@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLNghiPhepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AbsenceLetter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="TotalTime" Type="smallint" Nullable="false" />
+          <Property Name="CreateTime" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Reason_ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Account_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Permission_ID" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BonusDayOff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TotalDates" Type="tinyint" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+          <Property Name="CreateTime" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="CreateUser_ID" Type="int" Nullable="false" />
+          <Property Name="Employee_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DefaultValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DaysUsed" Type="smallint" Nullable="false" />
+          <Property Name="Account_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GoOutLetter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="TimeLeave" Type="tinyint" Nullable="false" />
+          <Property Name="CreateTime" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Reason_ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Account_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Timekeeping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckIn" Type="char" MaxLength="12" />
+          <Property Name="CheckOut" Type="char" MaxLength="12" />
+          <Property Name="Account_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AbsenceLetter_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AbsenceLetter" Type="Self.AbsenceLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AbsenceLetter">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AbsenceLetter_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="AbsenceLetter" Type="Self.AbsenceLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AbsenceLetter">
+              <PropertyRef Name="Reason_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Permission_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BonusDayOff_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="BonusDayOff" Type="Self.BonusDayOff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BonusDayOff">
+              <PropertyRef Name="CreateUser_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BonusDayOff_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="BonusDayOff" Type="Self.BonusDayOff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BonusDayOff">
+              <PropertyRef Name="Employee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GoOutLetter_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="GoOutLetter" Type="Self.GoOutLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoOutLetter">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GoOutLetter_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="GoOutLetter" Type="Self.GoOutLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoOutLetter">
+              <PropertyRef Name="Reason_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timekeeping_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Timekeeping" Type="Self.Timekeeping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Timekeeping">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLNghiPhepModelStoreContainer">
+          <EntitySet Name="AbsenceLetter" EntityType="Self.AbsenceLetter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BonusDayOff" EntityType="Self.BonusDayOff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefaultValue" EntityType="Self.DefaultValue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GoOutLetter" EntityType="Self.GoOutLetter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permission" EntityType="Self.Permission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reason" EntityType="Self.Reason" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Timekeeping" EntityType="Self.Timekeeping" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AbsenceLetter_Account" Association="Self.FK_AbsenceLetter_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="AbsenceLetter" EntitySet="AbsenceLetter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AbsenceLetter_Reason" Association="Self.FK_AbsenceLetter_Reason">
+            <End Role="Reason" EntitySet="Reason" />
+            <End Role="AbsenceLetter" EntitySet="AbsenceLetter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_Permission" Association="Self.FK_Account_Permission">
+            <End Role="Permission" EntitySet="Permission" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BonusDayOff_Account" Association="Self.FK_BonusDayOff_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="BonusDayOff" EntitySet="BonusDayOff" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BonusDayOff_Employee" Association="Self.FK_BonusDayOff_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="BonusDayOff" EntitySet="BonusDayOff" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Account" Association="Self.FK_Employee_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GoOutLetter_Account" Association="Self.FK_GoOutLetter_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="GoOutLetter" EntitySet="GoOutLetter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GoOutLetter_Reason" Association="Self.FK_GoOutLetter_Reason">
+            <End Role="Reason" EntitySet="Reason" />
+            <End Role="GoOutLetter" EntitySet="GoOutLetter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timekeeping_Account" Association="Self.FK_Timekeeping_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Timekeeping" EntitySet="Timekeeping" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLNghiPhepModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AbsenceLetter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartTime" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TotalTime" Type="Int16" Nullable="false" />
+          <Property Name="CreateTime" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Reason_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Account_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_AbsenceLetter_Account" FromRole="AbsenceLetter" ToRole="Account" />
+          <NavigationProperty Name="Reason" Relationship="Self.FK_AbsenceLetter_Reason" FromRole="AbsenceLetter" ToRole="Reason" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Permission_ID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="AbsenceLetters" Relationship="Self.FK_AbsenceLetter_Account" FromRole="Account" ToRole="AbsenceLetter" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_Account_Permission" FromRole="Account" ToRole="Permission" />
+          <NavigationProperty Name="BonusDayOffs" Relationship="Self.FK_BonusDayOff_Account" FromRole="Account" ToRole="BonusDayOff" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Account" FromRole="Account" ToRole="Employee" />
+          <NavigationProperty Name="GoOutLetters" Relationship="Self.FK_GoOutLetter_Account" FromRole="Account" ToRole="GoOutLetter" />
+          <NavigationProperty Name="Timekeepings" Relationship="Self.FK_Timekeeping_Account" FromRole="Account" ToRole="Timekeeping" />
+        </EntityType>
+        <EntityType Name="BonusDayOff">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalDates" Type="Byte" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CreateUser_ID" Type="Int32" Nullable="false" />
+          <Property Name="Employee_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_BonusDayOff_Account" FromRole="BonusDayOff" ToRole="Account" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_BonusDayOff_Employee" FromRole="BonusDayOff" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="DefaultValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DaysUsed" Type="Int16" Nullable="false" />
+          <Property Name="Account_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Employee_Account" FromRole="Employee" ToRole="Account" />
+          <NavigationProperty Name="BonusDayOffs" Relationship="Self.FK_BonusDayOff_Employee" FromRole="Employee" ToRole="BonusDayOff" />
+        </EntityType>
+        <EntityType Name="GoOutLetter">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartTime" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="TimeLeave" Type="Byte" Nullable="false" />
+          <Property Name="CreateTime" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Reason_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Account_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_GoOutLetter_Account" FromRole="GoOutLetter" ToRole="Account" />
+          <NavigationProperty Name="Reason" Relationship="Self.FK_GoOutLetter_Reason" FromRole="GoOutLetter" ToRole="Reason" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_Permission" FromRole="Permission" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AbsenceLetters" Relationship="Self.FK_AbsenceLetter_Reason" FromRole="Reason" ToRole="AbsenceLetter" />
+          <NavigationProperty Name="GoOutLetters" Relationship="Self.FK_GoOutLetter_Reason" FromRole="Reason" ToRole="GoOutLetter" />
+        </EntityType>
+        <EntityType Name="Timekeeping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckIn" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="CheckOut" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="Account_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Timekeeping_Account" FromRole="Timekeeping" ToRole="Account" />
+        </EntityType>
+        <Association Name="FK_AbsenceLetter_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="AbsenceLetter" Type="Self.AbsenceLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AbsenceLetter">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AbsenceLetter_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="AbsenceLetter" Type="Self.AbsenceLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AbsenceLetter">
+              <PropertyRef Name="Reason_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_Permission">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Permission_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BonusDayOff_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="BonusDayOff" Type="Self.BonusDayOff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BonusDayOff">
+              <PropertyRef Name="CreateUser_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GoOutLetter_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="GoOutLetter" Type="Self.GoOutLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoOutLetter">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timekeeping_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Timekeeping" Type="Self.Timekeeping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Timekeeping">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BonusDayOff_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="BonusDayOff" Type="Self.BonusDayOff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BonusDayOff">
+              <PropertyRef Name="Employee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GoOutLetter_Reason">
+          <End Role="Reason" Type="Self.Reason" Multiplicity="1" />
+          <End Role="GoOutLetter" Type="Self.GoOutLetter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reason">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GoOutLetter">
+              <PropertyRef Name="Reason_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLNghiPhepEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AbsenceLetters" EntityType="Self.AbsenceLetter" />
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="BonusDayOffs" EntityType="Self.BonusDayOff" />
+          <EntitySet Name="DefaultValues" EntityType="Self.DefaultValue" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="GoOutLetters" EntityType="Self.GoOutLetter" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="Reasons" EntityType="Self.Reason" />
+          <EntitySet Name="Timekeepings" EntityType="Self.Timekeeping" />
+          <AssociationSet Name="FK_AbsenceLetter_Account" Association="Self.FK_AbsenceLetter_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="AbsenceLetter" EntitySet="AbsenceLetters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AbsenceLetter_Reason" Association="Self.FK_AbsenceLetter_Reason">
+            <End Role="Reason" EntitySet="Reasons" />
+            <End Role="AbsenceLetter" EntitySet="AbsenceLetters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_Permission" Association="Self.FK_Account_Permission">
+            <End Role="Permission" EntitySet="Permissions" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BonusDayOff_Account" Association="Self.FK_BonusDayOff_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="BonusDayOff" EntitySet="BonusDayOffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Account" Association="Self.FK_Employee_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GoOutLetter_Account" Association="Self.FK_GoOutLetter_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="GoOutLetter" EntitySet="GoOutLetters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timekeeping_Account" Association="Self.FK_Timekeeping_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Timekeeping" EntitySet="Timekeepings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BonusDayOff_Employee" Association="Self.FK_BonusDayOff_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="BonusDayOff" EntitySet="BonusDayOffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GoOutLetter_Reason" Association="Self.FK_GoOutLetter_Reason">
+            <End Role="Reason" EntitySet="Reasons" />
+            <End Role="GoOutLetter" EntitySet="GoOutLetters" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLNghiPhepModelStoreContainer" CdmEntityContainer="QLNghiPhepEntities">
+          <EntitySetMapping Name="AbsenceLetters">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.AbsenceLetter">
+              <MappingFragment StoreEntitySet="AbsenceLetter">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Reason_ID" ColumnName="Reason_ID" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Permission_ID" ColumnName="Permission_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BonusDayOffs">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.BonusDayOff">
+              <MappingFragment StoreEntitySet="BonusDayOff">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TotalDates" ColumnName="TotalDates" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUser_ID" ColumnName="CreateUser_ID" />
+                <ScalarProperty Name="Employee_ID" ColumnName="Employee_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefaultValues">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.DefaultValue">
+              <MappingFragment StoreEntitySet="DefaultValue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="DaysUsed" ColumnName="DaysUsed" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GoOutLetters">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.GoOutLetter">
+              <MappingFragment StoreEntitySet="GoOutLetter">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="TimeLeave" ColumnName="TimeLeave" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Reason_ID" ColumnName="Reason_ID" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reasons">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.Reason">
+              <MappingFragment StoreEntitySet="Reason">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timekeepings">
+            <EntityTypeMapping TypeName="QLNghiPhepModel.Timekeeping">
+              <MappingFragment StoreEntitySet="Timekeeping">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CheckIn" ColumnName="CheckIn" />
+                <ScalarProperty Name="CheckOut" ColumnName="CheckOut" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>@Page.Title</title>
+        @RenderSection("head", required: false)
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="~/Content/reset.css" type="text/css" />
+        <link rel="stylesheet" href="~/Content/styles.css" type="text/css" />
+        <script src="~/scripts/jquery-1.12.3.js"></script>
+        <script src="~/scripts/bootstrap.min.js"></script>
+        <script src="~/scripts/scripts.js"></script>
+    </head>
+    <body>
+        <!--Main Header-->
+        <div class="container">
+            <nav id="navigation-bar">
+                <div class="col-md-12 logo">
+                    <a href="#"><img class="img-responsive img-rounded" src="~/Images/logo.jpg" /></a>
+                </div>
+                <div class="col-md-12 menu">
+                    <ul class="nav navbar">
+                        <li>QL User</li>
+                        <li>QL ngay nghi</li>
+                    </ul>
+                </div>
+            </nav>
+            <div id="content" class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12" id="top-content">
+                        <div class="row">
+                            <span type="button" class="toggle-btn">
+                                ☰
+                            </span>
+                            <div class="pull-right">
+                                <p id="user-login"><a href="javascript:void(0)">Admin <span class="caret"></span></a></p>
+                                <div class="setting"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="col-sm-12" id="body-content">
+                    <div class="row">
+                        <div class="row">
+                            @RenderBody()
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </body>
+</html>
