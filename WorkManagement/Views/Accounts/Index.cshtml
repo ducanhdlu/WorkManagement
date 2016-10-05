@@ -5,39 +5,56 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-    <h2>Thông tin các tài khoản</h2>
+<div class="title_right">
+    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Permission.Name)
-            </th>
-            <th></th>
-        </tr>
+            <h2>Thông tin các tài khoản</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Permission.Name)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Permission.Name)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                }
+                    
+                </tbody>
+            </table>
 
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Permission.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            </td>
-        </tr>
-    }
-
-    </table>
+        </div>
+    </div>
+</div>
