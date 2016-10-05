@@ -1,58 +1,141 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@Page.Title</title>
-        @RenderSection("head", required: false)
-        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="~/Content/reset.css" type="text/css" />
-        <link rel="stylesheet" href="~/Content/styles.css" type="text/css" />
-        <script src="~/scripts/jquery-1.12.3.js"></script>
-        <script src="~/scripts/bootstrap.min.js"></script>
-        <script src="~/scripts/scripts.js"></script>
-    </head>
-    <body>
-        <!--Main Header-->
-        <div class="container">
-            <nav id="navigation-bar">
-                <div class="col-md-12 logo">
-                    <a href="#"><img class="img-responsive img-rounded" src="~/Images/logo.jpg" /></a>
-                </div>
-                <div class="col-md-12 menu">
-                    <ul class="nav navbar">
-                        <li>QL User</li>
-                        <li>QL ngay nghi</li>
-                    </ul>
-                </div>
-            </nav>
-            <div id="content" class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-12" id="top-content">
-                        <div class="row">
-                            <span type="button" class="toggle-btn">
-                                ☰
-                            </span>
-                            <div class="pull-right">
-                                <p id="user-login"><a href="javascript:void(0)">Admin <span class="caret"></span></a></p>
-                                <div class="setting"></div>
-                            </div>
+    <title>Gentellela Alela! | </title>
+
+    <!-- Bootstrap -->
+    <link href="~/Content/bootstrap_dist/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="~/Content/nprogress/nprogress.css" rel="stylesheet">
+    <!-- jQuery custom content scroller -->
+    <link href="~/Content/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+
+    <!-- Custom Theme Style -->
+    <link href="~/Content/build/custom.min.css" rel="stylesheet">
+
+    <link href="~/Content/Styles.css" rel="stylesheet" />
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col menu_fixed">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-star-o"></i> <span>TDA Solutions</span></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile">
+                        <div class="profile_pic">
+                            <img src="~/images/icon-user.png" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>Admin</h2>
                         </div>
                     </div>
-                </div>
-                
+                    <!-- /menu profile quick info -->
 
-                <div class="col-sm-12" id="body-content">
-                    <div class="row">
-                        <div class="row">
-                            @RenderBody()
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i> Quản lý tài khoản <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Danh sách tài khoản</a></li>
+                                        <li><a href="#">Thêm tài khoản</a></li>
+                                        <li><a href="#">Reset mật khẩu</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-edit"></i> Quản lý quyền <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="form.html">Danh sách phân quyền</a></li>
+                                        <li><a href="form_advanced.html">...</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
                         </div>
-                        
                     </div>
+                    <!-- /sidebar menu -->
                 </div>
             </div>
 
-            
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="javascript:;"> Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+
+                @RenderBody()
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
         </div>
-    </body>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/scripts/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/Content/fastclick/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="~/Content/nprogress/nprogress.js"></script>
+    <!-- jQuery custom content scroller -->
+    <script src="~/Content/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="~/Content/build/js/custom.min.js"></script>
+</body>
 </html>
