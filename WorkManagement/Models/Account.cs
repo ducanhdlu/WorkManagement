@@ -19,7 +19,6 @@ namespace WorkManagement.Models
         {
             this.AbsenceLetters = new HashSet<AbsenceLetter>();
             this.BonusDayOffs = new HashSet<BonusDayOff>();
-            this.Employees = new HashSet<Employee>();
             this.GoOutLetters = new HashSet<GoOutLetter>();
             this.Timekeepings = new HashSet<Timekeeping>();
         }
@@ -28,14 +27,14 @@ namespace WorkManagement.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string Permission_ID { get; set; }
+        public int Employee_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AbsenceLetter> AbsenceLetters { get; set; }
+        public virtual Employee Employee { get; set; }
         public virtual Permission Permission { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BonusDayOff> BonusDayOffs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Employee> Employees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GoOutLetter> GoOutLetters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

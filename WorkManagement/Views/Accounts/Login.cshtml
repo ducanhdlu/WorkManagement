@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/login/style.css" rel="stylesheet" />
+</head>
+<body>
+    <!--/start-login-one-->
+    <h1>TDA Solutions</h1>
+    <div class="login">
+        <div class="ribbon-wrapper h2 ribbon-red">
+            <div class="ribbon-front">
+                <h2>User Login</h2>
+            </div>
+        </div>
+        <form>
+            <ul>
+                <li>
+                    <input type="text" class="text" placeholder="Email" ><i class="icon user"></i>
+                </li>
+                <li>
+                    <input type="password" placeholder="Mật khẩu" @*onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"*@><i class="icon lock"></i>
+                </li>
+            </ul>
+
+        </form>
+        <div class="submit">
+            <input type="submit" onclick="myFunction()" value="Log in">
+        </div>
+    </div>
+    <!--start-copyright-->
+    @*<div class="copy-right">
+            <p>Copyright &copy; 2015  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com">W3layouts</a></p>
+        </div>*@
+    <!--//end-copyright-->
+</body>
+</html>

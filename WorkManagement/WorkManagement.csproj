@@ -162,6 +162,7 @@
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome\HELP-US-OUT.txt" />
+    <Content Include="Content\login\style.css" />
     <Content Include="Content\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.concat.min.js" />
     <Content Include="Content\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.css" />
     <Content Include="Content\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.js" />
@@ -175,11 +176,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\csscheckbox_da83f5ec4bfb0d37395bf0b9a7a44321.png" />
     <Content Include="Images\icon-user.png" />
+    <Content Include="Images\lock.png" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Images\user.png" />
     <Content Include="Models\EntitiesDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EntitiesDB.Context.cs</LastGenOutput>
       <DependentUpon>EntitiesDB.edmx</DependentUpon>
+      <LastGenOutput>EntitiesDB.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\EntitiesDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -243,6 +246,13 @@
     <Content Include="Content\font-awesome\scss\_variables.scss" />
     <Content Include="Content\malihu-custom-scrollbar-plugin\.bower.json" />
     <Content Include="Content\malihu-custom-scrollbar-plugin\bower.json" />
+    <EntityDeploy Include="Models\EntitiesDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EntitiesDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\EntitiesDB.edmx.diagram">
+      <DependentUpon>EntitiesDB.edmx</DependentUpon>
+    </Content>
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
@@ -263,8 +273,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AbsenceLetterController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\GoOutLetterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -318,19 +330,18 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\EntitiesDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EntitiesDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\EntitiesDB.edmx.diagram">
-      <DependentUpon>EntitiesDB.edmx</DependentUpon>
-    </Content>
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="scripts\jquery\jquery.min.map" />
     <Content Include="Views\Accounts\Create.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Shared\_LayoutEmployee.cshtml" />
+    <Content Include="Views\Shared\_LayoutManager.cshtml" />
+    <Content Include="Views\Shared\_LayoutSuperManager.cshtml" />
+    <Content Include="Views\Accounts\Login.cshtml" />
+    <Content Include="Views\AbsenceLetter\Index_Manager.cshtml" />
+    <Content Include="Views\GoOutLetter\Index_Manager.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

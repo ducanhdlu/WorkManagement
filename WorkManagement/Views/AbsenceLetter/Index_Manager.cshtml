@@ -1,0 +1,87 @@
+﻿@model IEnumerable<WorkManagement.Models.AbsenceLetter>
+@{
+    ViewBag.Title = "Index_Manager";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
+}
+
+<div class="title_right">
+    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+
+            <h2>Danh sách đơn xin nghỉ phép</h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Tên nhân viên
+                        </th>
+                        <th>
+                            Thời gian bắt đầu
+                        </th>
+                        <th>
+                            Số ngày nghỉ
+                        </th>
+                        <th>
+                            Thời gian gửi
+                        </th>
+                        <th>
+                            Lý do
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Reason.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                <button class="btn btn-success">Chấp nhận</button>
+                                <button class="btn btn-danger">Từ chối</button>
+                                <button class="btn btn-primary">Chuyển</button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+

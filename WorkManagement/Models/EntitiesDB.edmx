@@ -25,6 +25,7 @@
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="25" Nullable="false" />
           <Property Name="Permission_ID" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Employee_ID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="BonusDayOff">
           <Key>
@@ -52,7 +53,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DaysUsed" Type="smallint" Nullable="false" />
-          <Property Name="Account_ID" Type="int" Nullable="false" />
+          <Property Name="IdentityCard" Type="varchar" MaxLength="12" Nullable="false" />
         </EntityType>
         <EntityType Name="GoOutLetter">
           <Key>
@@ -113,6 +114,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Account_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Employee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Account_Permission">
           <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
@@ -146,18 +159,6 @@
             </Principal>
             <Dependent Role="BonusDayOff">
               <PropertyRef Name="Employee_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Employee_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Employee">
-              <PropertyRef Name="Account_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -215,6 +216,10 @@
             <End Role="Reason" EntitySet="Reason" />
             <End Role="AbsenceLetter" EntitySet="AbsenceLetter" />
           </AssociationSet>
+          <AssociationSet Name="FK_Account_Employee" Association="Self.FK_Account_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
           <AssociationSet Name="FK_Account_Permission" Association="Self.FK_Account_Permission">
             <End Role="Permission" EntitySet="Permission" />
             <End Role="Account" EntitySet="Account" />
@@ -226,10 +231,6 @@
           <AssociationSet Name="FK_BonusDayOff_Employee" Association="Self.FK_BonusDayOff_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="BonusDayOff" EntitySet="BonusDayOff" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Employee_Account" Association="Self.FK_Employee_Account">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
           <AssociationSet Name="FK_GoOutLetter_Account" Association="Self.FK_GoOutLetter_Account">
             <End Role="Account" EntitySet="Account" />
@@ -271,10 +272,11 @@
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Permission_ID" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Employee_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AbsenceLetters" Relationship="Self.FK_AbsenceLetter_Account" FromRole="Account" ToRole="AbsenceLetter" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Account_Employee" FromRole="Account" ToRole="Employee" />
           <NavigationProperty Name="Permission" Relationship="Self.FK_Account_Permission" FromRole="Account" ToRole="Permission" />
           <NavigationProperty Name="BonusDayOffs" Relationship="Self.FK_BonusDayOff_Account" FromRole="Account" ToRole="BonusDayOff" />
-          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Account" FromRole="Account" ToRole="Employee" />
           <NavigationProperty Name="GoOutLetters" Relationship="Self.FK_GoOutLetter_Account" FromRole="Account" ToRole="GoOutLetter" />
           <NavigationProperty Name="Timekeepings" Relationship="Self.FK_Timekeeping_Account" FromRole="Account" ToRole="Timekeeping" />
         </EntityType>
@@ -306,8 +308,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="DaysUsed" Type="Int16" Nullable="false" />
-          <Property Name="Account_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="Self.FK_Employee_Account" FromRole="Employee" ToRole="Account" />
+          <Property Name="IdentityCard" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_Employee" FromRole="Employee" ToRole="Account" />
           <NavigationProperty Name="BonusDayOffs" Relationship="Self.FK_BonusDayOff_Employee" FromRole="Employee" ToRole="BonusDayOff" />
         </EntityType>
         <EntityType Name="GoOutLetter">
@@ -375,6 +377,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Account_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="Employee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Account_Permission">
           <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
           <End Role="Account" Type="Self.Account" Multiplicity="*" />
@@ -396,18 +410,6 @@
             </Principal>
             <Dependent Role="BonusDayOff">
               <PropertyRef Name="CreateUser_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Employee_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Employee">
-              <PropertyRef Name="Account_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -459,7 +461,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="QLNghiPhepEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="QLNghiPhepEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AbsenceLetters" EntityType="Self.AbsenceLetter" />
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="BonusDayOffs" EntityType="Self.BonusDayOff" />
@@ -477,6 +479,10 @@
             <End Role="Reason" EntitySet="Reasons" />
             <End Role="AbsenceLetter" EntitySet="AbsenceLetters" />
           </AssociationSet>
+          <AssociationSet Name="FK_Account_Employee" Association="Self.FK_Account_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Account_Permission" Association="Self.FK_Account_Permission">
             <End Role="Permission" EntitySet="Permissions" />
             <End Role="Account" EntitySet="Accounts" />
@@ -484,10 +490,6 @@
           <AssociationSet Name="FK_BonusDayOff_Account" Association="Self.FK_BonusDayOff_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="BonusDayOff" EntitySet="BonusDayOffs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Employee_Account" Association="Self.FK_Employee_Account">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
           <AssociationSet Name="FK_GoOutLetter_Account" Association="Self.FK_GoOutLetter_Account">
             <End Role="Account" EntitySet="Accounts" />
@@ -511,7 +513,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="QLNghiPhepModelStoreContainer" CdmEntityContainer="QLNghiPhepEntities">
+        <EntityContainerMapping StorageEntityContainer="QLNghiPhepModelStoreContainer" CdmEntityContainer="QLNghiPhepEntities1">
           <EntitySetMapping Name="AbsenceLetters">
             <EntityTypeMapping TypeName="QLNghiPhepModel.AbsenceLetter">
               <MappingFragment StoreEntitySet="AbsenceLetter">
@@ -532,6 +534,7 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Permission_ID" ColumnName="Permission_ID" />
+                <ScalarProperty Name="Employee_ID" ColumnName="Employee_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -562,7 +565,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="DaysUsed" ColumnName="DaysUsed" />
-                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+                <ScalarProperty Name="IdentityCard" ColumnName="IdentityCard" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,13 +1,9 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>TDA Solutions </title>
+    <meta name="viewport" content="width=device-width" />
+    <title>Quản lý</title>
 
     <!-- Bootstrap -->
     <link href="~/Content/bootstrap_dist/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +38,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>Admin</h2>
+                            <h2>Quản Lý</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -55,20 +51,49 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-home"></i> Quản lý tài khoản <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-calendar-times-o"></i> Chấm công <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="~/Accounts/Create">Thêm tài khoản</a></li>
-                                        <li><a href="~/Accounts/ResetPassword">Reset mật khẩu</a></li>
+                                        <li><a href="#">Check In</a></li>
+                                        <li><a href="#">Check Out</a></li>
+                                        <li><a href="#">Xem trong tháng</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-edit"></i> Quản lý nhân viên <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-edit"></i> Xin nghỉ phép <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="~/Employees/Index">Danh sách nhân viên</a></li>
-                                        <li><a href="~/Employees/Create">Thêm nhân viên</a></li>
+                                        <li><a href="#">Tạo mới</a></li>
+                                        <li><a href="#">Xem tình trạng</a></li>
                                     </ul>
                                 </li>
-
+                                <li>
+                                    <a><i class="fa fa-edit"></i> Xin nghỉ sớm <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Tạo mới</a></li>
+                                        <li><a href="#">Xem tình trạng</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-file-text-o"></i> Xem chấm công <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Trong ngày</a></li>
+                                        <li><a href="#">Trong tháng</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-file-text-o"></i> Xem ngày phép <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Nghỉ phép</a></li>
+                                        <li><a href="#">Nghỉ sớm</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    
+                                    <a><i class="fa fa-file-text-o"></i> Xem đơn nhận <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Nghỉ phép</a></li>
+                                        <li><a href="#">Nghỉ sớm</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -87,8 +112,8 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    Admin
-                                    <span class=" fa fa-angle-down"></span>
+                                    Quản Lý
+                                    <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="javascript:;"> Profile</a></li>

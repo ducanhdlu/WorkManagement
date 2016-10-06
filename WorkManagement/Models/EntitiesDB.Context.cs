@@ -13,10 +13,10 @@ namespace WorkManagement.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class QLNghiPhepEntities : DbContext
+    public partial class QLNghiPhepEntities1 : DbContext
     {
-        public QLNghiPhepEntities()
-            : base("name=QLNghiPhepEntities")
+        public QLNghiPhepEntities1()
+            : base("name=QLNghiPhepEntities1")
         {
         }
     

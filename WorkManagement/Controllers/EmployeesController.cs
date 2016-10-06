@@ -11,11 +11,11 @@ namespace WorkManagement.Controllers
 {
     public class EmployeesController : Controller
     {
-        private QLNghiPhepEntities db = new QLNghiPhepEntities();
+        private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
         // GET: Employees
         public ActionResult Index()
         {
-            var employees = db.Employees.Include(a => a.Account);
+            var employees = db.Employees;
             return View(employees.ToList());
         }
 

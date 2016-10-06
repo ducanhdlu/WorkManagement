@@ -1,9 +1,9 @@
-﻿@model IEnumerable<WorkManagement.Models.Employee>
-
+﻿@model IEnumerable<WorkManagement.Models.GoOutLetter>
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Index_Manager";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
+
 
 <div class="title_right">
     <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
@@ -19,7 +19,7 @@
     <div class="x_panel">
         <div class="x_title">
 
-            <h2>Thông tin các nhân viên</h2>
+            <h2>Danh sách đơn xin nghỉ sớm</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -30,11 +30,21 @@
                             Tên nhân viên
                         </th>
                         <th>
-                            Tên tài khoản
+                            Thời gian bắt đầu
                         </th>
                         <th>
-                            Quyền
+                            Số giờ nghỉ
                         </th>
+                        <th>
+                            Thời gian gửi
+                        </th>
+                        <th>
+                            Lý do
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+
                         <th></th>
                     </tr>
                 </thead>
@@ -43,17 +53,27 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
+                                @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Account.Email)
+                                @Html.DisplayFor(modelItem => item.StartTime)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Account.Permission.Name)
+                                @Html.DisplayFor(modelItem => item.TimeLeave)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                                @Html.DisplayFor(modelItem => item.CreateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Reason.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                <button class="btn btn-success">Chấp nhận</button>
+                                <button class="btn btn-danger">Từ chối</button>
+                                <button class="btn btn-primary">Chuyển</button>
                             </td>
                         </tr>
                     }

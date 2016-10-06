@@ -12,7 +12,7 @@ namespace WorkManagement.Controllers
 {
     public class AccountsController : Controller
     {
-        private QLNghiPhepEntities db = new QLNghiPhepEntities();
+        private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
 
 
 
@@ -27,6 +27,12 @@ namespace WorkManagement.Controllers
         public ActionResult ResetPassword()
         {
             
+            return View();
+        }
+        // GET: Accounts/Login
+        public ActionResult Login()
+        {
+
             return View();
         }
 

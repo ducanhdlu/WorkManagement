@@ -17,15 +17,17 @@ namespace WorkManagement.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employee()
         {
+            this.Accounts = new HashSet<Account>();
             this.BonusDayOffs = new HashSet<BonusDayOff>();
         }
     
         public int ID { get; set; }
         public string FullName { get; set; }
         public short DaysUsed { get; set; }
-        public int Account_ID { get; set; }
+        public string IdentityCard { get; set; }
     
-        public virtual Account Account { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account> Accounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BonusDayOff> BonusDayOffs { get; set; }
     }
