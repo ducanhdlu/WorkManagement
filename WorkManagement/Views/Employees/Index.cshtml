@@ -1,7 +1,7 @@
-﻿@model IEnumerable<WorkManagement.Models.Account>
+﻿@model IEnumerable<WorkManagement.Models.Employee>
 
 @{
-    ViewBag.Title = "Danh sách tài khoản";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -19,7 +19,7 @@
     <div class="x_panel">
         <div class="x_title">
 
-            <h2>Thông tin các tài khoản</h2>
+            <h2>Thông tin các nhân viên</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -27,34 +27,36 @@
                 <thead>
                     <tr>
                         <th>
-                            Tên tài khoản
+                            Tên nhân viên
                         </th>
                         <th>
-                            Quyền
+                            Tên tài khoản
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Permission.Name)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                        </td>
-                    </tr>
-                }
-                    
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Account.Email)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+
                 </tbody>
             </table>
 
         </div>
     </div>
 </div>
+
+

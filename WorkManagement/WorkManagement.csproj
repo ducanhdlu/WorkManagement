@@ -173,6 +173,7 @@
     <Content Include="Content\styles.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Content\csscheckbox_da83f5ec4bfb0d37395bf0b9a7a44321.png" />
     <Content Include="Images\icon-user.png" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Models\EntitiesDB.Context.tt">
@@ -263,6 +264,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -325,6 +327,10 @@
     </Content>
     <Content Include="scripts\jquery-1.10.2.min.map" />
     <Content Include="scripts\jquery\jquery.min.map" />
+    <Content Include="Views\Accounts\Create.cshtml" />
+    <Content Include="Views\Accounts\ResetPassword.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

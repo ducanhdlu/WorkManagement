@@ -14,6 +14,8 @@ namespace WorkManagement.Controllers
     {
         private QLNghiPhepEntities db = new QLNghiPhepEntities();
 
+
+
         // GET: Accounts
         public ActionResult Index()
         {
@@ -21,19 +23,11 @@ namespace WorkManagement.Controllers
             return View(accounts.ToList());
         }
 
-        // GET: Accounts/Details/5
-        public ActionResult Details(int? id)
+        // GET: Accounts/ResetPassword
+        public ActionResult ResetPassword()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
+            
+            return View();
         }
 
         // GET: Accounts/Create
