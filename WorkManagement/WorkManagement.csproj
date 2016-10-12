@@ -346,6 +346,8 @@
     <Content Include="Views\Timekeeping\Check.cshtml" />
     <Content Include="Views\Timekeeping\ManagerToday.cshtml" />
     <Content Include="Views\Timekeeping\ManagerOption.cshtml" />
+    <Content Include="Views\Shared\_MenuAdmin.cshtml" />
+    <Content Include="Views\Shared\_MenuManager.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

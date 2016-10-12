@@ -48,32 +48,21 @@
                     <!-- /menu profile quick info -->
 
                     <br />
-
-                    <!-- sidebar menu -->
-                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                        <div class="menu_section">
-                            <h3>General</h3>
-                            <ul class="nav side-menu">
-                                <li>
-                                    <a><i class="fa fa-edit"></i> Quản lý nhân viên <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="~/Accounts/Index">Danh sách nhân viên</a></li>
-                                        <li><a href="~/Employees/Create">Thêm nhân viên</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a><i class="fa fa-home"></i> Quản lý tài khoản <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="~/Accounts/Create">Thêm tài khoản</a></li>
-                                        <li><a href="~/Accounts/ResetPassword">Reset mật khẩu</a></li>
-                                    </ul>
-                                </li>
-                               
-
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /sidebar menu -->
+                    @{
+                        int permission = 1;
+                        switch (permission)
+                        {
+                            case 1:
+                                @Html.Partial("_MenuAdmin");
+                                break;
+                            case 2:
+                                @Html.Partial("_MenuManager");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                   
                 </div>
             </div>
 
@@ -89,7 +78,7 @@
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     Admin
-                                    <span class=" fa fa-angle-down"></span>
+                                    <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="javascript:;"> Profile</a></li>
