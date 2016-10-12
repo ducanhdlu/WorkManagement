@@ -10,31 +10,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
     <link href="~/Content/login/style.css" rel="stylesheet" />
+    <link href="~/Content/styles.css" rel="stylesheet" />
 </head>
 <body>
     <!--/start-login-one-->
-    <h1>TDA Solutions</h1>
-    <div class="login">
-        <div class="ribbon-wrapper h2 ribbon-red">
-            <div class="ribbon-front">
-                <h2>User Login</h2>
+    <form novalidate ng-app="" name="frmLogin">
+        <h1>TDA Solutions</h1>
+        <div class="login">
+            <div class="ribbon-wrapper h2 ribbon-red">
+                <div class="ribbon-front">
+                    <h2>User Login</h2>
+                </div>
             </div>
-        </div>
-        <form>
             <ul>
                 <li>
-                    <input type="text" class="text" placeholder="Email" ><i class="icon user"></i>
+                    <input type="text" class="text" placeholder="Email" name="email_login" required ng-model="email" ng-trim="true" ><i class="icon user"></i>
                 </li>
+                <content>
+                    <span class="error" ng-show="(frmLogin.email_login.$dirty||frmLogin.$submitted) && frmLogin.email_login.$error.required"><label class="control-label">Hãy nhập tên nhân viên.</label></span>
+                </content>
                 <li>
-                    <input type="password" placeholder="Mật khẩu" @*onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"*@><i class="icon lock"></i>
+                    <input type="password" placeholder="Mật khẩu" name="password" required ng-model="password" ng-trim="true" ><i class="icon lock"></i>
                 </li>
+                <content>
+                    
+                    <span class="error" ng-show="(frmLogin.password.$dirty||frmLogin.$submitted) && frmLogin.password.$error.required"><label class="control-label">Hãy nhập mật khẩu.</label></span>
+                </content>
             </ul>
 
-        </form>
-        <div class="submit">
-            <input type="submit" onclick="myFunction()" value="Log in">
+            <div class="submit">
+                <input type="submit" onclick="myFunction()" value="Log in">
+            </div>
         </div>
-    </div>
+    </form>
+    <!--angularjs-->
+    <script src="~/scripts/angular.min.js"></script>
     <!--start-copyright-->
     @*<div class="copy-right">
             <p>Copyright &copy; 2015  All rights  Reserved | Template by &nbsp;<a href="http://w3layouts.com">W3layouts</a></p>

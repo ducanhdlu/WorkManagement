@@ -27,6 +27,9 @@
                 <thead>
                     <tr>
                         <th>
+                            Tên nhân viên
+                        </th>
+                        <th>
                             Tên tài khoản
                         </th>
                         <th>
@@ -40,14 +43,17 @@
                 {
                     <tr>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Employee.FullName)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Permission.Name)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            <button class="btn btn-warning">Sửa</button>
+                            <button class="btn btn-danger">Xóa</button>
                         </td>
                     </tr>
                 }

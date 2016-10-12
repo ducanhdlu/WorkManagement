@@ -1,7 +1,48 @@
-﻿#gender{
+﻿/*css error validation*/
+#gender{
     padding-top:7px;
 }
+input.ng-dirty.ng-invalid{
+    border: 1px solid red;
+}
+.email_login{
+    border:none;
+}
+.error{
+    /*float: left;
+    margin: 0 ;
+    padding: 3px 10px;
+    color: #FFF;
+    border-radius: 3px 4px 4px 3px;
+    background-color: #CE5454;
+    max-width: 230px;
+    white-space: pre;
+    position: relative;
+    z-index: 1;
+    transition: 0.15s ease-out;
+    border:1px solid transparent;*/
+    color: #E74C3C;
+    padding-left: 0;
+    margin-bottom:0;
+}
+.error label{
+    
+    font-weight:unset;
+}
+.error::after {
+    /*content: '';
+    display: block;
+    height: 0;
+    width: 0;
+    border-color: transparent #CE5454 transparent transparent;
+    border-style: solid;
+    border-width: 11px 7px;
+    position: absolute;
+    left: -13px;
+    top: 1px;*/
+}
 
+/*css radio button*/
 input[type=radio].css-checkbox {
 position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
 }
@@ -22,190 +63,13 @@ input[type=radio].css-checkbox + label.css-label {
 input[type=radio].css-checkbox:checked + label.css-label {
 	background-position: 0 -15px;
 }
+
 label.css-label {
     background-image:url(csscheckbox_da83f5ec4bfb0d37395bf0b9a7a44321.png);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
+    
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.logo img {
-    width: 80%;
-    display: block;
-    margin: 0 auto;
-}
-.display-block {
-    display:block;
-
-}
-
-
-#navigation-bar {
-    width: 20%;
-    background: #0C6178;
-    float: left;
-    height: 100%;
-    position:fixed;
-}
-
-
-#content {
-    width: 80%;
-    background: #ddd;
-    float: right;
-}
-#body-content {
-    padding:0;
-    margin:0;
-    height:90%;
-    position:fixed;
-}
-.toggle-btn {
-    padding:10px;
-    background-color:#14C466;
-    color:#fff;
-    font-size: 30px;
-    line-height:50px;
-}
-#top-content {
-    background: #14C466;
-    height: 10%;
-    color: #fff;
-    float:left;
-    width:100%;
-}
-#top-content p {
-    padding: 20px 10px;
-}
-#user-login a {
-    color: #fff;
-}
-#user-login a:hover,#user-login a:visited,#user-login a:focus {
-    text-decoration:none;
-}
-
-
-@media screen and (max-width:768px) {
-    
-}
-.navigation {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    line-height: 1;
-}
-
-.navigation ul,
-.navigation ul li,
-.navigation ul ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  background:#0C245C;
-}
-
-.navigation ul {
-    z-index: 500;
-    float: left;
-}
-
-.navigation ul li {
-  float: left;
-  min-height: 0.05em;
-  line-height: 1em;
-  vertical-align: middle;
-  position: relative;
-}
-
-.navigation ul li.hover,
-.navigation ul li:hover {
-  position: relative;
-  z-index: 510;
-  cursor: default;
-}
-
-.navigation ul ul {
-  visibility: hidden;
-  position: absolute;
-  top: 100%;
-  left: 0px;
-  z-index: 520;
-  width: 100%;
-}
-
-.navigation ul ul li { float: none; }
-
-.navigation ul li:hover > ul { visibility: visible; }
-
-.navigation ul ul {
-  top: 0;
-  left: 100%;
-}
-
-.navigation ul li { float: none; }
-
-.navigation {
-    margin-top: 20px;
-    margin-left:13%;
-    margin-bottom: 20px;
-    width: 74%;
-    background: #0C245C;
-    font-family: 'roboto', Tahoma, Arial, sans-serif;
-    zoom: 1;
-}
-
-.navigation a {
-    display: block;
-    padding: 8% 10%;
-    color: #ffffff;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-.navigation > ul { width: 100%; }
-
-.navigation ul ul { width: 100%; }
-
-.navigation > ul > li > a:hover { color: #ffffff; }
-
-.navigation > ul > li a:hover,
-.navigation > ul > li:hover a { background: #34A65F; }
-
-.navigation li { position: relative; }
-
-.navigation ul li.has-sub > a:after {
-  content: '»';
-  position: absolute;
-  right: 5%;
-}
-
-.navigation ul ul li.first {
-  -webkit-border-radius: 0 3px 0 0;
-  -moz-border-radius: 0 3px 0 0;
-  border-radius: 0 3px 0 0;
-}
-
-.navigation ul ul li.last {
-  -webkit-border-radius: 0 0 3px 0;
-  -moz-border-radius: 0 0 3px 0;
-  border-radius: 0 0 3px 0;
-  border-bottom: 0;
-}
-
-.navigation ul ul {
-  -webkit-border-radius: 0 3px 3px 0;
-  -moz-border-radius: 0 3px 3px 0;
-  border-radius: 0 3px 3px 0;
-}
-
-.navigation ul ul { border: 1px solid #34A65F; }
-
-.navigation ul ul li { border-bottom: 1px solid #0F8A5F; }
-
-.navigation ul ul li:hover > a {
-  background: #4eb1ff;
-  color: #ffffff;
 }

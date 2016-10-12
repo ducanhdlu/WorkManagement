@@ -1,10 +1,8 @@
-﻿@model IEnumerable<WorkManagement.Models.Employee>
-
+﻿@model IEnumerable<WorkManagement.Models.Timekeeping>
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "ManagerToday";
+    Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
-
 <div class="title_right">
     <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
         <div class="input-group">
@@ -19,7 +17,7 @@
     <div class="x_panel">
         <div class="x_title">
 
-            <h2>Thông tin các nhân viên</h2>
+            <h2>Thông tin các nhân viên trong ngày @DateTime.Now.Day/@DateTime.Now.Month/@DateTime.Now.Year</h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -30,39 +28,46 @@
                             Tên nhân viên
                         </th>
                         <th>
-                            Ngày nghỉ đã dùng
+                            Check in
                         </th>
                         <th>
-                            Ngày nghỉ thêm
+                            Check out
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
-                    {
+            {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
+                                @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DaysUsed)
+                                @Html.DisplayFor(modelItem => item.CheckIn)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BonusDayOffs)
-                            </td>
-                            <td>
-                                <button class="btn btn-warning">Sửa</button>
-                                <button class="btn btn-danger">Xóa</button>
+                                @Html.DisplayFor(modelItem => item.CheckOut)
                             </td>
                         </tr>
                     }
-
+                    <tr>
+                        <td>Thor</td>
+                        <td>@DateTime.Now</td>
+                        <td>@DateTime.Now</td>
+                    </tr>
+                    <tr>
+                        <td>Finn</td>
+                        <td>@DateTime.MaxValue</td>
+                        <td>@DateTime.Now</td>
+                    </tr>
+                    <tr>
+                        <td>Serge</td>
+                        <td>@DateTime.Now</td>
+                        <td>@DateTime.Now</td>
+                    </tr>
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>
-
-

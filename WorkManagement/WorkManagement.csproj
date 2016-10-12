@@ -277,6 +277,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\GoOutLetterController.cs" />
+    <Compile Include="Controllers\TimekeepingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -342,6 +343,9 @@
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\AbsenceLetter\Index_Manager.cshtml" />
     <Content Include="Views\GoOutLetter\Index_Manager.cshtml" />
+    <Content Include="Views\Timekeeping\Check.cshtml" />
+    <Content Include="Views\Timekeeping\ManagerToday.cshtml" />
+    <Content Include="Views\Timekeeping\ManagerOption.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

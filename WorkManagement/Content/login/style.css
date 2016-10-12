@@ -34,7 +34,8 @@ body{
 
 }
 body a,form li,.submit input[type="submit"]{
-	transition: 0.1s all;
+	margin-top:10px;
+    transition: 0.1s all;
 	-webkit-transition: 0.1s all;
 	-moz-transition: 0.1s all;
 	-o-transition: 0.1s all;

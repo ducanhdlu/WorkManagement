@@ -14,22 +14,20 @@
             </div>
             <div class="x_content">
                 <br />
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form ng-app="" name="frmCreateEmployee" novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="employee_name">
                             Tên nhân viên <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="account" required="required" class="form-control col-md-7 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <input type="text" name="employee_name" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="employee_name_name" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 ">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="employee" class="control-label col-md-3 col-sm-3 col-xs-12">
-                            CMND <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="employee" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error" ng-show="(frmCreateEmployee.employee_name.$dirty||frmCreateEmployee.$submitted) && frmCreateEmployee.employee_name.$error.required"><label class="control-label">Hãy nhập tên nhân viên.</label></span>
+                            <span class="error" ng-show="frmCreateEmployee.employee_name.$dirty && frmCreateEmployee.employee_name.$error.minlength"><label class="control-label">Ít nhất là 4 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateEmployee.employee_name.$dirty && frmCreateEmployee.employee_name.$error.maxlength"><label class="control-label">Nhiều nhất là 50 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateEmployee.employee_name.$dirty && frmCreateEmployee.employee_name.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
                         </div>
                     </div>
                     <div class="ln_solid"></div>
