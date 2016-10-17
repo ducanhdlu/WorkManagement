@@ -275,6 +275,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AbsenceLetterController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\BonusDayOffsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\GoOutLetterController.cs" />
     <Compile Include="Controllers\TimekeepingController.cs" />
@@ -320,6 +321,9 @@
     <Compile Include="Models\Reason.cs">
       <DependentUpon>EntitiesDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>EntitiesDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Timekeeping.cs">
       <DependentUpon>EntitiesDB.tt</DependentUpon>
     </Compile>
@@ -348,6 +352,16 @@
     <Content Include="Views\Timekeeping\ManagerOption.cshtml" />
     <Content Include="Views\Shared\_MenuAdmin.cshtml" />
     <Content Include="Views\Shared\_MenuManager.cshtml" />
+    <Content Include="Views\Timekeeping\ShowInMonthOneEmployee.cshtml" />
+    <Content Include="Views\AbsenceLetter\Create.cshtml" />
+    <Content Include="Views\AbsenceLetter\Index_Employee.cshtml" />
+    <Content Include="Views\Shared\_MenuEmployee.cshtml" />
+    <Content Include="Views\GoOutLetter\Create.cshtml" />
+    <Content Include="Views\GoOutLetter\Index_Employee.cshtml" />
+    <Content Include="Views\AbsenceLetter\ViewAbsenceLetter_SuperManager.cshtml" />
+    <Content Include="Views\GoOutLetter\ViewGoOutLetter_SuperManager.cshtml" />
+    <Content Include="Views\Employees\ViewTimeUsed.cshtml" />
+    <Content Include="Views\BonusDayOffs\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

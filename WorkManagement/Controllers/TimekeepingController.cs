@@ -36,5 +36,12 @@ namespace WorkManagement.Controllers
             
             return View();
         }
+
+        // GET: Show a month of a employee
+        public ActionResult ShowInMonthOneEmployee()
+        {
+
+            return View();
+        }
     }
 }

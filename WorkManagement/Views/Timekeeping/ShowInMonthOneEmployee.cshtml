@@ -1,0 +1,99 @@
+﻿@model IEnumerable<WorkManagement.Models.Timekeeping>
+@{
+    ViewBag.Title = "ShowInMonthOneEmployee";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <form ng-app="" novalidate name="frmShowTimeKeepingInMonth" class="form-horizontal form-label-left">
+            <div class="x_panel">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_title">
+                       
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-1 col-sm-2 col-xs-8">
+                                        <h3>Tháng</h3>
+                                    </div>
+                                    <div class="col-md-1 col-sm-2 col-xs-6">
+                                        <input type="number" name="month" ng-pattern="/^([0-9]+)$/" required ng-model="month" ng-trim="true" ng-minlength="1" ng-maxlength="12" class="form-control col-md-7 col-xs-12 ">
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                        <button type="submit" class="btn btn-primary">Xem</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <label class="error" ng-show="(frmShowTimeKeepingInMonth.month.$dirty||frmShowTimeKeepingInMonth.$submitted) && frmShowTimeKeepingInMonth.month.$error.required">Hãy nhập tháng muốn xem.</label>
+                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.minlength"><label class="control-label">Tháng nhỏ nhất là 1.</label></label>
+                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.maxlength"><label class="control-label">Tháng lớn nhất là 12.</label></label>
+                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.pattern"><label class="control-label">Chỉ nhập số.</label></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        @{
+                        int days = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                        }
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Ngày
+                                    </th>
+                                    <th>
+                                        Check in
+                                    </th>
+                                    <th>
+                                        Check out
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 1; i <= days; i++)
+                            {
+                                if (i < DateTime.Now.Day)
+                                {
+                                        <tr>
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-lg btn-danger">Không</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-lg btn-danger">Không</button>
+                                            </td>
+                                        </tr>
+                                }
+                                else
+                                {
+                                        <tr>
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-lg btn-primary">Chưa</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-lg btn-primary">Chưa</button>
+                                            </td>
+                                        </tr>
+                                }
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

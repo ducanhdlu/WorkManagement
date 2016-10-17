@@ -1,9 +1,9 @@
-﻿@model IEnumerable<WorkManagement.Models.Account>
-
+﻿@model IEnumerable<WorkManagement.Models.Employee>
 @{
-    ViewBag.Title = "Danh sách tài khoản";
+    ViewBag.Title = "ViewTimeUsed";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 
 <div class="title_right">
     <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
@@ -20,7 +20,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_title">
 
-                <h2>Thông tin các tài khoản</h2>
+                <h2>Danh sách đơn xin nghỉ sớm</h2>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -33,38 +33,56 @@
                                 Tên nhân viên
                             </th>
                             <th>
-                                Tên tài khoản
+                                Ngày phép đã dùng
                             </th>
                             <th>
-                                Quyền
+                                Ngày phép cộng thêm
                             </th>
+                            <th>
+                                Ngày phép trong năm
+                            </th>
+                            <th>
+                                Giờ phép đã dùng
+                            </th>
+                            <th>
+                                Giờ phép trong tháng
+                            </th>
+
+
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                        {
+                    {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Employee.FullName)
+                                    @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
+                                    @Html.DisplayFor(modelItem => item.DaysUsed)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Permission.Name)
+                                    @Html.DisplayFor(modelItem => item.BonusDays)
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning">Sửa</button>
-                                    <button class="btn btn-danger">Xóa</button>
+                                    12
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HoursUsed)
+                                </td>
+                                <td>
+                                    6
                                 </td>
                             </tr>
-                        }
+                    }
 
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 </div>
+
+
+

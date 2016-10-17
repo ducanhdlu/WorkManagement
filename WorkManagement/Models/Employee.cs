@@ -24,8 +24,9 @@ namespace WorkManagement.Models
         public int ID { get; set; }
         public string FullName { get; set; }
         public short DaysUsed { get; set; }
-        public string IdentityCard { get; set; }
-    
+        public short HoursUsed { get; set; }
+        public byte BonusDays { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Account> Accounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

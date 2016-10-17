@@ -34,5 +34,6 @@ namespace WorkManagement.Models
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<Reason> Reasons { get; set; }
         public virtual DbSet<Timekeeping> Timekeepings { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

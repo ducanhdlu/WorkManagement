@@ -1,7 +1,5 @@
-﻿@model IEnumerable<WorkManagement.Models.Employee>
-
+﻿@model IEnumerable<WorkManagement.Models.AbsenceLetter>
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -20,7 +18,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_title">
 
-                <h2>Thông tin các nhân viên</h2>
+                <h2>Kiểm tra tình trạng nghỉ phép</h2>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -29,14 +27,24 @@
                 <thead>
                     <tr>
                         <th>
-                            Tên nhân viên
+                            Nhân viên
                         </th>
                         <th>
-                            Ngày nghỉ đã dùng
+                            Thời gian bắt đầu
                         </th>
                         <th>
-                            Ngày nghỉ thêm
+                            Số ngày nghỉ
                         </th>
+                        <th>
+                            Thời gian gửi
+                        </th>
+                        <th>
+                            Lý do
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+
                         <th></th>
                     </tr>
                 </thead>
@@ -45,17 +53,26 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
+                                @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DaysUsed)
+                                @Html.DisplayFor(modelItem => item.StartTime)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BonusDayOffs)
+                                @Html.DisplayFor(modelItem => item.TotalTime)
                             </td>
                             <td>
-                                <button class="btn btn-warning">Sửa</button>
-                                <button class="btn btn-danger">Xóa</button>
+                                @Html.DisplayFor(modelItem => item.CreateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Reason.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                <button class="btn btn-danger">Chấp nhận</button>
+                                <button class="btn btn-danger">Từ chối</button>
                             </td>
                         </tr>
                     }
@@ -66,5 +83,3 @@
         </div>
     </div>
 </div>
-
-

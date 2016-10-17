@@ -23,6 +23,7 @@
         <AssociationConnector Association="QLNghiPhepModel.FK_Timekeeping_Account" ManuallyRouted="false" />
         <AssociationConnector Association="QLNghiPhepModel.FK_BonusDayOff_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="QLNghiPhepModel.FK_GoOutLetter_Reason" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QLNghiPhepModel.sysdiagram" Width="1.5" PointX="5.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,64 @@
+﻿@model WorkManagement.Models.AbsenceLetter
+
+@{
+    ViewBag.Title = "Tạo Nghỉ Phép";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div ng-app="myApp" ng-controller="formCtrl">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>ĐĂNG KÝ NGHỈ PHÉP</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                            Thời gian bắt đầu <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="datetime" ng-model="StartTime" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                          Thời gian nghỉ <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="number" ng-model="TotalTime" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <label for="employee" class="control-label col-md-3 col-sm-3 col-xs-12">
+                                Ngày tạo <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="datetime" ng-model="CreateTime" class="form-control col-md-7 col-xs-12"required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                                Lý do <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" ng-model="Reason_Id" required="required" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button ng-click class="btn btn-danger">Gửi</button>
+                        </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
