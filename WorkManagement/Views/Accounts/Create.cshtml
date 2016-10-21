@@ -54,19 +54,32 @@
         <div class="x_panel">
             <div class="x_title">
                 <h2>Tạo tài khoản</h2>
-                
+
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <br />
-                <form ng-app="" novalidate name="frmCreateAccount"  class="form-horizontal form-label-left">
-
+                <form ng-app="" novalidate name="frmCreateAccount" method="post" action="@Url.Action("CreatePost","Accounts")" class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label for="employee" class="control-label col-md-2 col-sm-2 col-xs-12">
+                            Tên nhân viên <span class="required">*</span>
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <input type="text" name="employee" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="employee" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error" ng-show="(frmCreateAccount.employee.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.employee.$error.required"><label class="control-label">Hãy nhập tên nhân viên.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.minlength"><label class="control-label">Ít nhất là 4 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.maxlength"><label class="control-label">Nhiều nhất là 50 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-12" for="account">
                             Tên tài khoản <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="text" name="account" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="account_name" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 ">
+                            <input type="text" id="email" name="account" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="account_name" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateAccount.account.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.account.$error.required"><label class="control-label">Hãy nhập tên tài khoản.</label></span>
@@ -80,13 +93,13 @@
                             Mật khẩu <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="password" name="password" required ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="password" ng-trim="true" ng-minlength="6" ng-maxlength="25" class="form-control col-md-7 col-xs-12">
+                            <input type="password" id="password" name="password" required ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="password" ng-trim="true" ng-minlength="6" ng-maxlength="25" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <span class="error" ng-show="(frmCreatepassword.password.$dirty||frmCreatepassword.$submitted) && frmCreatepassword.password.$error.required"><label class="control-label">Hãy nhập mật khẩu.</label></span>
-                            <span class="error" ng-show="frmCreatepassword.password.$dirty && frmCreatepassword.password.$error.minlength"><label class="control-label">Ít nhất là 6 ký tự.</label></span>
-                            <span class="error" ng-show="frmCreatepassword.password.$dirty && frmCreatepassword.password.$error.maxlength"><label class="control-label">Nhiều nhất là 25 ký tự.</label></span>
-                            <span class="error" ng-show="frmCreatepassword.password.$dirty && frmCreatepassword.password.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
+                            <span class="error" ng-show="(frmCreateAccount.password.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.password.$error.required"><label class="control-label">Hãy nhập mật khẩu.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.password.$dirty && frmCreateAccount.password.$error.minlength"><label class="control-label">Ít nhất là 6 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.password.$dirty && frmCreateAccount.password.$error.maxlength"><label class="control-label">Nhiều nhất là 25 ký tự.</label></span>
+                            <span class="error" ng-show="frmCreateAccount.password.$dirty && frmCreateAccount.password.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -94,22 +107,20 @@
                             Mật khẩu (Nhập lại)<span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input class="form-control col-md-7 col-xs-12" type="password" name="password2" required  ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="password2" ng-trim="true" ng-minlength="6" ng-maxlength="25" >
+                            <input class="form-control col-md-7 col-xs-12 input-validate" type="password" name="password2" required ng-pattern="password" ng-model="password2" ng-trim="true">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <span class="error" ng-show="(frmCreatepassword2.password2.$dirty||frmCreatepassword2.$submitted) && frmCreatepassword2.password2.$error.required"><label class="control-label">Hãy nhập lại mật khẩu.</label></span>
-                            <span class="error" ng-show="frmCreatepassword2.password2.$dirty && frmCreatepassword2.password2.$error.minlength"><label class="control-label">Ít nhất là 6 ký tự.</label></span>
-                            <span class="error" ng-show="frmCreatepassword2.password2.$dirty && frmCreatepassword2.password2.$error.maxlength"><label class="control-label">Nhiều nhất là 25 ký tự.</label></span>
-                            <span class="error" ng-show="frmCreatepassword2.password2.$dirty && frmCreatepassword2.password2.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
+                            
+                            <span class="error" ng-show="frmCreateAccount.password2.$error.pattern"><label class="control-label">Mật khẩu nhập lại không đúng.</label></span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">Giới tính</label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <div id="gender" >
+                            <div id="gender">
                                 <input type="radio" name="gender" value="male" class="css-checkbox" id="male" checked="checked">
                                 <label class="css-label radGroup1" for="male">
-                                      Nam 
+                                    Nam
                                 </label>
                                 <input type="radio" name="gender" value="female" class="css-checkbox" id="female">
                                 <label class="css-label radGroup1" for="female">
@@ -117,21 +128,29 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
+                   
                     <div class="form-group">
-                        <label for="employee" class="control-label col-md-2 col-sm-2 col-xs-12">
-                            Nhân viên <span class="required">*</span>
+                        <label for="permission" class="control-label col-md-2 col-sm-2 col-xs-12">
+                            Chức vụ <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input name="employee" class="form-control col-md-7 col-xs-12" required type="text">
-                            
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission">
+                                @foreach (var item in ViewBag.Permission_ID)
+                                {
+                                    <option value="@item.ID">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error" ng-show="(frmCreateAccount.permission.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.permission.$error.required"><label class="control-label">Hãy chọn chức vụ.</label></span>
                         </div>
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-3">
                             <button type="submit" class="btn btn-danger">Hủy</button>
-                            <button type="submit" class="btn btn-primary">Tạo</button>
+                            <button type="submit" ng-disabled="frmCreateAccount.$invalid" class="btn btn-primary">Tạo</button>
                         </div>
                     </div>
 
@@ -140,3 +159,4 @@
         </div>
     </div>
 </div>
+

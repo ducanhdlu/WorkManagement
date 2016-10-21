@@ -19,6 +19,10 @@ namespace WorkManagement.Controllers
         // GET: Accounts
         public ActionResult Index()
         {
+            if (Session["user_login"]==null)
+            {
+                return Redirect("~/accounts/login");
+            }
             var accounts = db.Accounts.Include(a => a.Permission);
             return View(accounts.ToList());
         }
@@ -26,7 +30,10 @@ namespace WorkManagement.Controllers
         // GET: Accounts/ResetPassword
         public ActionResult ResetPassword()
         {
-            
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             return View();
         }
         // GET: Accounts/Login
@@ -35,32 +42,116 @@ namespace WorkManagement.Controllers
 
             return View();
         }
-
+        // post: Accounts/LoginPost
+        [HttpPost]
+        public ActionResult LoginPost()
+        {
+            string email = Request["email_login"].ToString();
+            string password = Request["password"].ToString();
+            var user = db.Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
+            
+            if (user!=null)
+            {
+                Session["user_login"] = user as Account;
+                
+                return Redirect("~/accounts/index");
+            }
+            else
+            {
+                //ViewBag.LoginError = "Email hoặc Mật khẩu không chính xác!";
+                //ModelState.AddModelError("LoginError", "Email hoặc Mật khẩu không chính xác!");
+            }
+            return Redirect("~/accounts/login");
+        }
+        //post: Accounts/LogOut
+        
+        public ActionResult LogOut()
+        {
+            Session["user_login"] = null;
+            return Redirect("~/accounts/login");
+        }
         // GET: Accounts/Create
         public ActionResult Create()
         {
-            ViewBag.Permission_ID = new SelectList(db.Permissions, "ID", "Name");
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+            ViewBag.Permission_ID = db.Permissions.ToList();
+            ViewBag.Employee_ID = db.Employees.ToList();
             return View();
         }
 
-        // POST: Accounts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Accounts/CreatePost
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Email,Password,Permission_ID")] Account account)
+        public ActionResult CreatePost()
         {
-            if (ModelState.IsValid)
+            Employee employee = new Employee();
+            employee.FullName= Request.Form["employee"].ToString();
+            employee.DaysUsed = 0;
+            employee.HoursUsed = 0;
+            try
             {
-                db.Accounts.Add(account);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Employees.Add(employee);
+                    db.SaveChanges();
+                    Account account = new Account();
+                    account.Email = Request.Form["account"].ToString();
+                    account.Password = Request.Form["password"].ToString();
+                    account.Permission_ID = Request.Form["permission"].ToString();
+                    account.Employee_ID = employee.ID;
+                    try
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            db.Accounts.Add(account);
+                            db.SaveChanges();
+                            return Redirect("~/Accounts/Index");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        db.Employees.Remove(employee);
+                        db.SaveChanges();
+                        throw;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
 
-            ViewBag.Permission_ID = new SelectList(db.Permissions, "ID", "Name", account.Permission_ID);
-            return View(account);
+            
+            
+            return View();
         }
 
+        // GET: Accounts/ChangePermission
+        public ActionResult ChangePermission()
+        {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+            var list = db.Accounts;
+            ViewBag.Permission_ID = db.Permissions.ToList();
+            return View(list.ToList());
+        }
+
+        // GET: Accounts/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+            return View();
+        }
+
+        
         // GET: Accounts/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -77,38 +168,7 @@ namespace WorkManagement.Controllers
             return View(account);
         }
 
-        // POST: Accounts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Email,Password,Permission_ID")] Account account)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.Permission_ID = new SelectList(db.Permissions, "ID", "Name", account.Permission_ID);
-            return View(account);
-        }
-
-        // GET: Accounts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
+        
         // POST: Accounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

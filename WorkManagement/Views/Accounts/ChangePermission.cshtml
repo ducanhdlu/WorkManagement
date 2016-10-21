@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WorkManagement.Models.Account>
+@{
+    ViewBag.Title = "ChangePermission";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tạo tài khoản</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form ng-app="" novalidate name="frmChangePermission" method="post" action="@Url.Action("ChangePermissionPost","Accounts")" class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label for="employee" class="control-label col-md-2 col-sm-2 col-xs-12">
+                            Tên nhân viên <span class="required">*</span>
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="employee">
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.ID">@item.Employee.FullName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error" ng-show="(frmChangePermission.employee.$dirty||frmChangePermission.$submitted) && frmChangePermission.employee.$error.required"><label class="control-label">Hãy chọn nhân viên.</label></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="permission" class="control-label col-md-2 col-sm-2 col-xs-12">
+                            Chức vụ <span class="required">*</span>
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission">
+                                @foreach (var item in ViewBag.Permission_ID)
+                                {
+                                    <option value="@item.ID">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error" ng-show="(frmChangePermission.permission.$dirty||frmChangePermission.$submitted) && frmChangePermission.permission.$error.required"><label class="control-label">Hãy chọn chức vụ.</label></span>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-3">
+                            <button type="submit" class="btn btn-danger">Hủy</button>
+                            <button type="submit" ng-disabled="frmChangePermission.$invalid" class="btn btn-primary">Thay đổi</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

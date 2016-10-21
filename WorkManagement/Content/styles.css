@@ -2,7 +2,7 @@
 #gender{
     padding-top:7px;
 }
-input.ng-dirty.ng-invalid{
+input.ng-dirty.ng-invalid.input-validate {
     border: 1px solid red;
 }
 .email_login{

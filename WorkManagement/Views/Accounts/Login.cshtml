@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<WorkManagement.Models.Account>
 @{
     Layout = null;
 }
@@ -14,7 +14,7 @@
 </head>
 <body>
     <!--/start-login-one-->
-    <form novalidate ng-app="" name="frmLogin">
+    <form novalidate ng-app="" name="frmLogin" method="post" action="@Url.Action("LoginPost","Accounts")"  >
         <h1>TDA Solutions</h1>
         <div class="login">
             <div class="ribbon-wrapper h2 ribbon-red">
@@ -39,7 +39,7 @@
             </ul>
 
             <div class="submit">
-                <input type="submit" onclick="myFunction()" value="Log in">
+                <input type="submit" ng-disabled="frmLogin.$invalid" value="Đăng nhập">
             </div>
         </div>
     </form>

@@ -362,6 +362,9 @@
     <Content Include="Views\GoOutLetter\ViewGoOutLetter_SuperManager.cshtml" />
     <Content Include="Views\Employees\ViewTimeUsed.cshtml" />
     <Content Include="Views\BonusDayOffs\Create.cshtml" />
+    <Content Include="Views\Shared\_MenuSuperManager.cshtml" />
+    <Content Include="Views\Accounts\ChangePermission.cshtml" />
+    <Content Include="Views\Accounts\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
