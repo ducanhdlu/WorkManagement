@@ -58,36 +58,54 @@
                             </thead>
                             <tbody>
                                 @for (int i = 1; i <= days; i++)
-                            {
-                                if (i < DateTime.Now.Day)
                                 {
+                                    if (i < 5)
+                                    {
                                         <tr>
                                             <td>
                                                 @i
                                             </td>
                                             <td>
-                                                <button class="btn btn-lg btn-danger">Không</button>
+                                                <p> @DateTime.Now</p>
                                             </td>
                                             <td>
-                                                <button class="btn btn-lg btn-danger">Không</button>
+                                                @DateTime.Now
                                             </td>
                                         </tr>
+                                    }
+                                    else
+                                    {
+                                        if (i < DateTime.Now.Day && i >= 5)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @i
+                                                </td>
+                                                <td>
+                                                    <p class="text-danger"><strong>Không check in</strong></p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-danger">Không check out</p>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @i
+                                                </td>
+                                                <td>
+                                                    <p class="text-success">Chưa</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-success">Chưa</p>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
                                 }
-                                else
-                                {
-                                        <tr>
-                                            <td>
-                                                @i
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-lg btn-primary">Chưa</button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-lg btn-primary">Chưa</button>
-                                            </td>
-                                        </tr>
-                                }
-                            }
                             </tbody>
                         </table>
                     </div>

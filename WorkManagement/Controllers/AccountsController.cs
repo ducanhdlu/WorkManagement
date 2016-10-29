@@ -19,7 +19,7 @@ namespace WorkManagement.Controllers
         // GET: Accounts
         public ActionResult Index()
         {
-            if (Session["user_login"]==null)
+            if (Session["user_login"] == null)
             {
                 return Redirect("~/accounts/login");
             }
@@ -27,15 +27,7 @@ namespace WorkManagement.Controllers
             return View(accounts.ToList());
         }
 
-        // GET: Accounts/ResetPassword
-        public ActionResult ResetPassword()
-        {
-            if (Session["user_login"] == null)
-            {
-                return Redirect("~/accounts/login");
-            }
-            return View();
-        }
+        
         // GET: Accounts/Login
         public ActionResult Login()
         {
@@ -48,18 +40,17 @@ namespace WorkManagement.Controllers
         {
             string email = Request["email_login"].ToString();
             string password = Request["password"].ToString();
-            var user = db.Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
+            Account user = db.Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
             
             if (user!=null)
             {
-                Session["user_login"] = user as Account;
+                Session["user_login"] = user;
                 
                 return Redirect("~/accounts/index");
             }
             else
             {
-                //ViewBag.LoginError = "Email hoặc Mật khẩu không chính xác!";
-                //ModelState.AddModelError("LoginError", "Email hoặc Mật khẩu không chính xác!");
+                TempData["LoginFailed"] = "Email hoặc Mật khẩu không chính xác!";
             }
             return Redirect("~/accounts/login");
         }
@@ -86,6 +77,10 @@ namespace WorkManagement.Controllers
         [HttpPost]
         public ActionResult CreatePost()
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             Employee employee = new Employee();
             employee.FullName= Request.Form["employee"].ToString();
             employee.DaysUsed = 0;
@@ -114,19 +109,53 @@ namespace WorkManagement.Controllers
                     {
                         db.Employees.Remove(employee);
                         db.SaveChanges();
-                        throw;
+                        
                     }
                 }
             }
             catch (Exception)
             {
                 
-                throw;
             }
 
             
             
-            return View();
+            return RedirectToAction("~/Accounts/Create");
+        }
+
+        // GET: Accounts/ResetPassword
+        public ActionResult ResetPassword()
+        {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+            return View(db.Accounts.ToList());
+        }
+        // POST: Accounts/ResetPasswordPost
+        [HttpPost]
+        public ActionResult ResetPasswordPost()
+        {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+
+            int id = int.Parse(Request["account"]);
+            string pass = Request["password"].ToString();
+            var acc = db.Accounts.Single(a => a.ID == id);
+            try
+            {
+                acc.Password = pass;
+                db.Entry(acc).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["ResetPasswordSuccess"] = "Mật khẩu đã được thay đổi";
+            }
+            catch (Exception)
+            {
+                TempData["ResetPasswordFailed"] = "Có lỗi xảy ra trong việc reset. Hãy thử thực hiện lại!";
+            }
+                return Redirect("~/Accounts/ResetPassword");
         }
 
         // GET: Accounts/ChangePermission
@@ -140,44 +169,90 @@ namespace WorkManagement.Controllers
             ViewBag.Permission_ID = db.Permissions.ToList();
             return View(list.ToList());
         }
+        // POST: Accounts/ChangePermissionPost
+        [HttpPost]
+        public ActionResult ChangePermissionPost()
+        {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
+            int id = int.Parse(Request["employee"].ToString());
+            Account acc = db.Accounts.SingleOrDefault(a => a.ID == id);
+            try
+            {
+                acc.Permission_ID = Request["permission"].ToString();
+                db.Entry(acc).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["ChangePermissionSuccess"] = "Thay đổi chức vụ thành công!";
+
+            }
+            catch (Exception)
+            {
+                TempData["ChangePermissionFailed"] = "Không thể thay đổi. Hãy thử lại!";
+            }
+            return Redirect("~/Accounts/ChangePermission");
+        }
 
         // GET: Accounts/ChangePassword
         public ActionResult ChangePassword()
         {
             if (Session["user_login"] == null)
             {
-                return Redirect("~/accounts/login");
+                return RedirectToAction("login");
             }
             return View();
         }
-
-        
-        // GET: Accounts/Edit/5
-        public ActionResult Edit(int? id)
+        // POST: Accounts/ChangePasswordPost
+        public ActionResult ChangePasswordPost()
         {
-            if (id == null)
+            if (Session["user_login"] == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("login");
             }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
+
+            Account acc = Session["user_login"] as Account;
+            if (acc.Password== Request["old_password"].ToString())
             {
-                return HttpNotFound();
+                acc.Password = Request["new_password"].ToString();
+                try
+                {
+                    db.Entry(acc).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["ChangePasswordSuccess"] = "Thay đổi mật khẩu thành công!";
+                }
+                catch (Exception)
+                {
+                    TempData["ChangePasswordFailed"] = "Thay đổi mật khẩu không thành công. Hãy thử lại!";
+                    throw;
+                }
             }
-            ViewBag.Permission_ID = new SelectList(db.Permissions, "ID", "Name", account.Permission_ID);
-            return View(account);
+            else
+            {
+                TempData["ChangePasswordDifferent"] = "Mật khẩu cũ không chính xác. Hãy thử lại!";
+            }
+            
+            return RedirectToAction("ChangePassword");
         }
 
-        
         // POST: Accounts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
-            Account account = db.Accounts.Find(id);
-            db.Accounts.Remove(account);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Account acc = db.Accounts.SingleOrDefault(a => a.ID == id);
+            Employee emp = db.Employees.SingleOrDefault(e => e.ID == acc.Employee_ID);
+
+            try
+            {
+                db.Employees.Remove(emp);
+                db.Accounts.Remove(acc);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Redirect("~/Accounts/Index");
         }
 
         protected override void Dispose(bool disposing)

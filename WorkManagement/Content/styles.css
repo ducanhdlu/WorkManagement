@@ -73,3 +73,31 @@ label.css-label {
     -ms-user-select: none;
     user-select: none;
 }
+
+.login-validation{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+div.login-validation{
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+h2.login-validation {
+    color: #a94442;
+    text-align: center;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+textarea.textarea{
+     overflow-y: scroll;
+    height: 100px;
+    resize: none;
+}

@@ -156,6 +156,7 @@
     <Content Include="Content\build\custom.min.css" />
     <Content Include="Content\build\js\custom.js" />
     <Content Include="Content\build\js\custom.min.js" />
+    <Content Include="Content\datepicker.css" />
     <Content Include="Content\fastclick\fastclick.js" />
     <Content Include="Content\font-awesome\.gitignore" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
@@ -254,6 +255,7 @@
       <DependentUpon>EntitiesDB.edmx</DependentUpon>
     </Content>
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="scripts\bootstrap-datepicker.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\jquery\jquery.js" />
