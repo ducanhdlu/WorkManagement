@@ -4,8 +4,78 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<p>Bạn chưa check in</p>
-<button class="btn btn-round btn-success btn-lg">Check in</button>
-<p>Bạn chưa check out</p>
-<button class="btn btn-round btn-warning btn-lg">Check out</button>
+<div class="col-md-6 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2 class="text-info">Hãy check in trước khi làm việc</h2>
+            
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <br />
+            <form class="form-horizontal form-label-left">
 
+                <div class="form-group">
+                    @if (TempData["CheckIn"] != null)
+                    {
+                        <button disabled class="btn btn-success btn-lg" style="width:116px">Check in  </button>
+
+                    }
+                    else
+                    {
+                        <a href="~/TimeKeeping/CheckIn" class="btn btn-success btn-lg" style="width:116px">Check in</a>
+                    }
+                </div>
+
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    @if (@TempData["CheckIn"] != null)
+                    {
+                        <p class="text-info">@TempData["CheckIn"]</p>
+                    }else if (TempData["CheckInFailed"] != null)
+                    {
+                        <p class="text-danger">@TempData["CheckInFailed"]</p>
+                    }
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2 class="text-info">Hãy check out trước khi ra về</h2>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <br />
+            <form class="form-horizontal form-label-left">
+
+                <div class="form-group">
+                    @if (TempData["CheckIn"] ==null)
+                    {
+                        <button disabled class="btn btn-warning btn-lg" style="width:116px">Check out</button>
+                    }
+                    else
+                    {
+                        <a href="~/TimeKeeping/CheckOut" class="btn btn-warning btn-lg" style="width:116px">Check out</a>
+                    }
+                </div>
+
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    @if (TempData["CheckOut"] != null)
+                    {
+                        <p class="text-info">@TempData["CheckOut"]</p>
+                    }else if (TempData["CheckInFailed"] != null)
+                    {
+                        <p class="text-danger">@TempData["CheckOutFailed"]</p>
+                    }
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

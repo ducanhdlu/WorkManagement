@@ -46,7 +46,24 @@ namespace WorkManagement.Controllers
             {
                 Session["user_login"] = user;
                 
-                return Redirect("~/accounts/index");
+                switch (user.Permission_ID)
+                {
+                    case "1":
+                        return Redirect("~/accounts/index");
+                    case "2":
+                        return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");
+                    case "3":
+                        return Redirect("~/TimeKeeping/Check");
+                    case "4":
+                        if (Session["tempLink"] != null)
+                        {
+                            return Redirect(Session["tempLink"] as string);
+                        }
+                        return Redirect("~/TimeKeeping/Check");
+                    default:
+                        break;
+                }
+                
             }
             else
             {

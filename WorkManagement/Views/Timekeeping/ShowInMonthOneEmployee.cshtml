@@ -1,37 +1,61 @@
 ﻿@model IEnumerable<WorkManagement.Models.Timekeeping>
+@using WorkManagement.Controllers
 @{
     ViewBag.Title = "ShowInMonthOneEmployee";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <form ng-app="" novalidate name="frmShowTimeKeepingInMonth" class="form-horizontal form-label-left">
+        <form ng-app="" novalidate name="frmShowTimeKeepingInMonth" method="post" action="ShowInMonthOneEmployeePost" class="form-horizontal form-label-left">
             <div class="x_panel">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_title">
                        
                         <div class="col-md-12 col-sm-12 col-xs-12">
+                            
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-md-1 col-sm-2 col-xs-8">
                                         <h3>Tháng</h3>
                                     </div>
                                     <div class="col-md-1 col-sm-2 col-xs-6">
-                                        <input type="number" name="month" ng-pattern="/^([0-9]+)$/" required ng-model="month" ng-trim="true" ng-minlength="1" ng-maxlength="12" class="form-control col-md-7 col-xs-12 ">
+                                        @{ 
+                                            List<SelectListItem> list = new List<SelectListItem>();
+                                            for (int i = 1; i < 13; i++)
+                                            {
+                                                SelectListItem iteml = new SelectListItem
+                                                {
+                                                    Text = i.ToString(),
+                                                    Value = i.ToString(),
+                                                    Selected = i.Equals(((DateTime)Session["DateTime"]).Month) ? true : false
+
+                                                };
+                                                list.Add(iteml);
+                                            }
+                                        }
+                                        @Html.DropDownList("month",list,new {@style="height:35px; width:50px; margin:0 5px 5px 0" } )
+                                        @*<select name="month">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>*@
+                                        
                                     </div>
                                     <div class="col-md-2 col-sm-2 col-xs-6">
                                         <button type="submit" class="btn btn-primary">Xem</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <label class="error" ng-show="(frmShowTimeKeepingInMonth.month.$dirty||frmShowTimeKeepingInMonth.$submitted) && frmShowTimeKeepingInMonth.month.$error.required">Hãy nhập tháng muốn xem.</label>
-                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.minlength"><label class="control-label">Tháng nhỏ nhất là 1.</label></label>
-                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.maxlength"><label class="control-label">Tháng lớn nhất là 12.</label></label>
-                                    <label class="error" ng-show="frmShowTimeKeepingInMonth.month.$dirty && frmShowTimeKeepingInMonth.month.$error.pattern"><label class="control-label">Chỉ nhập số.</label></label>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -39,7 +63,7 @@
                 <div class="x_content">
                     <div class="table-responsive">
                         @{
-                        int days = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                            int days = DateTime.DaysInMonth(((DateTime )Session["DateTime"]).Year, ((DateTime)Session["DateTime"]).Month);
                         }
                         <table class="table table-hover">
                             <thead>
@@ -57,54 +81,110 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for (int i = 1; i <= days; i++)
+                                @if (DateTime.Now.Month >= ((DateTime)Session["DateTime"]).Month)
                                 {
-                                    if (i < 5)
+                                    for (int i = 1; i <= days; i++)
                                     {
-                                        <tr>
-                                            <td>
-                                                @i
-                                            </td>
-                                            <td>
-                                                <p> @DateTime.Now</p>
-                                            </td>
-                                            <td>
-                                                @DateTime.Now
-                                            </td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        if (i < DateTime.Now.Day && i >= 5)
+                                        int temp = 3;
+                                        var t = (TimekeepingController)this.ViewContext.Controller;
+                                        WorkManagement.Models.Timekeeping tkp = new WorkManagement.Models.Timekeeping();
+
+                                        if (i <= ((DateTime)Session["DateTime"]).Day)
                                         {
                                             <tr>
                                                 <td>
                                                     @i
                                                 </td>
-                                                <td>
-                                                    <p class="text-danger"><strong>Không check in</strong></p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-danger">Không check out</p>
-                                                </td>
+                                                @{
+                                                    foreach (var item in Model)
+                                                    {
+                                                        //có check in
+                                                        if (@i == t.TakeDay(item.CheckIn))
+                                                        {
+                                                            tkp = item;
+                                                            //có check out
+                                                            if (item.CheckOut != null)
+                                                            {
+                                                                temp = 1;
+                                                                break;
+                                                            }
+                                                            //không check out
+                                                            else
+                                                            {
+                                                                temp = 2;
+                                                                break;
+                                                            }
+
+                                                        }
+
+                                                    }
+
+                                                    switch (temp)
+                                                    {
+                                                        case 1:
+                                                            <td>
+                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckOut)</strong></p>
+                                                            </td>
+                                                            break;
+                                                        case 2:
+                                                            <td>
+                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger">Không check out</p>
+                                                            </td>
+                                                            break;
+                                                        case 3:
+                                                            <td>
+                                                                <p class="text-danger"><strong>Không check in</strong></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger">Không check out</p>
+                                                            </td>
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
                                             </tr>
                                         }
                                         else
                                         {
+                                                        
                                             <tr>
                                                 <td>
                                                     @i
                                                 </td>
                                                 <td>
-                                                    <p class="text-success">Chưa</p>
+                                                    <p class="text-success">Chưa tới ngày</p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-success">Chưa</p>
+                                                    <p class="text-success">Chưa tới ngày</p>
                                                 </td>
                                             </tr>
+
                                         }
                                     }
-
+                                }
+                                else
+                                {
+                                    for (int i = 1; i <= days; i++)
+                                    {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        <p class="text-success">Chưa tới ngày</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-success">Chưa tới ngày</p>
+                                    </td>
+                                </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
