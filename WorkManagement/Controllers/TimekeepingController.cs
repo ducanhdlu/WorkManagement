@@ -22,7 +22,7 @@ namespace WorkManagement.Controllers
             }
             int accID = ((Account)Session["user_login"]).ID;
             DateTime now = DateTime.Now;
-            string date = now.Year.ToString() + now.Month.ToString() + now.Day.ToString();
+            string date = now.Year.ToString() + (now.Month>9? now.Month.ToString():"0"+ now.Month.ToString()) + (now.Day > 9 ? now.Day.ToString() : "0" + now.Day.ToString());
             Timekeeping tkp = db.Timekeepings.SingleOrDefault(t => t.Account_ID == accID && t.CheckIn.Substring(0, 8) == date);
             if (tkp!=null)
             {
@@ -71,7 +71,7 @@ namespace WorkManagement.Controllers
 
             int accID = ((Account)Session["user_login"]).ID;
             DateTime now = DateTime.Now;
-            string date = now.Year.ToString() + now.Month.ToString() + now.Day.ToString();
+            string date = now.Year.ToString() + (now.Month > 9 ? now.Month.ToString() : "0" + now.Month.ToString()) + (now.Day > 9 ? now.Day.ToString() : "0" + now.Day.ToString());
             Timekeeping tkp = db.Timekeepings.SingleOrDefault(t => t.Account_ID == accID && t.CheckIn.Substring(0, 8) == date);
             if (tkp != null)
             {
@@ -129,7 +129,7 @@ namespace WorkManagement.Controllers
         public ActionResult ShowInMonthOneEmployeePost()
         {
             int month = int.Parse(Request["month"]);
-            DateTime dt = new DateTime(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month));
+            DateTime dt = new DateTime(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month), 0, 0, 0);
             Session["DateTime"] = dt;
             
             return RedirectToAction("ShowInMonthOneEmployee");
@@ -147,8 +147,11 @@ namespace WorkManagement.Controllers
         public string DatetimeToString(DateTime dt)
         {
             string rs;
-            rs = dt.Year.ToString() + dt.Month.ToString() + dt.Day.ToString() + dt.Hour.ToString() 
-                + dt.Minute.ToString();
+            string mon = dt.Month > 9 ? dt.Month.ToString() : "0" + dt.Month.ToString();
+            string day = dt.Day > 9 ? dt.Day.ToString() : "0" + dt.Day.ToString();
+            string hou = dt.Hour > 9 ? dt.Hour.ToString() : "0" + dt.Hour.ToString();
+            string min = dt.Minute > 9 ? dt.Minute.ToString() : "0" + dt.Minute.ToString();
+            rs = dt.Year.ToString() + mon + day + hou + min;
             return rs;
         }
 
