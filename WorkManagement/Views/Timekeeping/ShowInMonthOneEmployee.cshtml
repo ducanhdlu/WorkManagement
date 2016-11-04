@@ -34,22 +34,7 @@
                                             }
                                         }
                                         @Html.DropDownList("month",list,new {@style="height:35px; width:50px; margin:0 5px 5px 0" } )
-                                        @*<select name="month">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                        </select>*@
-                                        
-                                    </div>
+                                        </div>
                                     <div class="col-md-2 col-sm-2 col-xs-6">
                                         <button type="submit" class="btn btn-primary">Xem</button>
                                     </div>
@@ -86,7 +71,6 @@
                                     for (int i = 1; i <= days; i++)
                                     {
                                         int temp = 3;
-                                        var t = (TimekeepingController)this.ViewContext.Controller;
                                         WorkManagement.Models.Timekeeping tkp = new WorkManagement.Models.Timekeeping();
 
                                         if (i <= ((DateTime)Session["DateTime"]).Day)
@@ -99,7 +83,7 @@
                                                     foreach (var item in Model)
                                                     {
                                                         //có check in
-                                                        if (@i == t.TakeDay(item.CheckIn))
+                                                        if (@i == Static.TakeDay(item.CheckIn))
                                                         {
                                                             tkp = item;
                                                             //có check out
@@ -123,18 +107,18 @@
                                                     {
                                                         case 1:
                                                             <td>
-                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                                <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
                                                             </td>
                                                             <td>
-                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckOut)</strong></p>
+                                                                <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckOut)</strong></p>
                                                             </td>
                                                             break;
                                                         case 2:
                                                             <td>
-                                                                <p class="text-info"><strong>@t.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                                <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
                                                             </td>
                                                             <td>
-                                                                <p class="text-danger">Không check out</p>
+                                                                <p class="text-danger"><strong>Không check out</strong></p>
                                                             </td>
                                                             break;
                                                         case 3:
@@ -142,7 +126,7 @@
                                                                 <p class="text-danger"><strong>Không check in</strong></p>
                                                             </td>
                                                             <td>
-                                                                <p class="text-danger">Không check out</p>
+                                                                <p class="text-danger"><strong>Không check out</strong></p>
                                                             </td>
                                                             break;
                                                         default:
@@ -159,10 +143,10 @@
                                                     @i
                                                 </td>
                                                 <td>
-                                                    <p class="text-success">Chưa tới ngày</p>
+                                                    <p class="text-success"><strong> Chưa tới ngày</strong></p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-success">Chưa tới ngày</p>
+                                                    <p class="text-success"><strong> Chưa tới ngày</strong></p>
                                                 </td>
                                             </tr>
 
@@ -178,10 +162,10 @@
                                         @i
                                     </td>
                                     <td>
-                                        <p class="text-success">Chưa tới ngày</p>
+                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
                                     </td>
                                     <td>
-                                        <p class="text-success">Chưa tới ngày</p>
+                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
                                     </td>
                                 </tr>
                                     }

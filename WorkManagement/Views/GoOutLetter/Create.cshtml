@@ -17,40 +17,46 @@
                 <br />
                 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="account">
                             Thời gian bắt đầu <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
                             <input type="datetime" ng-model="StartTime" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="account">
+                            Giờ <span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                            <input type="datetime" ng-model="StartTime" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                        <label class="control-label col-md-1 col-sm-1 col-xs-6" for="account">
+                            phút <span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                            <input type="datetime" ng-model="StartTime" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="account">
                             Thời gian nghỉ <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
                             <input type="number" ng-model="TotalTime" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="employee" class="control-label col-md-3 col-sm-3 col-xs-12">
-                            Ngày tạo <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="datetime" ng-model="CreateTime" class="form-control col-md-7 col-xs-12" required="required">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="account">
                             Lý do <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12">
                             <input type="text" ng-model="Reason_Id" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <div class="col-md-5 col-sm-5 col-xs-12 col-md-offset-3">
                             <button ng-click class="btn btn-danger">Gửi</button>
                         </div>
                     </div>

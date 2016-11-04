@@ -20,10 +20,11 @@
                             Tên nhân viên <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="employee">
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="employee" id="employee" onchange="ChangeEployee()">
                                 @foreach (var item in Model)
                                 {
-                                    <option value="@item.ID">@item.Employee.FullName</option>
+                                    <option value="@item.ID" data-per="@item.Permission_ID">@item.Employee.FullName</option>
+                                    
                                 }
                             </select>
                         </div>
@@ -36,7 +37,7 @@
                             Chức vụ <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission">
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission" id="permission">
                                 @foreach (var item in ViewBag.Permission_ID)
                                 {
                                     <option value="@item.ID">@item.Name</option>
@@ -67,10 +68,16 @@
                             <button type="submit" ng-disabled="frmChangePermission.$invalid" class="btn btn-primary">Thay đổi</button>
                         </div>
                     </div>
-
+                    
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+   
+    function ChangeEployee() {
+        document.getElementById("permission").value = $("#employee").find("option:selected").attr('data-per');
+}
+</script>

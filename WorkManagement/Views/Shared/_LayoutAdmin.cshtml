@@ -34,7 +34,18 @@
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="~/Accounts/Index" class="site_title"><i class="fa fa-star-o"></i> <span>TDA Solutions</span></a>
                     </div>
+                    @{ 
+                        string emp_name = null;
+                        string acc_email = null;
+                        WorkManagement.Models.Account cur_user = null;
+                        if (Session["user_login"] != null)
+                        {
+                            emp_name = Session["employee_name"].ToString();
+                            cur_user = Session["user_login"] as WorkManagement.Models.Account;
+                            acc_email = cur_user.Email;
 
+                        }
+                    }
                     <div class="clearfix"></div>
 
                     <!-- menu profile quick info -->
@@ -43,17 +54,16 @@
                             <img src="~/images/icon-user.png" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2>Admin</h2>
+                            <span>Xin chào,</span>
+                            <h2>@emp_name</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
 
                     <br />
                     @{
-                        if (Session["user_login"] != null)
+                        if (cur_user != null)
                         {
-                            WorkManagement.Models.Account cur_user = Session["user_login"] as WorkManagement.Models.Account;
                             switch (cur_user.Permission_ID)
                             {
                                 case "1":
@@ -69,6 +79,7 @@
                                     @Html.Partial("_MenuEmployee");
                                     break;
                                 default:
+                                    @Html.Partial("_MenuEmployee");
                                     break;
                             }
                         }
@@ -89,17 +100,17 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    Admin
+                                   
+                                        @(acc_email)
                                     <span class="fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;"> Thông tin cá nhân</a></li>
                                     <li>
-                                        <a href="~/accounts/changepassword">
+                                        <a href="~/accounts/changepassword"><i class="fa fa-pencil-square-o pull-right"></i>
                                             <span>Đổi mật khẩu</span>
                                         </a>
                                     </li>
-                                    <li><a href="~/accounts/logout">@*<i class="fa fa-sign-out pull-right"></i>*@ Đăng xuất</a></li>
+                                    <li><a href="~/accounts/logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
                                 </ul>
                             </li>
 
@@ -110,14 +121,15 @@
             <!-- /top navigation -->
             <!-- page content -->
             <div class="right_col" role="main">
-
-                @RenderBody()
+                <div class="" >
+                    @RenderBody()
+                </div>
             </div>
             <!-- /page content -->
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    Copyright 2016 - TDA SOLUTIONS CORP All rights reserved <a href="www.tdasolution.com">www.tdasolution.com</a>
                 </div>
                 <div class="clearfix"></div>
             </footer>

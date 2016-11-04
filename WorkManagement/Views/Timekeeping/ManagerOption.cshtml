@@ -16,22 +16,33 @@
             </div>
             <div class="x_content">
                 <br />
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form ng-app="" name="frmInfomationAnEmployeeOneMonth" method="post" action="ShowInMonthOneEmployeePost" novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="employee">
                             Tên Nhân viên <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" id="account" required="required" class="form-control col-md-7 col-xs-12">
+                            <select id="employee" name="employee" required class="form-control col-md-7 col-xs-12">
+                                @foreach (var item in (List<WorkManagement.Models.Account>)Session["employees"])
+                                {
+                                    <option value="@item.ID">@item.Employee.FullName</option>
+                                }
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="month">
                             Tháng <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="month" name="month" ng-model="month" min="1" max="12" ng-pattern="/^([0-9]+)$/" required class="form-control col-md-7 col-xs-12 input-validate">
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <span class="error" ng-show="(frmInfomationAnEmployeeOneMonth.month.$dirty||frmInfomationAnEmployeeOneMonth.$submitted) && frmInfomationAnEmployeeOneMonth.month.$error.required"><label class="control-label">Hãy nhập tháng cần xem</label></span>
+                            <span class="error" ng-show="frmInfomationAnEmployeeOneMonth.month.$dirty && frmInfomationAnEmployeeOneMonth.month.$error.pattern"><label class="control-label">Chỉ đc nhập số nguyên.</label></span>
+                            <span class="error" ng-show="frmInfomationAnEmployeeOneMonth.month.$dirty && frmInfomationAnEmployeeOneMonth.month.$error.number"><label class="control-label">Tháng nhập sai định dạng.</label></span>
+                            <span class="error" ng-show="frmInfomationAnEmployeeOneMonth.month.$dirty && (frmInfomationAnEmployeeOneMonth.month.$error.max||frmInfomationAnEmployeeOneMonth.month.$error.min)"><label class="control-label">Tháng nhập vào không đúng.</label></span>
                         </div>
                     </div>
                    
@@ -59,20 +70,13 @@
                 <br />
                 <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="account">
-                            Tên Nhân viên <span class="required">*</span>
-                        </label>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="text" id="account" required="required" class="form-control col-md-7 col-xs-12">
-                        </div>
-                    </div>
+                    
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">
                             Ngày <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="form-group">
@@ -80,7 +84,7 @@
                             Tháng <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="ln_solid"></div>

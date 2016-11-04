@@ -48,7 +48,7 @@ namespace WorkManagement.Controllers
             Timekeeping tkp = db.Timekeepings.SingleOrDefault(t => t.Account_ID == accID && t.CheckIn.Substring(0,8) == date);
             if (tkp==null)
             {
-                string checkin = DatetimeToString(now);
+                string checkin = Static.DatetimeToString(now);
                 tkp = new Timekeeping();
                 tkp.CheckIn = checkin;
                 tkp.Account_ID = accID;
@@ -75,7 +75,7 @@ namespace WorkManagement.Controllers
             Timekeeping tkp = db.Timekeepings.SingleOrDefault(t => t.Account_ID == accID && t.CheckIn.Substring(0, 8) == date);
             if (tkp != null)
             {
-                tkp.CheckOut = DatetimeToString(now);
+                tkp.CheckOut = Static.DatetimeToString(now);
                 db.Entry(tkp).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -88,14 +88,42 @@ namespace WorkManagement.Controllers
         // GET: ManagerToday
         public ActionResult ManagerToday()
         {
-            var list = db.Timekeepings;
-            return View(list.ToList());
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/TimeKeeping/ManagerToday";
+                return Redirect("~/accounts/login");
+            }
+            Account cur_user = Session["user_login"] as Account;
+            DateTime dt = DateTime.Now;
+            List<Timekeeping> tkps = new List<Timekeeping>();
+            foreach (var item in db.Timekeepings)
+            {
+                if (Static.StringToDatetime(item.CheckIn).Date == dt.Date && int.Parse(item.Account.Permission_ID)> int.Parse(cur_user.Permission_ID))
+                {
+                    tkps.Add(item);
+                }
+            }
+            return View(tkps);
         }
 
         // GET: ManagerOption
         public ActionResult ManagerOption()
         {
-            
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/TimeKeeping/ManagerOption";
+                return Redirect("~/accounts/login");
+            }
+            Account cur_user = Session["user_login"] as Account;
+            var rs = new List<Account>();
+            foreach (var item in db.Accounts.ToList())
+            {
+                if (int.Parse(item.Permission_ID)> int.Parse(cur_user.Permission_ID))
+                {
+                    rs.Add(item);
+                }
+            }
+            Session["employees"] = rs;
             return View();
         }
 
@@ -107,6 +135,8 @@ namespace WorkManagement.Controllers
                 Session["tempLink"] = "~/TimeKeeping/ShowInMonthOneEmployee";
                 return Redirect("~/accounts/login");
             }
+            //xóa session tạo ra từ action manageroption truy cập trước đó
+            Session["employees"] = null;
             DateTime dt = new DateTime();
             if (Session["DateTime"] ==null)
             {
@@ -117,8 +147,20 @@ namespace WorkManagement.Controllers
             {
                 dt = (DateTime)Session["DateTime"];
             }
-            
-            int accID = ((Account)Session["user_login"]).ID;
+
+            //nhân viên tự xem thông tin chính mình 
+            int accID = 0;
+            if (Session["accID"]==null)
+            {
+                accID = ((Account)Session["user_login"]).ID;
+
+            }
+            //quản lý xem thông tin của một nhân viên
+            //Session["accID"] được tạo ở action managerOption truy cập bởi quản lý
+            else
+            {
+                accID = (int)Session["accID"];
+            }
 
             var list = db.Timekeepings.Where(t => t.Account_ID == accID && t.CheckIn.Substring(4, 2) == dt.Month.ToString());
 
@@ -129,42 +171,21 @@ namespace WorkManagement.Controllers
         public ActionResult ShowInMonthOneEmployeePost()
         {
             int month = int.Parse(Request["month"]);
-            DateTime dt = new DateTime(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month), 0, 0, 0);
-            Session["DateTime"] = dt;
+            //kiểm tra nếu đi từ manageroption thì tạo thêm session accID cần xem
+            if (Session["employees"] != null)
+            {
+                int accID = int.Parse(Request["employee"]);
+                Session["accID"] = accID;
+            }
             
+            DateTime dt = new DateTime(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month), 0, 0, 0);
+            if (month == DateTime.Now.Month)
+            {
+                dt = new DateTime(DateTime.Now.Year, month, DateTime.Now.Day, 0, 0, 0);
+            }
+            Session["DateTime"] = dt;
             return RedirectToAction("ShowInMonthOneEmployee");
         }
-
-        public DateTime StringToDatetime(string s)
-        {
-            DateTime rs ;
-            string[] l = s.Split();
-            rs = new DateTime(int.Parse(s.Substring(0,4)), int.Parse(s.Substring( 4,2)),
-                int.Parse(s.Substring(6, 2)), int.Parse(s.Substring(8, 2)), int.Parse(s.Substring(10, 2)), 0);
-            return rs;
-        }
-
-        public string DatetimeToString(DateTime dt)
-        {
-            string rs;
-            string mon = dt.Month > 9 ? dt.Month.ToString() : "0" + dt.Month.ToString();
-            string day = dt.Day > 9 ? dt.Day.ToString() : "0" + dt.Day.ToString();
-            string hou = dt.Hour > 9 ? dt.Hour.ToString() : "0" + dt.Hour.ToString();
-            string min = dt.Minute > 9 ? dt.Minute.ToString() : "0" + dt.Minute.ToString();
-            rs = dt.Year.ToString() + mon + day + hou + min;
-            return rs;
-        }
-
-        public int TakeDay(string s)
-        {
-            int rs = int.Parse(s.Substring(6, 2));
-            return rs;
-        }
-
-        public int TakeMonth(string s)
-        {
-            int rs = int.Parse(s.Substring(4, 2));
-            return rs;
-        }
+        
     }
 }

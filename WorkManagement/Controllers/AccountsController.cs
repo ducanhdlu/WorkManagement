@@ -14,13 +14,12 @@ namespace WorkManagement.Controllers
     {
         private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
 
-
-
         // GET: Accounts
         public ActionResult Index()
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/Index";
                 return Redirect("~/accounts/login");
             }
             var accounts = db.Accounts.Include(a => a.Permission);
@@ -45,14 +44,26 @@ namespace WorkManagement.Controllers
             if (user!=null)
             {
                 Session["user_login"] = user;
-                
+                Session["employee_name"] = user.Employee.FullName+"";
                 switch (user.Permission_ID)
                 {
                     case "1":
+                        if (Session["tempLink"] != null)
+                        {
+                            return Redirect(Session["tempLink"] as string);
+                        }
                         return Redirect("~/accounts/index");
                     case "2":
+                        if (Session["tempLink"] != null)
+                        {
+                            return Redirect(Session["tempLink"] as string);
+                        }
                         return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");
                     case "3":
+                        if (Session["tempLink"] != null)
+                        {
+                            return Redirect(Session["tempLink"] as string);
+                        }
                         return Redirect("~/TimeKeeping/Check");
                     case "4":
                         if (Session["tempLink"] != null)
@@ -83,6 +94,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/Create";
                 return Redirect("~/accounts/login");
             }
             ViewBag.Permission_ID = db.Permissions.ToList();
@@ -96,6 +108,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/Index";
                 return Redirect("~/accounts/login");
             }
             Employee employee = new Employee();
@@ -145,6 +158,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/ResetPassword";
                 return Redirect("~/accounts/login");
             }
             return View(db.Accounts.ToList());
@@ -180,6 +194,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/ChangePermission";
                 return Redirect("~/accounts/login");
             }
             var list = db.Accounts;
@@ -216,6 +231,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/Accounts/ChangePassword";
                 return RedirectToAction("login");
             }
             return View();

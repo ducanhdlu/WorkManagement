@@ -33,7 +33,7 @@
                                 Thời gian bắt đầu
                             </th>
                             <th>
-                                Thời gian nghỉ
+                                Số giờ ngỉ
                             </th>
                             <th>
                                 Thời gian gửi
@@ -53,20 +53,38 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.StartTime)
+                                    @WorkManagement.Controllers.Static.StringToDatetime(item.StartTime)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TimeLeave)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.CreateTime)
+                                    @WorkManagement.Controllers.Static.StringToDatetime(item.CreateTime)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Reason.Name)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
+                                @switch (item.Status)
+                                {
+                                    case "0":
+                                        <td>
+                                            Chưa duyệt
+                                        </td>
+                                        break;
+                                    case "1":
+                                        <td>
+                                            Đã chấp nhận
+                                        </td>
+                                        break;
+                                    case "2":
+                                        <td>
+                                            Đã từ chối
+                                        </td>
+                                        break;
+                                    default:
+                                        <td> Chưa duyệt</td>
+                                        break;
+                                }
                                 <td>
                                     <button class="btn btn-danger">Hủy</button>
                                 </td>

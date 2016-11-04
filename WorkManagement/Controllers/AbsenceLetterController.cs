@@ -21,6 +21,11 @@ namespace WorkManagement.Controllers
         // GET: AbsenceLetter/Index_Employee
         public ActionResult Index_Employee()
         {
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/AbsenceLetter/Index_Employee";
+                return Redirect("~/accounts/login");
+            }
             var absenceLetters = db.AbsenceLetters.Include(a => a.Account.Employee);
             return View(absenceLetters.ToList());
         }

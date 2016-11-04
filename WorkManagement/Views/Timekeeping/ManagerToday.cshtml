@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WorkManagement.Models.Timekeeping>
+@using WorkManagement.Controllers
 @{
     ViewBag.Title = "ManagerToday";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -40,34 +41,30 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
-            {
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CheckIn)
+                                @Static.StringToDatetime(item.CheckIn)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CheckOut)
-                            </td>
+                            @if (item.CheckOut != null)
+                            {
+                                <td>
+                                    @Static.StringToDatetime(item.CheckOut)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <p class="text-danger">Chưa check out</p>
+                                </td>
+                            }
+
+
                         </tr>
                     }
-                    <tr>
-                        <td>Thor</td>
-                        <td>@DateTime.Now</td>
-                        <td>@DateTime.Now</td>
-                    </tr>
-                    <tr>
-                        <td>Finn</td>
-                        <td>@DateTime.MaxValue</td>
-                        <td>@DateTime.Now</td>
-                    </tr>
-                    <tr>
-                        <td>Serge</td>
-                        <td>@DateTime.Now</td>
-                        <td>@DateTime.Now</td>
-                    </tr>
                 </tbody>
             </table>
         </div>

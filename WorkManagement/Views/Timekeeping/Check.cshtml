@@ -36,6 +36,11 @@
                     {
                         <p class="text-danger">@TempData["CheckInFailed"]</p>
                     }
+                    else
+                    {
+                        <p>*</p>
+                    }
+
                 </div>
 
             </form>
@@ -72,6 +77,10 @@
                     }else if (TempData["CheckInFailed"] != null)
                     {
                         <p class="text-danger">@TempData["CheckOutFailed"]</p>
+                    }
+                    else
+                    {
+                        <p>*</p>
                     }
                 </div>
 

@@ -26,11 +26,23 @@ namespace WorkManagement.Controllers
         // GET: Employees/ViewTimeUsed
         public ActionResult ViewTimeUsed()
         {
-            ViewBag.DayOffInYear = db.DefaultValues.Where(d => d.ID.Equals(1));
-            var employees = from e in db.Employees
-                            join b in db.BonusDayOffs on e.ID equals b.Employee_ID
-                            select e; 
-
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/TimeKeeping/ManagerToday";
+                return Redirect("~/accounts/login");
+            }
+            Account cur_user = Session["user_login"] as Account;
+            Session["DayOffInYear"] = db.DefaultValues.SingleOrDefault(d=>d.Value==12);
+            Session["TimeOffInMonth"] = db.DefaultValues.SingleOrDefault(d => d.Value == 8);
+            Session["BonusDayOffs"] = db.BonusDayOffs.ToList();
+            var employees = new List<Employee>();
+            foreach (var item in db.Employees)
+            {
+                if (int.Parse((item.Accounts.SingleOrDefault(a=>a.Employee_ID==item.ID)).Permission_ID)> int.Parse(cur_user.Permission_ID))
+                {
+                    employees.Add(item);
+                }
+            }
             return View(employees);
         }
     }

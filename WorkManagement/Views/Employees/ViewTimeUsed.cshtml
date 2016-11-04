@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WorkManagement.Models.Employee>
+@using WorkManagement.Models
 @{
     ViewBag.Title = "ViewTimeUsed";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -20,7 +21,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_title">
 
-                <h2>Danh sách đơn xin nghỉ sớm</h2>
+                <h2>Thông tin thời gian nghỉ của các nhân viên</h2>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -54,7 +55,15 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                    {
+                        {
+                            int sumBonus = 0;
+                            foreach (var bn in (List<BonusDayOff>)Session["BonusDayOffs"])
+                            {
+                                if (bn.Employee_ID == item.ID)
+                                {
+                                    sumBonus += int.Parse(bn.TotalDates.ToString());
+                                }
+                            }
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.FullName)
@@ -63,17 +72,18 @@
                                     @Html.DisplayFor(modelItem => item.DaysUsed)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.BonusDays)
-                                </td>
+                                    @sumBonus
+                                </td> 
                                 <td>
-                                    12
+                                    @(((DefaultValue)Session["DayOffInYear"]).Value)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.HoursUsed)
                                 </td>
                                 <td>
-                                    6
+                                    @(((DefaultValue)Session["TimeOffInMonth"]).Value)
                                 </td>
+                                
                             </tr>
                     }
 

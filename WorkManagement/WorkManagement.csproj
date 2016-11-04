@@ -280,6 +280,7 @@
     <Compile Include="Controllers\BonusDayOffsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\GoOutLetterController.cs" />
+    <Compile Include="Controllers\Static.cs" />
     <Compile Include="Controllers\TimekeepingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -343,9 +344,6 @@
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Employees\Create.cshtml" />
-    <Content Include="Views\Shared\_LayoutEmployee.cshtml" />
-    <Content Include="Views\Shared\_LayoutManager.cshtml" />
-    <Content Include="Views\Shared\_LayoutSuperManager.cshtml" />
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\AbsenceLetter\Index_Manager.cshtml" />
     <Content Include="Views\GoOutLetter\Index_Manager.cshtml" />

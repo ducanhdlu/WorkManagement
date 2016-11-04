@@ -20,7 +20,7 @@
                             Tên nhân viên <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="text" name="employee" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="employee" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
+                            <input type="text" name="employee" id="employee" ng-pattern="/^([a-zA-Z0-9 ]+)$/" required ng-model="employee" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateAccount.employee.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.employee.$error.required"><label class="control-label">Hãy nhập tên nhân viên.</label></span>
@@ -34,7 +34,7 @@
                             Tên tài khoản <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="text" name="account" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="account_name" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
+                            <input type="text" name="account" id="account" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="account_name" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateAccount.account.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.account.$error.required"><label class="control-label">Hãy nhập tên tài khoản.</label></span>
@@ -48,7 +48,7 @@
                             Mật khẩu <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="password" name="password" required ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="password" ng-trim="true" ng-minlength="6" ng-maxlength="25" class="form-control col-md-7 col-xs-12 input-validate">
+                            <input type="password" name="password" id="password" required ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="password" ng-trim="true" ng-minlength="6" ng-maxlength="25" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateAccount.password.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.password.$error.required"><label class="control-label">Hãy nhập mật khẩu.</label></span>
@@ -62,7 +62,7 @@
                             Mật khẩu (Nhập lại)<span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input class="form-control col-md-7 col-xs-12 input-validate" type="password" name="password2" required ng-pattern="password" ng-model="password2" ng-trim="true">
+                            <input class="form-control col-md-7 col-xs-12 input-validate" type="password" name="password2" id="password2" required ng-pattern="password" ng-model="password2" ng-trim="true">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             
@@ -74,7 +74,7 @@
                             Chức vụ <span class="required">*</span>
                         </label>
                         <div class="col-md-5 col-sm-5 col-xs-12">
-                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission">
+                            <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="permission" id="permission">
                                 @foreach (var item in ViewBag.Permission_ID)
                                 {
                                     <option value="@item.ID">@item.Name</option>
