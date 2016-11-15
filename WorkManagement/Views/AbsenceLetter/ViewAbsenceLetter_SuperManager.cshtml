@@ -67,30 +67,27 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Reason.Name)
                             </td>
-                            @switch (item.Status)
-                            {
-                                case "0":
-                                    <td>
-                                        Chưa duyệt
-                                    </td>
-                                    break;
-                                case "1":
-                                    <td>
-                                        Đã chấp nhận
-                                    </td>
-                                    break;
-                                case "2":
-                                    <td>
-                                        Đã từ chối
-                                    </td>
-                                    break;
-                                default:
-                                    <td> Chưa duyệt</td>
-                                    break;
-                            }
                             <td>
-                                <button class="btn btn-danger">Chấp nhận</button>
-                                <button class="btn btn-danger">Từ chối</button>
+                                @WorkManagement.Controllers.Static.ProcessStatus(item.Status)
+                            </td>
+                            <td>
+                                @if (item.Status.Equals("5")|| item.Status.Equals("4"))
+                                {
+                                    /**/
+                                        <form action="Cancel_SuperManager" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-danger">Từ chối</button>
+                                        </form>
+                                        <form action="Accept_SuperManager" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-success">Chấp nhận</button>
+                                        </form>
+                                }
+                                else
+                                {
+                                        <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
+                                        <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
+                                }
                             </td>
                         </tr>
                     }

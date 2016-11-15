@@ -16,7 +16,7 @@
             </div>
             <div class="x_content">
                 <br />
-                <form ng-app="" name="frmInfomationAnEmployeeOneMonth" method="post" action="ShowInMonthOneEmployeePost" novalidate class="form-horizontal form-label-left">
+                <form ng-app="" name="frmInfomationAnEmployeeOneMonth" method="get" action="ManagerOneEmployeeOneMonth" novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="employee">
@@ -68,23 +68,21 @@
             </div>
             <div class="x_content">
                 <br />
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
-                    
+                <form name="frmInfomationEmployeesOneDay" method="get" action="ManagerOneDay" novalidate class="form-horizontal form-label-left">
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="day">
                             Ngày <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="day" name="day" required class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="month">
                             Tháng <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                            <input type="number" id="month" name="month" required class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="ln_solid"></div>

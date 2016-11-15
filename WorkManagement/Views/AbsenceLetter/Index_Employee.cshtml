@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WorkManagement.Models.AbsenceLetter>
 @using WorkManagement.Controllers
+
 @{
     ViewBag.Title = "Kiểm Tra Nghỉ Phép";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -49,10 +50,11 @@
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
-                            {
+                        {
                             <tr>
+
                                 <td>
-                                    @Static.StringToDatetime(item.StartTime)
+                                    @Static.StringToDatetime(item.StartTime).ToShortDateString()
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TotalTime)
@@ -63,34 +65,25 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Reason.Name)
                                 </td>
-                                
-                                    @switch (item.Status)
+                                <td>
+                                    @Static.ProcessStatus(item.Status)
+                                </td>
+                                <td>
+                                    @*nếu trạng thái khác đã từ chối hoặc đã hủy và ngày nghỉ chưa tới thì được phép hủy*@
+                                    @if (item.Status != "2" && item.Status != "7" && item.Status != "3" && Static.StringToDatetime(item.StartTime) > DateTime.Now)
                                     {
-                                        case "0":
-                                            <td> 
-                                                Chưa duyệt
-                                            </td>
-                                            break;
-                                        case "1":
-                                            <td>
-                                                Đã chấp nhận
-                                            </td>
-                                            break;
-                                        case "2":
-                                            <td>
-                                                Đã từ chối
-                                            </td>
-                                            break;
-                                        default:
-                                            <td> Chưa duyệt</td>
-                                            break;
+                                       <form action="CancelAbsenceLetter" method="post" >
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-danger">Hủy</button>
+                                        </form>
                                     }
-
-<td>
-                                    <button class="btn btn-danger">Hủy</button>
+                                    else
+                                    {
+                                        <button disabled class="btn btn-danger">Hủy</button>
+                                    }
                                 </td>
                             </tr>
-                            }
+                        }
 
                     </tbody>
                 </table>

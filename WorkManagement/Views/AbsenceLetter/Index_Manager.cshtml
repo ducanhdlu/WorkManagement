@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<WorkManagement.Models.AbsenceLetter>
+@using WorkManagement.Controllers
 @{
     ViewBag.Title = "Index_Manager";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -57,24 +58,43 @@
                                     @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.StartTime)
+                                    @Static.StringToDatetime(item.StartTime).ToShortDateString()
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TotalTime)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.CreateTime)
+                                    @Static.StringToDatetime(item.CreateTime)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Reason.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @Static.ProcessStatus(item.Status)
                                 </td>
                                 <td>
-                                    <button class="btn btn-success">Chấp nhận</button>
-                                    <button class="btn btn-danger">Từ chối</button>
-                                    <button class="btn btn-primary">Chuyển</button>
+                                    @if (item.Status.Equals("0"))
+                                    {
+                                        /**/
+                                        <form action="ChuyenLenQLCC" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-primary">Chuyển</button>
+                                        </form>
+                                        <form action="XuLyYeuCauTuChoi" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-danger">Từ chối</button>
+                                        </form>
+                                        <form action="XuLyYeuCauChapNhan" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-success">Chấp nhận</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary disabled" style="float:right">Chuyển</button>
+                                        <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
+                                        <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -87,5 +107,3 @@
     </div>
 
 </div>
-
-

@@ -17,10 +17,17 @@ namespace WorkManagement.Controllers
         // GET: Accounts
         public ActionResult Index()
         {
+
             if (Session["user_login"] == null)
             {
+                //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/Index";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID!="1")
+            {
+                return Redirect("~/Default/Error");
             }
             var accounts = db.Accounts.Include(a => a.Permission);
             return View(accounts.ToList());
@@ -45,36 +52,11 @@ namespace WorkManagement.Controllers
             {
                 Session["user_login"] = user;
                 Session["employee_name"] = user.Employee.FullName+"";
-                switch (user.Permission_ID)
+                if (Session["tempLink"] != null)
                 {
-                    case "1":
-                        if (Session["tempLink"] != null)
-                        {
-                            return Redirect(Session["tempLink"] as string);
-                        }
-                        return Redirect("~/accounts/index");
-                    case "2":
-                        if (Session["tempLink"] != null)
-                        {
-                            return Redirect(Session["tempLink"] as string);
-                        }
-                        return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");
-                    case "3":
-                        if (Session["tempLink"] != null)
-                        {
-                            return Redirect(Session["tempLink"] as string);
-                        }
-                        return Redirect("~/TimeKeeping/Check");
-                    case "4":
-                        if (Session["tempLink"] != null)
-                        {
-                            return Redirect(Session["tempLink"] as string);
-                        }
-                        return Redirect("~/TimeKeeping/Check");
-                    default:
-                        break;
+                    return Redirect(Session["tempLink"] as string);
                 }
-                
+                return Redirect("~/Default/Welcome");
             }
             else
             {
@@ -94,8 +76,14 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/Create";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
             ViewBag.Permission_ID = db.Permissions.ToList();
             ViewBag.Employee_ID = db.Employees.ToList();
@@ -108,8 +96,12 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Accounts/Index";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
             Employee employee = new Employee();
             employee.FullName= Request.Form["employee"].ToString();
@@ -145,11 +137,8 @@ namespace WorkManagement.Controllers
             }
             catch (Exception)
             {
-                
+                return Redirect("~/Default/ErrorDB");
             }
-
-            
-            
             return RedirectToAction("~/Accounts/Create");
         }
 
@@ -158,8 +147,14 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/ResetPassword";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
             return View(db.Accounts.ToList());
         }
@@ -170,6 +165,11 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
 
             int id = int.Parse(Request["account"]);
@@ -194,8 +194,14 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/ChangePermission";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
             var list = db.Accounts;
             ViewBag.Permission_ID = db.Permissions.ToList();
@@ -231,8 +237,14 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
+                //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/ChangePassword";
                 return RedirectToAction("login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/Error");
             }
             return View();
         }
@@ -242,6 +254,11 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 return RedirectToAction("login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/ErrorDB");
             }
 
             Account acc = Session["user_login"] as Account;
@@ -271,6 +288,15 @@ namespace WorkManagement.Controllers
         // POST: Accounts/Delete/5
         public ActionResult Delete(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return RedirectToAction("login");
+            }
+            //không có quyền admin thì trả về trang lỗi
+            if (((Account)Session["user_login"]).Permission_ID != "1")
+            {
+                return Redirect("~/Default/ErrorDB");
+            }
             Account acc = db.Accounts.SingleOrDefault(a => a.ID == id);
             Employee emp = db.Employees.SingleOrDefault(e => e.ID == acc.Employee_ID);
 
@@ -282,8 +308,7 @@ namespace WorkManagement.Controllers
             }
             catch (Exception)
             {
-
-                throw;
+                return Redirect("~/Default/ErrorDB");
             }
             return Redirect("~/Accounts/Index");
         }

@@ -278,6 +278,7 @@
     <Compile Include="Controllers\AbsenceLetterController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\BonusDayOffsController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\GoOutLetterController.cs" />
     <Compile Include="Controllers\Static.cs" />
@@ -342,8 +343,6 @@
     <Content Include="scripts\jquery\jquery.min.map" />
     <Content Include="Views\Accounts\Create.cshtml" />
     <Content Include="Views\Accounts\ResetPassword.cshtml" />
-    <Content Include="Views\Employees\Index.cshtml" />
-    <Content Include="Views\Employees\Create.cshtml" />
     <Content Include="Views\Accounts\Login.cshtml" />
     <Content Include="Views\AbsenceLetter\Index_Manager.cshtml" />
     <Content Include="Views\GoOutLetter\Index_Manager.cshtml" />
@@ -365,6 +364,12 @@
     <Content Include="Views\Shared\_MenuSuperManager.cshtml" />
     <Content Include="Views\Accounts\ChangePermission.cshtml" />
     <Content Include="Views\Accounts\ChangePassword.cshtml" />
+    <Content Include="Views\Timekeeping\ManagerOneDay.cshtml" />
+    <Content Include="Views\Timekeeping\ManagerOneEmployeeOneMonth.cshtml" />
+    <Content Include="Views\Default\Welcome.cshtml" />
+    <Content Include="Views\Default\Error.cshtml" />
+    <Content Include="Views\Default\ErrorDB.cshtml" />
+    <Content Include="Views\BonusDayOffs\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

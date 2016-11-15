@@ -1,4 +1,4 @@
-﻿@model WorkManagement.Models.AbsenceLetter
+﻿@model IEnumerable<WorkManagement.Models.AbsenceLetter>
 
 @{
     ViewBag.Title = "Tạo Nghỉ Phép";
@@ -14,18 +14,18 @@
         </div>
         <div class="x_content">
             <br />
-            <form ng-app="" novalidate name="frmCreateAbsenceLetter" class="form-horizontal form-label-left">
+            <form ng-app="" novalidate name="frmCreateAbsenceLetter" method="post" action="CreatePost" class="form-horizontal form-label-left">
                 @*<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">*@
                 <div class="form-group">
-                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="absenceLetter">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="startDay">
                         Thời gian bắt đầu <span class="required">*</span>
                     </label>
                     <div class="col-md-5 col-sm-5 col-xs-12">
-                        <input type="text" name="absenceLetter" required ng-model="absenceLetter" class="form-control col-md-7 col-xs-12 input-validate datepicker">
+                        <input type="text" name="startDay" autocomplete="off" ng-model="startDay" id="datepicker" class="form-control col-md-7 col-xs-12 input-validate datepicker">
                     </div>
 
                     <div class="col-md-5 col-sm-5 col-xs-12">
-                        <span class="error" ng-show="(frmCreateAbsenceLetter.absenceLetter.$dirty||frmCreateAbsenceLetter.$submitted) && frmCreateAbsenceLetter.absenceLetter.$error.required"><label class="control-label">Hãy nhập thời gian bắt đầu</label></span>
+                        <span class="error" ng-show="(frmCreateAbsenceLetter.startDay.$dirty||frmCreateAbsenceLetter.$submitted) && frmCreateAbsenceLetter.startDay.$error.required"><label class="control-label">Hãy nhập thời gian bắt đầu</label></span>
 
                     </div>
                 </div>
@@ -42,30 +42,42 @@
                         <span class="error" ng-show="frmCreateAbsenceLetter.totalTime.$dirty && frmCreateAbsenceLetter.totalTime.$error.number"><label class="control-label">Số nhập sai định dạng.</label></span>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="reason">
                         Lý do <span class="required">*</span>
                     </label>
                     <div class="col-md-5 col-sm-5 col-xs-12">
-                        <select name="reason" ng-model="reason" required class="form-control col-md-7 col-xs-12">
-                            <option selected>Ốm đau</option>
-                            <option>Có việc gia đình</option>
+                        <select class="form-control col-md-7 col-sm-7 col-xs-12" required name="reason">
+                            @foreach (var item in ViewBag.ListReason)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
                         </select>
+
                     </div>
-                    
+                    <div class="col-md-5 col-sm-5 col-xs-12">
+                        <span class="error" ng-show="(frmCreateAbsenceLetter.reason.$dirty||frmCreateAbsenceLetter.$submitted) && frmCreateAbsenceLetter.totalTime.$error.required"><label class="control-label">Hãy chọn lý do</label></span>
+                    </div>
+
                 </div>
                 <div class="ln_solid"></div>
+
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button ng-click ng-disabled="frmCreateAbsenceLetter.$invalid" class="btn btn-primary">Gửi</button>
                     </div>
+                    @if (TempData["ErrorDay"] != null)
+                    {
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <p class="text-danger text-center">@TempData["ErrorDay"]</p>
+                        </div>
+                    }
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 
 
 

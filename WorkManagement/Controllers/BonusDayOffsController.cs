@@ -17,111 +17,110 @@ namespace WorkManagement.Controllers
         // GET: BonusDayOffs
         public ActionResult Index()
         {
-            var bonusDayOffs = db.BonusDayOffs.Include(b => b.Account).Include(b => b.Employee);
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/BonusDayOffs/Index";
+                return Redirect("~/Accounts/Login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
+            List<BonusDayOff> bonusDayOffs = new List<BonusDayOff>();
+            foreach (var item in db.BonusDayOffs)
+            {
+                if (int.Parse(((Account)Session["user_login"]).Permission_ID)< item.Employee_ID)
+                {
+                    bonusDayOffs.Add(item);
+                }
+            }
             return View(bonusDayOffs.ToList());
         }
-
-        // GET: BonusDayOffs/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BonusDayOff bonusDayOff = db.BonusDayOffs.Find(id);
-            if (bonusDayOff == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bonusDayOff);
-        }
+        
 
         // GET: BonusDayOffs/Create
         public ActionResult Create()
         {
-            ViewBag.CreateUser_ID = new SelectList(db.Accounts, "ID", "Email");
-            ViewBag.Employee_ID = new SelectList(db.Employees, "ID", "FullName");
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/BonusDayOffs/Create";
+                return Redirect("~/Accounts/Login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
+            List<Employee> tkps = new List<Employee>();
+            foreach (var item in db.Employees)
+            {
+                if (int.Parse(item.Accounts.SingleOrDefault(a => a.Employee_ID == item.ID).Permission_ID) > int.Parse(((Account)Session["user_login"]).Permission_ID))
+                {
+                    tkps.Add(item);
+                }
+            }
+            ViewBag.Employees = tkps;
             return View();
         }
 
         // POST: BonusDayOffs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TotalDates,Description,CreateTime,CreateUser_ID,Employee_ID")] BonusDayOff bonusDayOff)
+        public ActionResult Create(int employee_id, string number_of_days, string description)
         {
-            if (ModelState.IsValid)
+            if (Session["user_login"] == null)
             {
+                Session["tempLink"] = "~/BonusDayOffs/Create";
+                return Redirect("~/Accounts/Login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
+            try
+            {
+                BonusDayOff bonusDayOff = new BonusDayOff();
+                bonusDayOff.Employee_ID = employee_id;
+                bonusDayOff.TotalDates = byte.Parse(number_of_days);
+                bonusDayOff.Description = description;
+                bonusDayOff.CreateTime = Static.DatetimeToString(DateTime.Now);
+                bonusDayOff.CreateUser_ID = ((Account)Session["user_login"]).ID;
                 db.BonusDayOffs.Add(bonusDayOff);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CreateUser_ID = new SelectList(db.Accounts, "ID", "Email", bonusDayOff.CreateUser_ID);
-            ViewBag.Employee_ID = new SelectList(db.Employees, "ID", "FullName", bonusDayOff.Employee_ID);
-            return View(bonusDayOff);
+            catch (Exception)
+            {
+                return Redirect("~/Default/ErrorDB");
+            }
         }
 
-        // GET: BonusDayOffs/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BonusDayOff bonusDayOff = db.BonusDayOffs.Find(id);
-            if (bonusDayOff == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CreateUser_ID = new SelectList(db.Accounts, "ID", "Email", bonusDayOff.CreateUser_ID);
-            ViewBag.Employee_ID = new SelectList(db.Employees, "ID", "FullName", bonusDayOff.Employee_ID);
-            return View(bonusDayOff);
-        }
-
-        // POST: BonusDayOffs/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: BonusDayOffs/Delete
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TotalDates,Description,CreateTime,CreateUser_ID,Employee_ID")] BonusDayOff bonusDayOff)
+        public ActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
+            if (Session["user_login"] == null)
             {
-                db.Entry(bonusDayOff).State = EntityState.Modified;
+                Session["tempLink"] = "~/BonusDayOffs/Create";
+                return Redirect("~/Accounts/Login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
+            try
+            {
+                BonusDayOff bonusDayOff = db.BonusDayOffs.SingleOrDefault(b=>b.ID==id);
+                db.BonusDayOffs.Remove(bonusDayOff);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CreateUser_ID = new SelectList(db.Accounts, "ID", "Email", bonusDayOff.CreateUser_ID);
-            ViewBag.Employee_ID = new SelectList(db.Employees, "ID", "FullName", bonusDayOff.Employee_ID);
-            return View(bonusDayOff);
-        }
-
-        // GET: BonusDayOffs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
+            catch (Exception)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Redirect("~/Default/ErrorDB");
             }
-            BonusDayOff bonusDayOff = db.BonusDayOffs.Find(id);
-            if (bonusDayOff == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bonusDayOff);
-        }
-
-        // POST: BonusDayOffs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            BonusDayOff bonusDayOff = db.BonusDayOffs.Find(id);
-            db.BonusDayOffs.Remove(bonusDayOff);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

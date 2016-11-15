@@ -20,6 +20,11 @@ namespace WorkManagement.Controllers
                 Session["tempLink"] = "~/TimeKeeping/Check";
                 return Redirect("~/accounts/login");
             }
+            //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "4" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
             int accID = ((Account)Session["user_login"]).ID;
             DateTime now = DateTime.Now;
             string date = now.Year.ToString() + (now.Month>9? now.Month.ToString():"0"+ now.Month.ToString()) + (now.Day > 9 ? now.Day.ToString() : "0" + now.Day.ToString());
@@ -41,6 +46,11 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "4" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
             }
             int accID = ((Account)Session["user_login"]).ID;
             DateTime now = DateTime.Now;
@@ -68,6 +78,11 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/accounts/login");
             }
+            //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "4" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
 
             int accID = ((Account)Session["user_login"]).ID;
             DateTime now = DateTime.Now;
@@ -93,6 +108,11 @@ namespace WorkManagement.Controllers
                 Session["tempLink"] = "~/TimeKeeping/ManagerToday";
                 return Redirect("~/accounts/login");
             }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
             Account cur_user = Session["user_login"] as Account;
             DateTime dt = DateTime.Now;
             List<Timekeeping> tkps = new List<Timekeeping>();
@@ -105,6 +125,47 @@ namespace WorkManagement.Controllers
             }
             return View(tkps);
         }
+        // GET: ManagerOneDay
+        public ActionResult ManagerOneDay(string day, string month)
+        {
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/TimeKeeping/ManagerOneDay";
+                return Redirect("~/accounts/login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
+            }
+
+            Account cur_user = Session["user_login"] as Account;
+            if (!string.IsNullOrEmpty(day)&& !string.IsNullOrEmpty(month))
+            {
+                try
+                {
+
+                    int d = int.Parse(Request["day"]);
+                    int m = int.Parse(Request["month"]);
+                    DateTime dt = new DateTime(DateTime.Now.Year, m, d);
+                    ViewBag.current_day = dt;
+                    List<Timekeeping> tkps = new List<Timekeeping>();
+                    foreach (var item in db.Timekeepings)
+                    {
+                        if (Static.StringToDatetime(item.CheckIn).Date == dt.Date && int.Parse(item.Account.Permission_ID) > int.Parse(cur_user.Permission_ID))
+                        {
+                            tkps.Add(item);
+                        }
+                    }
+                    return View(tkps);
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("ManagerOption");
+                }
+            }
+            return RedirectToAction("ManagerOption");
+        }
 
         // GET: ManagerOption
         public ActionResult ManagerOption()
@@ -113,6 +174,11 @@ namespace WorkManagement.Controllers
             {
                 Session["tempLink"] = "~/TimeKeeping/ManagerOption";
                 return Redirect("~/accounts/login");
+            }
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            {
+                return Redirect("~/Default/Error");
             }
             Account cur_user = Session["user_login"] as Account;
             var rs = new List<Account>();
@@ -127,64 +193,78 @@ namespace WorkManagement.Controllers
             return View();
         }
 
-        // GET: Show a month of a employee
-        public ActionResult ShowInMonthOneEmployee()
+        // GET: TimeKeeping/ShowInMonthOneEmployee
+        // Xem thông tin chấm công của nhân viên đang đăng nhập trong 1 tháng
+        public ActionResult ShowInMonthOneEmployee(string month)
         {
             if (Session["user_login"] == null)
             {
                 Session["tempLink"] = "~/TimeKeeping/ShowInMonthOneEmployee";
                 return Redirect("~/accounts/login");
             }
-            //xóa session tạo ra từ action manageroption truy cập trước đó
-            Session["employees"] = null;
-            DateTime dt = new DateTime();
-            if (Session["DateTime"] ==null)
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
             {
-                dt = DateTime.Now;
-                Session["DateTime"] = dt;
+                return Redirect("~/Default/Error");
             }
-            else
+            DateTime dt = DateTime.Now;
+            if (!string.IsNullOrEmpty(month))
             {
-                dt = (DateTime)Session["DateTime"];
-            }
+                try
+                {
 
-            //nhân viên tự xem thông tin chính mình 
-            int accID = 0;
-            if (Session["accID"]==null)
-            {
-                accID = ((Account)Session["user_login"]).ID;
-
+                    int mon = int.Parse(month);
+                    dt = new DateTime(DateTime.Now.Year, mon, DateTime.Now.Day);
+                }
+                catch (Exception)
+                {
+                    TempData["WrongMonthFormat"] = "Tháng nhập sai.";
+                    return View();
+                }
             }
-            //quản lý xem thông tin của một nhân viên
-            //Session["accID"] được tạo ở action managerOption truy cập bởi quản lý
-            else
-            {
-                accID = (int)Session["accID"];
-            }
+            Session["DateTime"] = dt;
+            int accID = ((Account)Session["user_login"]).ID;
 
             var list = db.Timekeepings.Where(t => t.Account_ID == accID && t.CheckIn.Substring(4, 2) == dt.Month.ToString());
 
             return View(list.ToList());
         }
-        // POST: TimeKeeping/ShowInMonthOneEmployeePost
-        [HttpPost]
-        public ActionResult ShowInMonthOneEmployeePost()
+        // Get: TimeKeeping/ManagerOneEmployeeOneMonth
+        // Quản lý xem 1 nhân viên dưới quyền trong 1 tháng
+        public ActionResult ManagerOneEmployeeOneMonth(string employee, string month)
         {
-            int month = int.Parse(Request["month"]);
-            //kiểm tra nếu đi từ manageroption thì tạo thêm session accID cần xem
-            if (Session["employees"] != null)
+            if (Session["user_login"] == null)
             {
-                int accID = int.Parse(Request["employee"]);
-                Session["accID"] = accID;
+                Session["tempLink"] = "~/TimeKeeping/ManagerOneEmployeeOneMonth";
+                return Redirect("~/accounts/login");
             }
-            
-            DateTime dt = new DateTime(DateTime.Now.Year, month, DateTime.DaysInMonth(DateTime.Now.Year, month), 0, 0, 0);
-            if (month == DateTime.Now.Month)
+            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
             {
-                dt = new DateTime(DateTime.Now.Year, month, DateTime.Now.Day, 0, 0, 0);
+                return Redirect("~/Default/Error");
+            }
+            DateTime dt = DateTime.Now;
+            int accID = -1;
+            if (!string.IsNullOrEmpty(month))
+            {
+                try
+                {
+                    accID = int.Parse(employee);
+                    int mon = int.Parse(month);
+                    dt = new DateTime(DateTime.Now.Year, mon, DateTime.Now.Day);
+                    TempData["SelectedEmployeeName"] = db.Employees.Single(e => e.ID == accID).FullName;
+                }
+                catch (Exception)
+                {
+                    TempData["WrongMonthFormat"] = "Tháng hoặc nhân viên nhập sai.";
+                    return View();
+                }
             }
             Session["DateTime"] = dt;
-            return RedirectToAction("ShowInMonthOneEmployee");
+
+            var list = db.Timekeepings.Where(t => t.Account_ID == accID && t.CheckIn.Substring(4, 2) == dt.Month.ToString());
+
+            return View(list.ToList());
         }
         
     }
