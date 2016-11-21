@@ -124,6 +124,13 @@ namespace WorkManagement.Controllers
             Static.New_Messeger_NghiPhep = new_mesenger_NghiPhep.Count;
             Static.New_Messeger_NghiSom = new_mesenger_NghiSom.Count;
         }
+        public static void setMessegerSuper(QLNghiPhepEntities1 db)
+        {
+            List<AbsenceLetter> new_mesenger_NghiPhep = db.AbsenceLetters.Where(n => n.Status == "4" || n.Status == "5").ToList();
+            List<GoOutLetter> new_mesenger_NghiSom = db.GoOutLetters.Where(n => n.Status == "4" || n.Status == "5").ToList();
+            Static.New_Messeger_NghiPhep = new_mesenger_NghiPhep.Count;
+            Static.New_Messeger_NghiSom = new_mesenger_NghiSom.Count;
 
+        }
     }
 }

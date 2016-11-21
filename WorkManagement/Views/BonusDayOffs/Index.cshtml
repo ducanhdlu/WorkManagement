@@ -1,89 +1,114 @@
-﻿@model IEnumerable<WorkManagement.Models.BonusDayOff>
+﻿@model PagedList.IPagedList<WorkManagement.Models.BonusDayOff>
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="title_right">
-    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_title">
-
-                <h2>Thông tin các ngày nghỉ cộng thêm</h2>
-
-                <div class="clearfix"></div>
+<div class="row">
+    <form>
+        <div class="title_right">
+            <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control", @placeholder = "Tìm kiếm..." })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="x_content">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                Tên nhân viên
-                            </th>
-                            <th>
-                                Số ngày thêm
-                            </th>
-                            <th>
-                                Ghi chú
-                            </th>
-                            <th>
-                                Thời gian thêm
-                            </th>
-                            <th>
-                                Người thêm
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @using (Html.BeginForm("Delete","BonusDayOffs",FormMethod.Post))
-                        {
-                            foreach (var item in Model)
+    </form>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_title">
+
+                    <h2>Thông tin các ngày nghỉ cộng thêm</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.ActionLink("Tên nhân viên", "Index", new
+                                {
+                                    sortOrder = ViewBag.NameSort,
+                                    currentSort = ViewBag.CurrentSort,
+                                    currentSearch = ViewBag.CurrentSearch
+                                })
+                                </th>
+                                <th>
+                                    Số ngày thêm
+                                </th>
+                                <th>
+                                    Ghi chú
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Thời gian thêm", "Index", new
+                               {
+                                   sortOrder = ViewBag.CreateTimeSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    Người thêm
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @using (Html.BeginForm("Delete", "BonusDayOffs", FormMethod.Post))
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Employee.FullName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalDates)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        @WorkManagement.Controllers.Static.StringToDatetime(item.CreateTime)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
-                                    </td>
-                                    <td>
-                                        <input type="hidden" name="id" value="@item.ID" />
-                                        <button type="submit" class="btn btn-danger">Xóa</button>
-                                       @* @Html.ActionLink("Xóa", "Delete", "BonusDayOffs", new { id = item.ID }, new { onclick = "return confirm('Bạn có muốn xóa tất cả thông tin của nhân viên " + item.Employee.FullName + "?');", @class = "btn btn-danger", @method = "post" })*@
-                                    </td>
-                                </tr>
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Employee.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalDates)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @WorkManagement.Controllers.Static.StringToDatetime(item.CreateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button type="submit" class="btn btn-danger">Xóa</button>
+                                            @* @Html.ActionLink("Xóa", "Delete", "BonusDayOffs", new { id = item.ID }, new { onclick = "return confirm('Bạn có muốn xóa tất cả thông tin của nhân viên " + item.Employee.FullName + "?');", @class = "btn btn-danger", @method = "post" })*@
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                        
 
-                    </tbody>
-                </table>
 
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
+        <div class="mid_center">
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index_Manager",
+        new
+        {
+            page,
+            sortOrder = ViewBag.CurrentSort,
+            currentSearch = ViewBag.CurrentSearch
+        }))
+        </div>
     </div>
-</div>
 
+</div>

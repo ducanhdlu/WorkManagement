@@ -23,11 +23,12 @@
                     <div class="col-md-5 col-sm-5 col-xs-12">
                         <input type="text" name="startDay" autocomplete="off" ng-model="startDay" id="datepicker" class="form-control col-md-7 col-xs-12 input-validate datepicker">
                     </div>
-
-                    <div class="col-md-5 col-sm-5 col-xs-12">
-                        <span class="error" ng-show="(frmCreateAbsenceLetter.startDay.$dirty||frmCreateAbsenceLetter.$submitted) && frmCreateAbsenceLetter.startDay.$error.required"><label class="control-label">Hãy nhập thời gian bắt đầu</label></span>
-
-                    </div>
+                    @if (TempData["ErrorDay"] != null)
+                    {
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error"><label class="control-label">@TempData["ErrorDay"]</label></span>
+                        </div>
+                    }
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="totalTime">
@@ -67,18 +68,12 @@
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button ng-click ng-disabled="frmCreateAbsenceLetter.$invalid" class="btn btn-primary">Gửi</button>
                     </div>
-                    @if (TempData["ErrorDay"] != null)
-                    {
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <p class="text-danger text-center">@TempData["ErrorDay"]</p>
-                        </div>
-                    }
+                    
                 </div>
             </form>
         </div>
     </div>
 </div>
-
 
 
 

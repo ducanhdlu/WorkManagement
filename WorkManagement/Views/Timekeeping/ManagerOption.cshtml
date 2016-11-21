@@ -16,7 +16,7 @@
             </div>
             <div class="x_content">
                 <br />
-                <form ng-app="" name="frmInfomationAnEmployeeOneMonth" method="get" action="ManagerOneEmployeeOneMonth" novalidate class="form-horizontal form-label-left">
+                <form ng-app="" name="frmInfomationAnEmployeeOneMonth" method="get" action="ShowOneEmployeeOneMonth" novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="employee">
@@ -49,7 +49,7 @@
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-primary">Xem</button>
+                            <button type="submit" ng-disabled="frmInfomationAnEmployeeOneMonth.$invalid" class="btn btn-primary">Xem</button>
                         </div>
                     </div>
 
@@ -68,28 +68,27 @@
             </div>
             <div class="x_content">
                 <br />
-                <form name="frmInfomationEmployeesOneDay" method="get" action="ManagerOneDay" novalidate class="form-horizontal form-label-left">
+                <form name="frmInfomationEmployeesOneDay" method="get" action="ShowOneDay" novalidate class="form-horizontal form-label-left">
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="day">
-                            Ngày <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="datepicker">
+                            Thời gian <span class="required">*</span>
                         </label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" id="day" name="day" required class="form-control col-md-7 col-xs-12">
+                            <input type="text" name="day" autocomplete="off" ng-model="startDay" id="datepicker" class="form-control col-md-7 col-xs-12 input-validate datepicker">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="month">
-                            Tháng <span class="required">*</span>
-                        </label>
-                        <div class="col-md-4 col-sm-4 col-xs-12">
-                            <input type="number" id="month" name="month" required class="form-control col-md-7 col-xs-12">
-                        </div>
+                        @if (TempData["NullDay"] != null)
+                        {
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <span class="error"><label class="control-label">@TempData["NullDay"]</label></span>
+                            </div>
+                        }
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <button type="submit" class="btn btn-primary">Xem</button>
                         </div>
+                        
                     </div>
 
                 </form>

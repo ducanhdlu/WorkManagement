@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace WorkManagement.Controllers
         private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
 
         // GET: Accounts
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, string currentSearch, int? page)
         {
 
             if (Session["user_login"] == null)
@@ -30,7 +31,43 @@ namespace WorkManagement.Controllers
                 return Redirect("~/Default/Error");
             }
             var accounts = db.Accounts.Include(a => a.Permission);
-            return View(accounts.ToList());
+            //tìm kiếm, sắp xếp
+            ViewBag.NameSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.EmailSort = sortOrder == "email" ? "email_desc" : "email";
+            ViewBag.PermissionSort = sortOrder == "permission" ? "permission_desc" : "permission";
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                accounts = accounts.Where(a => a.Email.Contains(searchString)|| a.Employee.FullName.Contains(searchString) );
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    accounts = accounts.OrderByDescending(a => a.Employee.FullName);
+                    break;
+                case "email_desc":
+                    accounts = accounts.OrderByDescending(a => a.Email);
+                    break;
+                case "email":
+                    accounts = accounts.OrderBy(a => a.Email);
+                    break;
+                case "permission_desc":
+                    accounts = accounts.OrderByDescending(a => a.Permission_ID);
+                    break;
+                case "permission":
+                    accounts = accounts.OrderBy(a => a.Permission_ID);
+                    break;
+                default:
+                    accounts = accounts.OrderBy(a => a.Employee.FullName);
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(accounts.ToPagedList(pageNumber, pageSize));
         }
 
         
@@ -52,6 +89,14 @@ namespace WorkManagement.Controllers
             {
                 Session["user_login"] = user;
                 Session["employee_name"] = user.Employee.FullName+"";
+                if (user.Permission_ID=="3" )
+                {
+                    Static.setMesseger(db);
+                }
+                if (user.Permission_ID == "2")
+                {
+                    Static.setMessegerSuper(db);
+                }
                 if (Session["tempLink"] != null)
                 {
                     return Redirect(Session["tempLink"] as string);
@@ -103,43 +148,37 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/Default/Error");
             }
-            Employee employee = new Employee();
-            employee.FullName= Request.Form["employee"].ToString();
-            employee.DaysUsed = 0;
-            employee.HoursUsed = 0;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    db.Employees.Add(employee);
-                    db.SaveChanges();
+                    string email = Request.Form["account"].ToString();
+                    if (db.Accounts.FirstOrDefault(a => a.Email == email) != null)
+                    {
+                        return Redirect("~/Accounts/Create");
+                    }
+                    Employee employee = new Employee();
+                    employee.FullName = Request.Form["employee"].ToString();
+                    employee.DaysUsed = 0;
+                    employee.HoursUsed = 0;
                     Account account = new Account();
-                    account.Email = Request.Form["account"].ToString();
+                    account.Email = email;
                     account.Password = Request.Form["password"].ToString();
                     account.Permission_ID = Request.Form["permission"].ToString();
                     account.Employee_ID = employee.ID;
-                    try
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            db.Accounts.Add(account);
-                            db.SaveChanges();
-                            return Redirect("~/Accounts/Index");
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        db.Employees.Remove(employee);
-                        db.SaveChanges();
-                        
-                    }
+
+                    db.Employees.Add(employee);
+                    db.Accounts.Add(account);
+                    db.SaveChanges();
+                    return Redirect("~/Accounts/Index");
+                    
                 }
             }
             catch (Exception)
             {
                 return Redirect("~/Default/ErrorDB");
             }
-            return RedirectToAction("~/Accounts/Create");
+            return Redirect("~/Accounts/Create");
         }
 
         // GET: Accounts/ResetPassword
@@ -274,7 +313,6 @@ namespace WorkManagement.Controllers
                 catch (Exception)
                 {
                     TempData["ChangePasswordFailed"] = "Thay đổi mật khẩu không thành công. Hãy thử lại!";
-                    throw;
                 }
             }
             else

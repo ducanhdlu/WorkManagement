@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<WorkManagement.Models.GoOutLetter>
-
+@using WorkManagement.Controllers
 @{
     ViewBag.Title = "Kiểm Tra Tình Trạng";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -36,7 +36,7 @@
                                 Thời gian bắt đầu
                             </th>
                             <th>
-                                Số giờ ra ngoài
+                                Thời gian nghỉ
                             </th>
                             <th>
                                 Thời gian gửi
@@ -59,41 +59,38 @@
                                     @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
                                 </td>
                                 <td>
-                                    @WorkManagement.Controllers.Static.StringToDatetime(item.StartTime)
+                                    @Static.StringToDatetime(item.StartTime)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TimeLeave)
                                 </td>
                                 <td>
-                                    @WorkManagement.Controllers.Static.StringToDatetime(item.CreateTime)
+                                    @Static.StringToDatetime(item.CreateTime)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Reason.Name)
                                 </td>
-                                @switch (item.Status)
-                                {
-                                    case "0":
-                                        <td>
-                                            Chưa duyệt
-                                        </td>
-                                        break;
-                                    case "1":
-                                        <td>
-                                            Đã chấp nhận
-                                        </td>
-                                        break;
-                                    case "2":
-                                        <td>
-                                            Đã từ chối
-                                        </td>
-                                        break;
-                                    default:
-                                        <td> Chưa duyệt</td>
-                                        break;
-                                }
                                 <td>
-                                    <button class="btn btn-danger">Chấp nhận</button>
-                                    <button class="btn btn-danger">Từ chối</button>
+                                    @Static.ProcessStatus(item.Status)
+                                </td>
+                                <td>
+                                    @if (item.Status.Equals("4") || item.Status.Equals("5"))
+                                    {
+                                        /**/
+                                        <form action="QLCCTuChoi" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-danger">Từ chối</button>
+                                        </form>
+                                        <form action="QLCCChapNhan" method="post" style="float:right">
+                                            <input type="hidden" name="id" value="@item.ID" />
+                                            <button class="btn btn-success">Chấp nhận</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
+                                        <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
+                                    }
                                 </td>
                             </tr>
                         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace WorkManagement.Controllers
         private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
 
         // GET: BonusDayOffs
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
@@ -35,7 +36,36 @@ namespace WorkManagement.Controllers
                     bonusDayOffs.Add(item);
                 }
             }
-            return View(bonusDayOffs.ToList());
+            //tìm kiếm, sắp xếp
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.CreateTimeSort = sortOrder == "create" ? "create_desc" : "create";
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bonusDayOffs = bonusDayOffs.Where(a => a.Employee.FullName.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    bonusDayOffs = bonusDayOffs.OrderByDescending(a => a.Employee.FullName).ToList();
+                    break;
+                case "create_desc":
+                    bonusDayOffs = bonusDayOffs.OrderByDescending(a => a.CreateTime).ToList();
+                    break;
+                case "create":
+                    bonusDayOffs = bonusDayOffs.OrderBy(a => a.CreateTime).ToList();
+                    break;
+                default:
+                    bonusDayOffs = bonusDayOffs.OrderBy(a => a.Employee.FullName).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(bonusDayOffs.ToPagedList(pageNumber, pageSize));
         }
         
 
@@ -102,7 +132,6 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/BonusDayOffs/Create";
                 return Redirect("~/Accounts/Login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy

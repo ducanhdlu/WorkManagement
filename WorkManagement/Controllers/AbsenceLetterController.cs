@@ -6,6 +6,7 @@ using WorkManagement.Models;
 using System.Data.Entity;
 using System.Net;
 using System.Web.Mvc;
+using PagedList;
 
 namespace WorkManagement.Controllers
 {
@@ -14,7 +15,7 @@ namespace WorkManagement.Controllers
         private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
         
         // GET: AbsenceLetter/Index_Employee
-        public ActionResult Index_Employee()
+        public ActionResult Index_Employee(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
@@ -29,9 +30,39 @@ namespace WorkManagement.Controllers
             }
             Account user = Session["user_login"] as Account;
             Static.setMesseger(db);
-            var absenceLetters = db.AbsenceLetters.Where(a => a.Account.ID == user.ID);
-            return View(absenceLetters.ToList());
-            
+            var absenceLetters = db.AbsenceLetters.Where(a => a.Account.ID == user.ID).ToList();
+
+            //tìm kiếm, sắp xếp
+            ViewBag.StartTimeSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.CreateTimeSort = sortOrder == "create" ? "create_desc" : "create";
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                absenceLetters = absenceLetters.Where(a => a.StartTime.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    break;
+                case "create_desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
+                    break;
+                case "create":
+                    absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
+                    break;
+                default:
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(absenceLetters.ToPagedList(pageNumber, pageSize));
+
         }
         /*
          giá trị Status của absence letter và ý nghĩa
@@ -54,7 +85,7 @@ namespace WorkManagement.Controllers
              */
 
         // GET: AbsenceLetter/Index_Manager
-        public ActionResult Index_Manager()
+        public ActionResult Index_Manager(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
@@ -67,7 +98,7 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/Default/Error");
             }
-            Static.setMesseger(db);
+
             List<AbsenceLetter> absenceLetters = new List<AbsenceLetter>();
             foreach (var item in db.AbsenceLetters)
             {
@@ -76,7 +107,37 @@ namespace WorkManagement.Controllers
                     absenceLetters.Add(item);
                 }
             }
-            return View(absenceLetters);
+
+            //tìm kiếm, sắp xếp
+            ViewBag.StartTimeSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.CreateTimeSort = sortOrder == "create" ? "create_desc" : "create";
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                absenceLetters = absenceLetters.Where(a => a.Account.Employee.FullName.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    break;
+                case "create_desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
+                    break;
+                case "create":
+                    absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
+                    break;
+                default:
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(absenceLetters.ToPagedList(pageNumber, pageSize));
         }
         /// <summary>
         /// hoaippt
@@ -85,6 +146,10 @@ namespace WorkManagement.Controllers
         /// <returns></returns>
         public ActionResult XuLyYeuCauChapNhan(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);
@@ -95,6 +160,7 @@ namespace WorkManagement.Controllers
                 cur_emp.DaysUsed += absen.TotalTime;
                 db.Entry(cur_emp).State = EntityState.Modified;
                 db.SaveChanges();
+                Static.setMesseger(db);
                 return Redirect("~/AbsenceLetter/Index_Manager");
             }
             catch (Exception)
@@ -110,12 +176,17 @@ namespace WorkManagement.Controllers
         /// <returns></returns>
         public ActionResult XuLyYeuCauTuChoi(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);
                 absen.Status = "2";
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
+                Static.setMesseger(db);
                 return Redirect("~/AbsenceLetter/Index_Manager");
             }
             catch (Exception)
@@ -126,12 +197,17 @@ namespace WorkManagement.Controllers
         }
         public ActionResult ChuyenLenQLCC(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);
                 absen.Status = "5";
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
+                Static.setMesseger(db);
                 return Redirect("~/AbsenceLetter/Index_Manager");
             }
             catch (Exception)
@@ -160,12 +236,10 @@ namespace WorkManagement.Controllers
             return View();
         }
 
-        // post: AbsenceLetter/Createpost
+        // post: AbsenceLetter/Create
         [HttpPost]
         public ActionResult CreatePost()
         {
-            //string t = Request["startDay"];
-            //return RedirectToAction("~\AbsenceLetter\Index_Employee");
             if (ModelState.IsValid)
             {
 
@@ -208,9 +282,14 @@ namespace WorkManagement.Controllers
             }
             return Redirect("~/AbsenceLetter/Create");
         }
+        
         //hủy một đơn xin nghỉ phép
         public ActionResult CancelAbsenceLetter(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 Static.setMesseger(db);
@@ -234,8 +313,8 @@ namespace WorkManagement.Controllers
             }
             
         }
-        // GET: AbsenceLetter/ViewAbsenceLetter
-        public ActionResult ViewAbsenceLetter_SuperManager()
+        // GET: AbsenceLetter/ViewAbsenceLetter_SuperManager
+        public ActionResult ViewAbsenceLetter_SuperManager(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
@@ -258,11 +337,45 @@ namespace WorkManagement.Controllers
                     absenceLetters.Add(item);
                 }
             }
-            return View(absenceLetters.ToList());
+
+            //tìm kiếm, sắp xếp
+            ViewBag.StartTimeSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.CreateTimeSort = sortOrder == "create" ? "create_desc" : "create";
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                absenceLetters = absenceLetters.Where(a => a.Account.Employee.FullName.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    break;
+                case "create_desc":
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
+                    break;
+                case "create":
+                    absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
+                    break;
+                default:
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(absenceLetters.ToPagedList(pageNumber, pageSize));
         }
         //quản lý cấp cao từ chối 1 đơn
         public ActionResult Cancel_SuperManager(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);
@@ -280,6 +393,10 @@ namespace WorkManagement.Controllers
         //quản lý cấp cao chấp nhận 1 đơn
         public ActionResult Accept_SuperManager(int id)
         {
+            if (Session["user_login"] == null)
+            {
+                return Redirect("~/accounts/login");
+            }
             try
             {
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);

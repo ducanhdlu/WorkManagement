@@ -6,6 +6,7 @@ using WorkManagement.Models;
 using System.Data.Entity;
 using System.Net;
 using System.Web.Mvc;
+using PagedList;
 
 namespace WorkManagement.Controllers
 {
@@ -17,7 +18,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/Check";
+                Session["tempLink"] = "~/Timekeeping/Check";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -101,11 +102,11 @@ namespace WorkManagement.Controllers
 
 
         // GET: ManagerToday
-        public ActionResult ManagerToday()
+        public ActionResult ShowToday(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ManagerToday";
+                Session["tempLink"] = "~/Timekeeping/ManagerToday";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -123,14 +124,36 @@ namespace WorkManagement.Controllers
                     tkps.Add(item);
                 }
             }
-            return View(tkps);
+            //tìm kiếm, sắp xếp
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tkps = tkps.Where(a => a.Account.Employee.FullName.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    tkps = tkps.OrderByDescending(a => a.Account.Employee.FullName).ToList();
+                    break;
+                default:
+                    tkps = tkps.OrderBy(a => a.Account.Employee.FullName).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(tkps.ToPagedList(pageNumber, pageSize));
         }
         // GET: ManagerOneDay
-        public ActionResult ManagerOneDay(string day, string month)
+        public ActionResult ShowOneDay(string day)
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ManagerOneDay";
+                Session["tempLink"] = "~/Timekeeping/ManagerOneDay";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -140,14 +163,12 @@ namespace WorkManagement.Controllers
             }
 
             Account cur_user = Session["user_login"] as Account;
-            if (!string.IsNullOrEmpty(day)&& !string.IsNullOrEmpty(month))
+            if (!string.IsNullOrEmpty(day))
             {
                 try
                 {
-
-                    int d = int.Parse(Request["day"]);
-                    int m = int.Parse(Request["month"]);
-                    DateTime dt = new DateTime(DateTime.Now.Year, m, d);
+                    string t = Static.ShortDatetimeToString(day);
+                    DateTime dt = Static.StringToDatetime(t);
                     ViewBag.current_day = dt;
                     List<Timekeeping> tkps = new List<Timekeeping>();
                     foreach (var item in db.Timekeepings)
@@ -161,9 +182,10 @@ namespace WorkManagement.Controllers
                 }
                 catch (Exception)
                 {
-                    return RedirectToAction("ManagerOption");
+                    return Redirect("~/Default/Error");
                 }
             }
+            TempData["NullDay"] = "Hãy chọn thời gian";
             return RedirectToAction("ManagerOption");
         }
 
@@ -172,7 +194,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ManagerOption";
+                Session["tempLink"] = "~/Timekeeping/ManagerOption";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -199,11 +221,11 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ShowInMonthOneEmployee";
+                Session["tempLink"] = "~/Timekeeping/ShowInMonthOneEmployee";
                 return Redirect("~/accounts/login");
             }
-            //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
-            if (((Account)Session["user_login"]).Permission_ID != "2" && ((Account)Session["user_login"]).Permission_ID != "3")
+            //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
+            if (((Account)Session["user_login"]).Permission_ID != "4" && ((Account)Session["user_login"]).Permission_ID != "3")
             {
                 return Redirect("~/Default/Error");
             }
@@ -231,11 +253,11 @@ namespace WorkManagement.Controllers
         }
         // Get: TimeKeeping/ManagerOneEmployeeOneMonth
         // Quản lý xem 1 nhân viên dưới quyền trong 1 tháng
-        public ActionResult ManagerOneEmployeeOneMonth(string employee, string month)
+        public ActionResult ShowOneEmployeeOneMonth(string employee, string month)
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ManagerOneEmployeeOneMonth";
+                Session["tempLink"] = "~/Timekeeping/ManagerOneEmployeeOneMonth";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -252,7 +274,7 @@ namespace WorkManagement.Controllers
                     accID = int.Parse(employee);
                     int mon = int.Parse(month);
                     dt = new DateTime(DateTime.Now.Year, mon, DateTime.Now.Day);
-                    TempData["SelectedEmployeeName"] = db.Employees.Single(e => e.ID == accID).FullName;
+                    TempData["SelectedEmployeeName"] = db.Accounts.Single(e => e.ID == accID).Employee.FullName;
                 }
                 catch (Exception)
                 {

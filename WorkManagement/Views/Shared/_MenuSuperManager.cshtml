@@ -1,29 +1,87 @@
-﻿ <!-- sidebar menu -->
+﻿@using WorkManagement.Controllers
+<!-- sidebar menu -->
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <div class="menu_section">
         <h3>Quản lý cấp cao</h3>
         <ul class="nav side-menu">
             <li>
-                <a><i class="fa fa-file-text-o"></i>Quản lý chấm công <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-file-text-o"></i> Xem chấm công <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="~/Timekeeping/ManagerToday">Trong ngày</a></li>
-                    <li><a href="~/Timekeeping/ManagerOption">Tùy chọn quản lý</a></li>
+                    <li><a href="~/Timekeeping/ManagerOption">Trong tháng</a></li>
                 </ul>
             </li>
             <li>
-                <a><i class="fa fa-file-text-o"></i>Quản lý nghỉ phép <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-file-text-o"></i> Xem ngày phép <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="~/Employees/ViewTimeUsed">Thông tin nghỉ phép</a></li>
-                    <li><a href="~/BonusDayOffs/Create">Thêm nghỉ phép</a></li>
+                    <li><a href="~/Employees/ViewTimeUsed">Nghỉ phép</a></li>
+                    <li><a href="~/BonusDayOffs/Create">Nghỉ sớm</a></li>
                 </ul>
             </li>
             <li>
 
-                <a><i class="fa fa-file-text-o"></i> Xem đơn nhận <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li><a href="~/AbsenceLetter/ViewAbsenceLetter_SuperManager">Nghỉ phép</a></li>
-                    <li><a href="~/GoOutLetter/ViewGoOutLetter_SuperManager">Nghỉ sớm</a></li>
-                </ul>
+                @*<a>
+                        <i class="fa fa-file-text-o"></i> Xem đơn nhận <span class="fa fa-chevron-down"></span>
+                        <span class="badge" style="float:right;background-color:red"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="~/AbsenceLetter/ViewAbsenceLetter_SuperManager">Nghỉ phép</a></li>
+                        <li><a href="~/GoOutLetter/ViewGoOutLetter_SuperManager">Nghỉ sớm</a></li>
+                    </ul>*@
+                @if ((Static.New_Messeger_NghiPhep + Static.New_Messeger_NghiSom) == 0)
+                {
+                    <a>
+                        <i class="fa fa-file-text-o"></i> Xem đơn nhận  <span class="fa fa-chevron-down"></span>
+
+                    </a>
+                    <ul class="nav child_menu">
+                        <li><a href="~/AbsenceLetter/ViewAbsenceLetter_SuperManager">Nghỉ phép</a></li>
+                        <li><a href="~/GoOutLetter/ViewGoOutLetter_SuperManager">Nghỉ sớm</a></li>
+                    </ul>
+                }
+                else
+                {
+
+                    <a>
+                        <i class="fa fa-file-text-o"></i> Xem đơn nhận  <span class="fa fa-chevron-down"></span>
+                        <span class="badge" style="float:right;background-color:red">@(Static.New_Messeger_NghiPhep + Static.New_Messeger_NghiSom)</span>
+                    </a>
+                    <ul class="nav child_menu">
+                        @if (Static.New_Messeger_NghiPhep > 0)
+                        {
+
+                            <li>
+                                <a href="~/AbsenceLetter/ViewAbsenceLetter_SuperManager">
+                                    Nghỉ phép
+
+                                    <span class="badge" style="float:right;background-color:red">@(Static.New_Messeger_NghiPhep)</span>
+                                </a>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="~/AbsenceLetter/ViewAbsenceLetter_SuperManager">Nghỉ phép</a>
+                            </li>
+                        }
+                        @if (Static.New_Messeger_NghiSom > 0)
+                        {
+                            <li>
+                                <a href="~/GoOutLetter/ViewGoOutLetter_SuperManager">
+                                    Nghỉ sớm
+                                    <span class="badge" style="float:right;background-color:red">@(Static.New_Messeger_NghiSom)</span>
+                                </a>
+
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="~/GoOutLetter/ViewGoOutLetter_SuperManager">Nghỉ sớm</a></li>
+                        }
+
+                    </ul>
+                }
             </li>
         </ul>
     </div>

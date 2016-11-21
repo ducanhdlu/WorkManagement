@@ -1,0 +1,95 @@
+﻿@model PagedList.IPagedList<WorkManagement.Models.Timekeeping>
+@using WorkManagement.Controllers
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "ShowToday";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <form>
+        <div class="title_right">
+            <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control", @placeholder = "Tìm kiếm..." })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_title">
+
+                    <h2>Thông tin các nhân viên trong ngày @DateTime.Now.Day/@DateTime.Now.Month/@DateTime.Now.Year</h2>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.ActionLink("Tên nhân viên", "ShowToday", new
+                           {
+                               sortOrder = ViewBag.NameSort,
+                               currentSort = ViewBag.CurrentSort,
+                               currentSearch = ViewBag.CurrentSearch
+                           })
+                            </th>
+                            <th>
+                                Check in
+                            </th>
+                            <th>
+                                Check out
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
+                                </td>
+                                <td>
+                                    @Static.StringToDatetime(item.CheckIn)
+                                </td>
+                                @if (item.CheckOut != null)
+                                {
+                                    <td>
+                                        @Static.StringToDatetime(item.CheckOut)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <p class="text-danger">Chưa check out</p>
+                                    </td>
+                                }
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mid_center">
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index_Manager",
+        new
+        {
+            page,
+            sortOrder = ViewBag.CurrentSort,
+            currentSearch = ViewBag.CurrentSearch
+        }))
+        </div>
+    </div>
+
+    </div>
+</div>
