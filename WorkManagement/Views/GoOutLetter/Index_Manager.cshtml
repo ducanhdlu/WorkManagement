@@ -1,111 +1,136 @@
-﻿@model IEnumerable<WorkManagement.Models.GoOutLetter>
+﻿@model PagedList.IPagedList<WorkManagement.Models.GoOutLetter>
 @using WorkManagement.Controllers
+@using PagedList.Mvc
+
 @{
     ViewBag.Title = "Index_Manager";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
-<div class="title_right">
-    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_title">
-
-                <h2>Danh sách đơn xin nghỉ sớm</h2>
-                <div class="clearfix"></div>
+<div class="row">
+    <form>
+        <div class="title_right">
+            <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control", @placeholder = "Tìm kiếm..." })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="x_content">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                Tên nhân viên
-                            </th>
-                            <th>
-                                Thời gian bắt đầu
-                            </th>
-                            <th>
-                                Số giờ nghỉ
-                            </th>
-                            <th>
-                                Thời gian gửi
-                            </th>
-                            <th>
-                                Lý do
-                            </th>
-                            <th>
-                                Trạng thái
-                            </th>
+    </form>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_title">
 
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+                    <h2>Danh sách đơn xin nghỉ sớm</h2>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
-                                </td>
-                                <td>
-                                    @Static.StringToDatetime(item.StartTime)
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TimeLeave)
-                                </td>
-                                <td>
-                                    @Static.StringToDatetime(item.CreateTime)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Reason.Name)
-                                </td>
-                                <td>
-                                    @WorkManagement.Controllers.Static.ProcessStatus(item.Status)
-                                </td>
-                                <td>
-                                    @if (item.Status.Equals("0"))
-                                    {
-                                        /**/
-                                        <form action="XyLyChuyen" method="post" style="float:right">
-                                            <input type="hidden" name="id" value="@item.ID" />
-                                            <button class="btn btn-primary">Chuyển</button>
-                                        </form>
-                                        <form action="XuLyYeuCauCTuChoi" method="post" style="float:right">
-                                            <input type="hidden" name="id" value="@item.ID" />
-                                            <button class="btn btn-danger">Từ chối</button>
-                                        </form>
-                                        <form action="XuLyYeuCauChapNhan" method="post" style="float:right">
-                                            <input type="hidden" name="id" value="@item.ID" />
-                                            <button class="btn btn-success">Chấp nhận</button>
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-primary disabled" style="float:right">Chuyển</button>
-                                        <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
-                                        <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
-                                    }
-                                </td>
+                                <th>
+                                    Tên nhân viên
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Thời gian bắt đầu", "Index_Manager", new
+                               {
+                                   sortOrder = ViewBag.StartTimeSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    Số giờ nghỉ
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Thời gian gửi", "Index_Manager", new
+                               {
+                                   sortOrder = ViewBag.CreateTimeSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    Lý do
+                                </th>
+                                <th>
+                                    Trạng thái
+                                </th>
+
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
+                                    </td>
+                                    <td>
+                                        @Static.StringToDatetime(item.StartTime)
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeLeave)
+                                    </td>
+                                    <td>
+                                        @Static.StringToDatetime(item.CreateTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Reason.Name)
+                                    </td>
+                                    <td>
+                                        @WorkManagement.Controllers.Static.ProcessStatus(item.Status)
+                                    </td>
+                                    <td>
+                                        @if (item.Status.Equals("0"))
+                                        {
+                                            /**/
+                                            <form action="XyLyChuyen" method="post" style="float:right">
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button class="btn btn-primary">Chuyển</button>
+                                            </form>
+                                            <form action="XuLyYeuCauCTuChoi" method="post" style="float:right">
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button class="btn btn-danger">Từ chối</button>
+                                            </form>
+                                            <form action="XuLyYeuCauChapNhan" method="post" style="float:right">
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button class="btn btn-success">Chấp nhận</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-primary disabled" style="float:right">Chuyển</button>
+                                            <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
+                                            <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
+                </div>
             </div>
         </div>
+        <div class="mid_center">
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index_Manager",
+        new
+        {
+            page,
+            sortOrder = ViewBag.CurrentSort,
+            currentSearch = ViewBag.CurrentSearch
+        }))
+        </div>
     </div>
-</div>
 
+</div>
 

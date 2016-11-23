@@ -86,7 +86,7 @@
                                     @Static.ProcessStatus(item.Status)
                                 </td>
                                 <td>
-                                    @if (item.Status.Equals("5") || item.Status.Equals("4"))
+                                    @if ((item.Status.Equals("5") || item.Status.Equals("4")) && Static.StringToDatetime(item.StartTime) > DateTime.Now)
                                     {
                                         /**/
                                         <form action="Cancel_SuperManager" method="post" style="float:right">
@@ -114,7 +114,7 @@
         </div>
         <div class="mid_center">
             Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
-            @Html.PagedListPager(Model, page => Url.Action("Index_Manager",
+            @Html.PagedListPager(Model, page => Url.Action("ViewAbsenceLetter_SuperManager",
         new
         {
             page,

@@ -29,7 +29,6 @@ namespace WorkManagement.Controllers
                 return Redirect("~/Default/Error");
             }
             Account user = Session["user_login"] as Account;
-            Static.setMesseger(db);
             var absenceLetters = db.AbsenceLetters.Where(a => a.Account.ID == user.ID).ToList();
 
             //tìm kiếm, sắp xếp
@@ -47,7 +46,7 @@ namespace WorkManagement.Controllers
             switch (sortOrder)
             {
                 case "desc":
-                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
                     break;
                 case "create_desc":
                     absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
@@ -56,7 +55,7 @@ namespace WorkManagement.Controllers
                     absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
                     break;
                 default:
-                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
                     break;
             }
             int pageNumber = (page ?? 1);
@@ -123,7 +122,7 @@ namespace WorkManagement.Controllers
             switch (sortOrder)
             {
                 case "desc":
-                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
                     break;
                 case "create_desc":
                     absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
@@ -132,7 +131,7 @@ namespace WorkManagement.Controllers
                     absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
                     break;
                 default:
-                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
                     break;
             }
             int pageNumber = (page ?? 1);
@@ -299,6 +298,7 @@ namespace WorkManagement.Controllers
                 {
                     Employee cur_emp = db.Employees.SingleOrDefault(e => e.ID == absen.Account.Employee_ID);
                     cur_emp.DaysUsed -= absen.TotalTime;
+                    db.Entry(cur_emp).State = EntityState.Modified;
                 }
                 absen.Status = "3";
                 absen.CreateTime = Static.DatetimeToString(DateTime.Now);
@@ -327,7 +327,6 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/Default/Error");
             }
-            Static.setMesseger(db);
             //quản lý cấp cao chỉ thấy các đơn của quản lý gửi, đơn được chuyển lên hoặc được duyệt
             List<AbsenceLetter> absenceLetters = new List<AbsenceLetter>();
             foreach (var item in db.AbsenceLetters)
@@ -353,7 +352,7 @@ namespace WorkManagement.Controllers
             switch (sortOrder)
             {
                 case "desc":
-                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
                     break;
                 case "create_desc":
                     absenceLetters = absenceLetters.OrderByDescending(a => a.CreateTime).ToList();
@@ -362,7 +361,7 @@ namespace WorkManagement.Controllers
                     absenceLetters = absenceLetters.OrderBy(a => a.CreateTime).ToList();
                     break;
                 default:
-                    absenceLetters = absenceLetters.OrderBy(a => a.StartTime).ToList();
+                    absenceLetters = absenceLetters.OrderByDescending(a => a.StartTime).ToList();
                     break;
             }
             int pageNumber = (page ?? 1);
@@ -404,6 +403,7 @@ namespace WorkManagement.Controllers
                 // cập nhật số ngày nghỉ đã dùng của nhân viên đó
                 Employee cur_emp = db.Employees.SingleOrDefault(e => e.ID == absen.Account.Employee_ID);
                 cur_emp.DaysUsed += absen.TotalTime;
+                db.Entry(cur_emp).State = EntityState.Modified;
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
                 return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");

@@ -87,7 +87,7 @@
                                         @Static.ProcessStatus(item.Status)
                                     </td>
                                     <td>
-                                        @if (item.Status.Equals("0"))
+                                        @if (item.Status.Equals("0") && Static.StringToDatetime(item.StartTime) > DateTime.Now)
                                         {
                                             /**/
                                             <form action="ChuyenLenQLCC" method="post" style="float:right">

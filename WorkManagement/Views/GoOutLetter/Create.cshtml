@@ -23,11 +23,15 @@
                     <div class="col-md-5 col-sm-5 col-xs-12">
                         <input type="text" name="startTime" ng-model="goOutLetter" class="form-control col-md-7 col-xs-12 input-validate datepicker">
                     </div>
+                    @if (TempData["ErrorDay"] != null)
+                    {
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <span class="error"><label class="control-label">@TempData["ErrorDay"]</label></span>
 
-                    <div class="col-md-5 col-sm-5 col-xs-12">
-                        <span class="error" ng-show="(frmCreateGoOutLetter.goOutLetter.$dirty||frmCreateGoOutLetter.$submitted) && frmCreateGoOutLetter.goOutLetter.$error.required"><label class="control-label">Hãy nhập thời gian bắt đầu</label></span>
+                        </div>
+                        
+                    }
 
-                    </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-2 col-sm-2 col-xs-6">
@@ -97,13 +101,7 @@
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <button ng-click ng-disabled="frmCreateGoOutLetter.$invalid" class="btn btn-primary">Gửi</button>
                     </div>
-                    @if (TempData["ErrorDay"] != null)
-            {
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <p class="text-danger text-center">@TempData["ErrorDay"]</p>
-                        </div>
-                    }
-
+                    
                 </div>
 
             </form>
