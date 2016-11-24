@@ -16,7 +16,7 @@ namespace WorkManagement
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Default", action = "Welcome", id = UrlParameter.Optional }
+                defaults: new { controller = "Accounts", action = "Login", id = UrlParameter.Optional }
             );
         }
     }

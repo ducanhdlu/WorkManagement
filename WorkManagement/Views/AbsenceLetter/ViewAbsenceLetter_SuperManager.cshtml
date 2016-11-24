@@ -3,6 +3,7 @@
 @using PagedList.Mvc
 
 @{
+    ViewBag.Title = "ViewAbsenceLetter_SuperManager";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="row">
@@ -28,88 +29,89 @@
                 </div>
             </div>
             <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                Nhân viên
-                            </th>
-                            <th>
-                                @Html.ActionLink("Thời gian bắt đầu", "ViewAbsenceLetter_SuperManager", new
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nhân viên
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Thời gian bắt đầu", "ViewAbsenceLetter_SuperManager", new
                            {
                                sortOrder = ViewBag.StartTimeSort,
                                currentSort = ViewBag.CurrentSort,
                                currentSearch = ViewBag.CurrentSearch
                            })
-                            </th>
-                            <th>
-                                Số ngày nghỉ
-                            </th>
-                            <th>
-                                @Html.ActionLink("Thời gian gửi", "ViewAbsenceLetter_SuperManager", new
+                                </th>
+                                <th>
+                                    Số ngày nghỉ
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Thời gian gửi", "ViewAbsenceLetter_SuperManager", new
                            {
                                sortOrder = ViewBag.CreateTimeSort,
                                currentSort = ViewBag.CurrentSort,
                                currentSearch = ViewBag.CurrentSearch
                            })
-                            </th>
-                            <th>
-                                Lý do
-                            </th>
-                            <th>
-                                Trạng thái
-                            </th>
+                                </th>
+                                <th>
+                                    Lý do
+                                </th>
+                                <th>
+                                    Trạng thái
+                                </th>
 
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
-                                </td>
-                                <td>
-                                    @Static.StringToDatetime(item.StartTime)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TotalTime)
-                                </td>
-                                <td>
-                                    @Static.StringToDatetime(item.CreateTime)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Reason.Name)
-                                </td>
-                                <td>
-                                    @Static.ProcessStatus(item.Status)
-                                </td>
-                                <td>
-                                    @if ((item.Status.Equals("5") || item.Status.Equals("4")) && Static.StringToDatetime(item.StartTime) > DateTime.Now)
-                                    {
-                                        /**/
-                                        <form action="Cancel_SuperManager" method="post" style="float:right">
-                                            <input type="hidden" name="id" value="@item.ID" />
-                                            <button class="btn btn-danger">Từ chối</button>
-                                        </form>
-                                        <form action="Accept_SuperManager" method="post" style="float:right">
-                                            <input type="hidden" name="id" value="@item.ID" />
-                                            <button class="btn btn-success">Chấp nhận</button>
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
-                                        <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
-                                    }
-                                </td>
+                                <th></th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Account.Employee.FullName)
+                                    </td>
+                                    <td>
+                                        @Static.StringToDatetime(item.StartTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalTime)
+                                    </td>
+                                    <td>
+                                        @Static.StringToDatetime(item.CreateTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Reason.Name)
+                                    </td>
+                                    <td>
+                                        @Static.ProcessStatus(item.Status)
+                                    </td>
+                                    <td>
+                                        @if ((item.Status.Equals("5") || item.Status.Equals("4")) && Static.StringToDatetime(item.StartTime) > DateTime.Now)
+                                        {
+                                            /**/
+                                            <form action="Cancel_SuperManager" method="post" style="float:right">
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button class="btn btn-danger">Từ chối</button>
+                                            </form>
+                                            <form action="Accept_SuperManager" method="post" style="float:right">
+                                                <input type="hidden" name="id" value="@item.ID" />
+                                                <button class="btn btn-success">Chấp nhận</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-danger disabled" style="float:right">Từ chối</button>
+                                            <button class="btn btn-success disabled" style="float:right">Chấp nhận</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
 
-                    </tbody>
-                </table>
-
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="mid_center">

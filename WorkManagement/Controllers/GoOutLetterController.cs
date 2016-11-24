@@ -153,6 +153,16 @@ namespace WorkManagement.Controllers
                         TempData["ErrorDay"] = "Thời gian bắt đầu nghỉ phép không hợp lệ";
                         return RedirectToAction("Create");
                     }
+                    var goOutLetters = db.GoOutLetters.Where(a => a.Account.ID == user.ID).ToList();
+                    foreach (var item in goOutLetters)
+                    {
+                        if (item.StartTime.Substring(0,8) == goOut.StartTime.Substring(0, 8))
+                        {
+                            TempData["ErrorDay"] = "Đã có đơn xin nghỉ sớm vào ngày hôm đó";
+                            return RedirectToAction("Create");
+                        }
+                    }
+
                     goOut.TimeLeave = Byte.Parse(Request["totalTime"]);
                     goOut.CreateTime = Static.DatetimeToString(DateTime.Now);
                     if (user.Permission_ID == "3")

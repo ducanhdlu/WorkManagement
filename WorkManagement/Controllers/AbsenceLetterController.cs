@@ -256,6 +256,15 @@ namespace WorkManagement.Controllers
                         TempData["ErrorDay"] = "Thời gian bắt đầu nghỉ phép không hợp lệ";
                         return RedirectToAction("Create");
                     }
+                    var absenceLetters = db.AbsenceLetters.Where(a => a.Account.ID == user.ID).ToList();
+                    foreach (var item in absenceLetters)
+                    {
+                        if (item.StartTime.Substring(0, 8) == absen.StartTime.Substring(0, 8))
+                        {
+                            TempData["ErrorDay"] = "Đã có đơn xin nghỉ phép vào ngày hôm đó";
+                            return RedirectToAction("Create");
+                        }
+                    }
                     var x = Request["startDay"];
                     absen.TotalTime = Convert.ToInt16(Request["totalTime"]);
                     absen.Account_ID = user.ID;
@@ -270,6 +279,7 @@ namespace WorkManagement.Controllers
                     {
                         absen.Status = "0";
                     }
+                    
                     db.AbsenceLetters.Add(absen);
                     db.SaveChanges();
                     return RedirectToAction("Index_Employee");

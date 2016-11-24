@@ -12,23 +12,37 @@ namespace WorkManagement.Controllers
     public class EmployeesController : Controller
     {
         private QLNghiPhepEntities1 db = new QLNghiPhepEntities1();
-        //// GET: Employees
-        //public ActionResult Index()
-        //{
-        //    var employees = db.Employees;
-        //    return View(employees.ToList());
-        //}
-        //// GET: Employees/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-        // GET: Employees/ViewTimeUsed
+        // GET: Employees/Index
+        public ActionResult Index()
+        {
+            if (Session["user_login"] == null)
+            {
+                Session["tempLink"] = "~/Employees/Index";
+                return Redirect("~/Accounts/Login");
+            }
+            int curID = ((Account)Session["user_login"]).ID;
+            Account cur = db.Accounts.SingleOrDefault(a => a.ID == curID);
+            int sumDayOff = 12;
+            List<BonusDayOff> listBDO = db.BonusDayOffs.Where(b => b.Employee.ID == cur.Employee.ID).ToList();
+            if (listBDO.Count>0)
+            {
+                foreach (var item in listBDO)
+                {
+                    sumDayOff += item.TotalDates;
+                }
+            }
+            ViewBag.SumDayOff = sumDayOff;
+            ViewBag.SumBonus = sumDayOff - 12;
+            ViewBag.SumHourOut = 8;
+            ViewBag.User = cur;
+            return View();
+        }
+
         public ActionResult ViewTimeUsed()
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/TimeKeeping/ViewTimeUsed";
+                Session["tempLink"] = "~/Employees/ViewTimeUsed";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy

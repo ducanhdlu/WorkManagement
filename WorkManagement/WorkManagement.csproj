@@ -375,10 +375,10 @@
     <Content Include="Views\Accounts\ChangePassword.cshtml" />
     <Content Include="Views\Timekeeping\ShowOneDay.cshtml" />
     <Content Include="Views\Timekeeping\ShowOneEmployeeOneMonth.cshtml" />
-    <Content Include="Views\Default\Welcome.cshtml" />
     <Content Include="Views\Default\Error.cshtml" />
     <Content Include="Views\Default\ErrorDB.cshtml" />
     <Content Include="Views\BonusDayOffs\Index.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

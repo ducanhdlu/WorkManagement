@@ -101,7 +101,19 @@ namespace WorkManagement.Controllers
                 {
                     return Redirect(Session["tempLink"] as string);
                 }
-                return Redirect("~/Default/Welcome");
+                switch (user.Permission_ID)
+                {
+                    case "1":
+                        return Redirect("/Accounts/Index");
+                    case "2":
+                        return Redirect("/Employees/ViewTimeUsed");
+                    case "3":
+                        return Redirect("/TimeKeeping/Check");
+                    case "4":
+                        return Redirect("/TimeKeeping/Check");
+                    default:
+                        return Redirect("/Account/Login");
+                }
             }
             else
             {
@@ -279,11 +291,6 @@ namespace WorkManagement.Controllers
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
                 Session["tempLink"] = "~/Accounts/ChangePassword";
                 return RedirectToAction("login");
-            }
-            //không có quyền admin thì trả về trang lỗi
-            if (((Account)Session["user_login"]).Permission_ID != "1")
-            {
-                return Redirect("~/Default/Error");
             }
             return View();
         }

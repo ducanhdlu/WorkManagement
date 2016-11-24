@@ -119,15 +119,43 @@ namespace WorkManagement.Controllers
         /// <param name="db"></param>
         public static void setMesseger(QLNghiPhepEntities1 db)
         {
-            List<AbsenceLetter> new_mesenger_NghiPhep = db.AbsenceLetters.Where(n => n.Status == "0").ToList();
-            List<GoOutLetter> new_mesenger_NghiSom = db.GoOutLetters.Where(n => n.Status == "0").ToList();
+            List<AbsenceLetter> new_mesenger_NghiPhep = new List<AbsenceLetter>();
+            List<GoOutLetter> new_mesenger_NghiSom = new List<GoOutLetter>();
+            foreach (var item in db.AbsenceLetters)
+            {
+                if (item.Status == "0" && StringToDatetime(item.StartTime) > DateTime.Now)
+                {
+                    new_mesenger_NghiPhep.Add(item);
+                }
+            }
+            foreach (var item in db.GoOutLetters)
+            {
+                if (item.Status == "0" && StringToDatetime(item.StartTime) > DateTime.Now)
+                {
+                    new_mesenger_NghiSom.Add(item);
+                }
+            }
             Static.New_Messeger_NghiPhep = new_mesenger_NghiPhep.Count;
             Static.New_Messeger_NghiSom = new_mesenger_NghiSom.Count;
         }
         public static void setMessegerSuper(QLNghiPhepEntities1 db)
         {
-            List<AbsenceLetter> new_mesenger_NghiPhep = db.AbsenceLetters.Where(n => n.Status == "4" || n.Status == "5").ToList();
-            List<GoOutLetter> new_mesenger_NghiSom = db.GoOutLetters.Where(n => n.Status == "4" || n.Status == "5").ToList();
+            List<AbsenceLetter> new_mesenger_NghiPhep = new List<AbsenceLetter>();
+            List<GoOutLetter> new_mesenger_NghiSom = new List<GoOutLetter>();
+            foreach (var item in db.AbsenceLetters)
+            {
+                if (item.Status == "4" && item.Status == "5" && StringToDatetime(item.StartTime) > DateTime.Now)
+                {
+                    new_mesenger_NghiPhep.Add(item);
+                }
+            }
+            foreach (var item in db.GoOutLetters)
+            {
+                if (item.Status == "4" && item.Status == "5" && StringToDatetime(item.StartTime) > DateTime.Now)
+                {
+                    new_mesenger_NghiSom.Add(item);
+                }
+            }
             Static.New_Messeger_NghiPhep = new_mesenger_NghiPhep.Count;
             Static.New_Messeger_NghiSom = new_mesenger_NghiSom.Count;
 

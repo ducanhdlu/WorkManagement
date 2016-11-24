@@ -1,70 +1,117 @@
-﻿@model IEnumerable<WorkManagement.Models.Employee>
-
+﻿@using WorkManagement.Models
+@model Employee
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<div class="title_right">
-    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="x_panel">
             <div class="x_title">
+                <h2>Thông tin cá nhân</h2>
 
-                <h2>Thông tin các nhân viên</h2>
                 <div class="clearfix"></div>
             </div>
+            <div class="x_content">
+                <br />
+                <form class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="padding-top:0">
+                            Họ tên:
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            @(((Account)ViewBag.User).Employee.FullName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="padding-top:0">
+                            Email:
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            @(((Account)ViewBag.User).Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" style="padding-top:0">
+                            Chức vụ:
+                        </label>
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            @(((Account)ViewBag.User).Permission.Name)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label></label>
+                    </div>
+                    <div class="form-group">
+                        <label></label>
+                    </div>
+                    
+                </form>
+            </div>
         </div>
-        <div class="x_content">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>
-                            Tên nhân viên
-                        </th>
-                        <th>
-                            Ngày nghỉ đã dùng
-                        </th>
-                        <th>
-                            Ngày nghỉ thêm
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DaysUsed)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BonusDayOffs)
-                            </td>
-                            <td>
-                                <button class="btn btn-warning">Sửa</button>
-                                <button class="btn btn-danger">Xóa</button>
-                            </td>
-                        </tr>
-                    }
 
-                </tbody>
-            </table>
-
-        </div>
     </div>
+    @if (((Account)ViewBag.User).Permission_ID != "1")
+    {
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Thông tin nghỉ phép</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+                    <form class="form-horizontal form-label-left">
+                        <div class="form-group">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-12" style="padding-top:0">
+                                Ngày phép hiện có:
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                @ViewBag.SumDayOff ngày
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-12" style="padding-top:0">
+                                Ngày phép đã sử dụng:
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                @(((Account)ViewBag.User).Employee.DaysUsed) ngày
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-12" style="padding-top:0">
+                                Ngày phép được thưởng:
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                @ViewBag.SumBonus ngày
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-12" style="padding-top:0">
+                                Giờ ra ngoài hiện có:
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                @ViewBag.SumHourOut giờ
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-6 col-sm-6 col-xs-12" style="padding-top:0">
+                                Giờ ra ngoài đã sử dụng:
+                            </label>
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                @(((Account)ViewBag.User).Employee.HoursUsed) giờ
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    }
+    
 </div>
+
 
 
