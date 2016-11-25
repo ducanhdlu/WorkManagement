@@ -83,11 +83,11 @@ namespace WorkManagement.Controllers
                 return Redirect("~/Default/Error");
             }
             List<Employee> tkps = new List<Employee>();
-            foreach (var item in db.Employees)
+            foreach (var item in db.Accounts)
             {
-                if (int.Parse(item.Accounts.SingleOrDefault(a => a.Employee_ID == item.ID).Permission_ID) > int.Parse(((Account)Session["user_login"]).Permission_ID))
+                if (int.Parse(item.Permission_ID) > int.Parse(((Account)Session["user_login"]).Permission_ID))
                 {
-                    tkps.Add(item);
+                    tkps.Add(item.Employee);
                 }
             }
             ViewBag.Employees = tkps;

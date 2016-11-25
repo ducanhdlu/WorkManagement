@@ -88,7 +88,7 @@
                                         @Static.ProcessStatus(item.Status)
                                     </td>
                                     <td>
-                                        @if (item.Status.Equals("4") || item.Status.Equals("5"))
+                                        @if ((item.Status.Equals("5") || item.Status.Equals("4")) && Static.StringToDatetime(item.StartTime) > DateTime.Now)
                                         {
                                             /**/
                                             <form action="QLCCTuChoi" method="post" style="float:right">

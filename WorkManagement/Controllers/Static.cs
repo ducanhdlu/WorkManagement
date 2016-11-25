@@ -8,8 +8,8 @@ namespace WorkManagement.Controllers
 {
     public class Static
     {
-        
-
+        public static int MaxDaysOfInYear = 12;
+        public static int MaxHoursOfInYear = 8;
         //201611071500=>15:00:00 07/11/2016
         public static DateTime StringToDatetime(string s)
         {
@@ -144,14 +144,14 @@ namespace WorkManagement.Controllers
             List<GoOutLetter> new_mesenger_NghiSom = new List<GoOutLetter>();
             foreach (var item in db.AbsenceLetters)
             {
-                if (item.Status == "4" && item.Status == "5" && StringToDatetime(item.StartTime) > DateTime.Now)
+                if ((item.Status == "4" || item.Status == "5") && StringToDatetime(item.StartTime) > DateTime.Now)
                 {
                     new_mesenger_NghiPhep.Add(item);
                 }
             }
             foreach (var item in db.GoOutLetters)
             {
-                if (item.Status == "4" && item.Status == "5" && StringToDatetime(item.StartTime) > DateTime.Now)
+                if ((item.Status == "4" || item.Status == "5") && StringToDatetime(item.StartTime) > DateTime.Now)
                 {
                     new_mesenger_NghiSom.Add(item);
                 }

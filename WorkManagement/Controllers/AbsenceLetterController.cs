@@ -155,8 +155,11 @@ namespace WorkManagement.Controllers
                 absen.Status = "1";
                 db.Entry(absen).State = EntityState.Modified;
                 //cập nhật số ngày nghỉ đã dùng của nhân viên đó
-                Employee cur_emp = db.Employees.SingleOrDefault(e => e.ID == absen.Account.Employee_ID);
-                cur_emp.DaysUsed += absen.TotalTime;
+                Employee cur_emp = db.Employees.FirstOrDefault(e => e.ID == absen.Account.Employee_ID);
+                if (cur_emp!=null)
+                {
+                    cur_emp.DaysUsed += absen.TotalTime;
+                }
                 db.Entry(cur_emp).State = EntityState.Modified;
                 db.SaveChanges();
                 Static.setMesseger(db);
@@ -306,9 +309,13 @@ namespace WorkManagement.Controllers
                 //nếu đơn này đã được chấp nhận thì trừ số ngày nghỉ này trong thông tin nhân viên vì chưa dùng tới
                 if (absen.Status=="1"|| absen.Status == "6")
                 {
-                    Employee cur_emp = db.Employees.SingleOrDefault(e => e.ID == absen.Account.Employee_ID);
+                    Employee cur_emp = db.Employees.FirstOrDefault(e => e.ID == absen.Account.Employee_ID);
+                    if (cur_emp!=null)
+                    {
                     cur_emp.DaysUsed -= absen.TotalTime;
                     db.Entry(cur_emp).State = EntityState.Modified;
+                    }
+                    
                 }
                 absen.Status = "3";
                 absen.CreateTime = Static.DatetimeToString(DateTime.Now);
@@ -411,9 +418,13 @@ namespace WorkManagement.Controllers
                 AbsenceLetter absen = db.AbsenceLetters.FirstOrDefault(x => x.ID == id);
                 absen.Status = "6";
                 // cập nhật số ngày nghỉ đã dùng của nhân viên đó
-                Employee cur_emp = db.Employees.SingleOrDefault(e => e.ID == absen.Account.Employee_ID);
-                cur_emp.DaysUsed += absen.TotalTime;
-                db.Entry(cur_emp).State = EntityState.Modified;
+                Employee cur_emp = db.Employees.FirstOrDefault(e => e.ID == absen.Account.Employee_ID);
+                if (cur_emp != null)
+                {
+                    cur_emp.DaysUsed += absen.TotalTime;
+                    db.Entry(cur_emp).State = EntityState.Modified;
+                }
+                
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
                 return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");

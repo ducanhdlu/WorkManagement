@@ -83,7 +83,7 @@ namespace WorkManagement.Controllers
         {
             string email = Request["email_login"].ToString();
             string password = Request["password"].ToString();
-            Account user = db.Accounts.SingleOrDefault(u => u.Email == email && u.Password == password);
+            Account user = db.Accounts.FirstOrDefault(u => u.Email == email && u.Password == password);
             
             if (user!=null)
             {
@@ -267,7 +267,7 @@ namespace WorkManagement.Controllers
                 return Redirect("~/accounts/login");
             }
             int id = int.Parse(Request["employee"].ToString());
-            Account acc = db.Accounts.SingleOrDefault(a => a.ID == id);
+            Account acc = db.Accounts.FirstOrDefault(a => a.ID == id);
             try
             {
                 acc.Permission_ID = Request["permission"].ToString();
@@ -342,8 +342,8 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/Default/ErrorDB");
             }
-            Account acc = db.Accounts.SingleOrDefault(a => a.ID == id);
-            Employee emp = db.Employees.SingleOrDefault(e => e.ID == acc.Employee_ID);
+            Account acc = db.Accounts.FirstOrDefault(a => a.ID == id);
+            Employee emp = db.Employees.FirstOrDefault(e => e.ID == acc.Employee_ID);
 
             try
             {

@@ -21,7 +21,7 @@ namespace WorkManagement.Controllers
                 return Redirect("~/Accounts/Login");
             }
             int curID = ((Account)Session["user_login"]).ID;
-            Account cur = db.Accounts.SingleOrDefault(a => a.ID == curID);
+            Account cur = db.Accounts.FirstOrDefault(a => a.ID == curID);
             int sumDayOff = 12;
             List<BonusDayOff> listBDO = db.BonusDayOffs.Where(b => b.Employee.ID == cur.Employee.ID).ToList();
             if (listBDO.Count>0)
@@ -34,7 +34,11 @@ namespace WorkManagement.Controllers
             ViewBag.SumDayOff = sumDayOff;
             ViewBag.SumBonus = sumDayOff - 12;
             ViewBag.SumHourOut = 8;
-            ViewBag.User = cur;
+            if (cur != null)
+            {
+                ViewBag.User = cur;
+            }
+            
             return View();
         }
 
@@ -51,15 +55,15 @@ namespace WorkManagement.Controllers
                 return Redirect("~/Default/Error");
             }
             Account cur_user = Session["user_login"] as Account;
-            Session["DayOffInYear"] = db.DefaultValues.SingleOrDefault(d=>d.Value==12);
-            Session["TimeOffInMonth"] = db.DefaultValues.SingleOrDefault(d => d.Value == 8);
+            Session["DayOffInYear"] = db.DefaultValues.FirstOrDefault(d=>d.Value==12);
+            Session["TimeOffInMonth"] = db.DefaultValues.FirstOrDefault(d => d.Value == 8);
             Session["BonusDayOffs"] = db.BonusDayOffs.ToList();
             var employees = new List<Employee>();
-            foreach (var item in db.Employees)
+            foreach (var item in db.Accounts)
             {
-                if (int.Parse((item.Accounts.SingleOrDefault(a=>a.Employee_ID==item.ID)).Permission_ID)> int.Parse(cur_user.Permission_ID))
+                if (int.Parse(item.Permission_ID)> int.Parse(cur_user.Permission_ID))
                 {
-                    employees.Add(item);
+                    employees.Add(item.Employee);
                 }
             }
             return View(employees);
