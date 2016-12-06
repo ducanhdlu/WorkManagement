@@ -22,7 +22,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/Accounts/Index";
+                //Session["tempLink"] = "~/Accounts/Index";
                 return Redirect("~/accounts/login");
             }
             //không có quyền admin thì trả về trang lỗi
@@ -97,10 +97,10 @@ namespace WorkManagement.Controllers
                 {
                     Static.setMessegerSuper(db);
                 }
-                if (Session["tempLink"] != null)
-                {
-                    return Redirect(Session["tempLink"] as string);
-                }
+                //if (Session["tempLink"] != null)
+                //{
+                //    return Redirect(Session["tempLink"] as string);
+                //}
                 switch (user.Permission_ID)
                 {
                     case "1":
@@ -134,7 +134,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/Accounts/Create";
+                //Session["tempLink"] = "~/Accounts/Create";
                 return Redirect("~/accounts/login");
             }
             //không có quyền admin thì trả về trang lỗi
@@ -199,7 +199,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/Accounts/ResetPassword";
+                //Session["tempLink"] = "~/Accounts/ResetPassword";
                 return Redirect("~/accounts/login");
             }
             //không có quyền admin thì trả về trang lỗi
@@ -246,7 +246,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/Accounts/ChangePermission";
+                //Session["tempLink"] = "~/Accounts/ChangePermission";3
                 return Redirect("~/accounts/login");
             }
             //không có quyền admin thì trả về trang lỗi
@@ -289,7 +289,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/Accounts/ChangePassword";
+                //Session["tempLink"] = "~/Accounts/ChangePassword";
                 return RedirectToAction("login");
             }
             return View();
@@ -347,9 +347,13 @@ namespace WorkManagement.Controllers
 
             try
             {
-                db.Employees.Remove(emp);
-                db.Accounts.Remove(acc);
-                db.SaveChanges();
+                if (acc.Permission_ID!="1")
+                {
+                    db.Employees.Remove(emp);
+                    db.Accounts.Remove(acc);
+                    db.SaveChanges();
+                }
+                
             }
             catch (Exception)
             {

@@ -19,14 +19,13 @@
                         <label for="employee" class="control-label col-md-2 col-sm-2 col-xs-12">
                             Tên nhân viên <span class="required">*</span>
                         </label>
-                        <div class="col-md-5 col-sm-5 col-xs-12">
-                            <input type="text" name="employee" id="employee" ng-pattern="/^([a-zA-Z0-9]+)$/" required ng-model="employee" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
+                        <div class="col-md-5 col-sm-5 col-xs-12">@*ăâêưôơđĐàứạễ/^[a-zA-Z0-9]+$/*@ 
+                            <input type="text" name="employee" id="employee" required ng-model="employee" ng-trim="true" ng-minlength="4" ng-maxlength="50" class="form-control col-md-7 col-xs-12 input-validate">
                         </div>
                         <div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateAccount.employee.$dirty||frmCreateAccount.$submitted) && frmCreateAccount.employee.$error.required"><label class="control-label">Hãy nhập tên nhân viên.</label></span>
                             <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.minlength"><label class="control-label">Ít nhất là 4 ký tự.</label></span>
                             <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.maxlength"><label class="control-label">Nhiều nhất là 50 ký tự.</label></span>
-                            <span class="error" ng-show="frmCreateAccount.employee.$dirty && frmCreateAccount.employee.$error.pattern"><label class="control-label">Không được phép có ký tự đặc biệt.</label></span>
                         </div>
                     </div>
                     <div class="form-group">

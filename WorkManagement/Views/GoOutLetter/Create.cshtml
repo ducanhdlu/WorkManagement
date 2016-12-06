@@ -38,7 +38,7 @@
                         Giờ bắt đầu <span class="required">*</span>
                     </label>
                     <div class="col-md-2 col-sm-2 col-xs-12">
-                        <input type="number" name="hour" ng-model="hour" min="1" max="24" ng-pattern="/^([0-9]+)$/" class="form-control col-md-7 col-xs-6 input-validate">
+                        <input type="number" name="hour" ng-model="hour" min="7" max="16" ng-pattern="/^([0-9]+)$/" class="form-control col-md-7 col-xs-6 input-validate">
                     </div>
                     @*<div class="col-md-5 col-sm-5 col-xs-12">
                             <span class="error" ng-show="(frmCreateGoOutLetter.hour.$dirty||frmCreateGoOutLetter.$submitted) && frmCreateGoOutLetter.hour.$error.required"><label class="control-label">Hãy nhập giờ bắt đầu</label></span>
@@ -53,11 +53,11 @@
                         <input type="number" name="minute" min="0" max="59" ng-pattern="/^([0-9]+)$/" required ng-model="minute" class="form-control col-md-7 col-xs-12 input-validate">
 
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-12">
+                    <div class="col-md-5 col-sm-5 col-xs-12">
                         <span class="error" ng-show="(frmCreateGoOutLetter.hour.$dirty||frmCreateGoOutLetter.$submitted) && frmCreateGoOutLetter.hour.$error.required"><label class="control-label">Hãy nhập giờ bắt đầu</label></span>
                         <span class="error" ng-show="frmCreateGoOutLetter.hour.$dirty && frmCreateGoOutLetter.hour.$error.pattern"><label class="control-label">Chỉ đc nhập số nguyên.</label></span>
                         <span class="error" ng-show="frmCreateGoOutLetter.hour.$dirty && frmCreateGoOutLetter.hour.$error.number"><label class="control-label">Giờ nhập sai định dạng.</label></span>
-                        <span class="error" ng-show="frmCreateGoOutLetter.hour.$dirty && (frmCreateGoOutLetter.hour.$error.max||frmCreateGoOutLetter.hour.$error.min)"><label class="control-label">Giờ nhập vào không đúng.</label></span>
+                        <span class="error" ng-show="frmCreateGoOutLetter.hour.$dirty && (frmCreateGoOutLetter.hour.$error.max||frmCreateGoOutLetter.hour.$error.min)"><label class="control-label">Giờ đã nhập không hợp lệ.</label></span>
                         <span class="error" ng-show="(frmCreateGoOutLetter.minute.$dirty||frmCreateGoOutLetter.$submitted) && frmCreateGoOutLetter.minute.$error.required"><label class="control-label">Hãy nhập phút bắt đầu</label></span>
                         <span class="error" ng-show="frmCreateGoOutLetter.minute.$dirty && frmCreateGoOutLetter.minute.$error.pattern"><label class="control-label">Chỉ đc nhập số nguyên.</label></span>
                         <span class="error" ng-show="frmCreateGoOutLetter.minute.$dirty && frmCreateGoOutLetter.minute.$error.number"><label class="control-label">Phút nhập sai định dạng.</label></span>

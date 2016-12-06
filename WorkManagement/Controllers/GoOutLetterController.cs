@@ -19,7 +19,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/GoOutLetter/Index_Manager";
+                //Session["tempLink"] = "~/GoOutLetter/Index_Manager";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý thì trả về trang không tìm thấy
@@ -74,7 +74,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/GoOutLetter/Index_Employee";
+                //Session["tempLink"] = "~/GoOutLetter/Index_Employee";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -122,7 +122,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/GoOutLetter/Create";
+                //Session["tempLink"] = "~/GoOutLetter/Create";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -292,7 +292,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/GoOutLetter/ViewGoOutLetter_SuperManager";
+                //Session["tempLink"] = "~/GoOutLetter/ViewGoOutLetter_SuperManager";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý cấp cao thì trả về trang không tìm thấy

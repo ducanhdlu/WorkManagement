@@ -20,7 +20,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/AbsenceLetter/Index_Employee";
+                //Session["tempLink"] = "~/AbsenceLetter/Index_Employee";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -89,7 +89,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/AbsenceLetter/Index_Manager";
+                //Session["tempLink"] = "~/AbsenceLetter/Index_Manager";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý thì trả về trang không tìm thấy
@@ -226,7 +226,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/AbsenceLetter/Create";
+                //Session["tempLink"] = "~/AbsenceLetter/Create";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -336,7 +336,7 @@ namespace WorkManagement.Controllers
             if (Session["user_login"] == null)
             {
                 //link tạm để sau khi đăng nhập sẽ đi tới link này
-                Session["tempLink"] = "~/AbsenceLetter/ViewAbsenceLetter_SuperManager";
+                //Session["tempLink"] = "~/AbsenceLetter/ViewAbsenceLetter_SuperManager";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý cấp cao thì trả về trang không tìm thấy
@@ -398,6 +398,7 @@ namespace WorkManagement.Controllers
                 absen.Status = "7";
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
+                Static.setMessegerSuper(db);
                 return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");
             }
             catch (Exception)
@@ -427,6 +428,7 @@ namespace WorkManagement.Controllers
                 
                 db.Entry(absen).State = EntityState.Modified;
                 db.SaveChanges();
+                Static.setMessegerSuper(db);
                 return Redirect("~/AbsenceLetter/ViewAbsenceLetter_SuperManager");
             }
             catch (Exception)

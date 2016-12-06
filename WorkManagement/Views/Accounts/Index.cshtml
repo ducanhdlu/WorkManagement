@@ -73,9 +73,18 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Permission.Name)
                                     </td>
-                                    <td>
-                                        @Html.ActionLink("Xóa", "Delete", "Accounts", new { id = item.ID }, new { onclick = "return confirm('Bạn có muốn xóa tất cả thông tin của nhân viên " + item.Employee.FullName + "?');", @class = "btn btn-danger" })
-                                    </td>
+                                    @if (item.Permission_ID != "1")
+                                    {
+                                        <td>
+                                            @Html.ActionLink("Xóa", "Delete", "Accounts", new { id = item.ID }, new { onclick = "return confirm('Bạn có muốn xóa tất cả thông tin của nhân viên " + item.Employee.FullName + "?');", @class = "btn btn-danger" })
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="button" class="btn btn-danger" disabled value="Xóa" />
+                                        </td>
+                                    }
                                 </tr>
                             }
 

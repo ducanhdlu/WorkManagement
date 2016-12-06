@@ -10,16 +10,16 @@
             <div class="x_panel">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="x_title">
-                       
+
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            
+
                             <div class="form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-md-1 col-sm-2 col-xs-8">
                                         <h3>Tháng</h3>
                                     </div>
                                     <div class="col-md-1 col-sm-2 col-xs-6">
-                                        @{ 
+                                        @{
                                             List<SelectListItem> list = new List<SelectListItem>();
                                             for (int i = 1; i < 13; i++)
                                             {
@@ -33,14 +33,14 @@
                                                 list.Add(iteml);
                                             }
                                         }
-                                        @Html.DropDownList("month",list,new {@style="height:35px; width:50px; margin:0 5px 5px 0" } )
-                                        </div>
+                                        @Html.DropDownList("month", list, new { @style = "height:35px; width:50px; margin:0 5px 5px 0" })
+                                    </div>
                                     <div class="col-md-2 col-sm-2 col-xs-6">
                                         <button type="submit" class="btn btn-primary">Xem</button>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -48,8 +48,8 @@
                 <div class="x_content">
                     <div class="table-responsive">
                         @{
-                            int days = DateTime.DaysInMonth(((DateTime )Session["DateTime"]).Year, ((DateTime)Session["DateTime"]).Month);
-                            if (TempData["WrongMonthFormat"]!=null)
+                            int days = DateTime.DaysInMonth(((DateTime)Session["DateTime"]).Year, ((DateTime)Session["DateTime"]).Month);
+                            if (TempData["WrongMonthFormat"] != null)
                             {
                                 <p class="text-center text-danger">@TempData["WrongMonthFormat"]</p>
                             }
@@ -71,7 +71,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (DateTime.Now.Month >= ((DateTime)Session["DateTime"]).Month)
+                                        
+                                        @if (DateTime.Now.Month == ((DateTime)Session["DateTime"]).Month)
+                                        //trường hợp tháng xem bằng tháng hiện tại
                                         {
                                             for (int i = 1; i <= days; i++)
                                             {
@@ -111,80 +113,152 @@
                                                             switch (temp)
                                                             {
                                                                 case 1:
-                                                                    <td>
-                                                                        <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
-                                                                    </td>
-                                                                    <td>
-                                                                        <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckOut)</strong></p>
-                                                                    </td>
+                                                        <td>
+                                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckOut)</strong></p>
+                                                        </td>
                                                                     break;
                                                                 case 2:
-                                                                    <td>
-                                                                        <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
-                                                                    </td>
-                                                                    <td>
-                                                                        <p class="text-danger"><strong>Không check out</strong></p>
-                                                                    </td>
+                                                        <td>
+                                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-danger"><strong>Không check out</strong></p>
+                                                        </td>
                                                                     break;
                                                                 case 3:
-                                                                    <td>
-                                                                        <p class="text-danger"><strong>Không check in</strong></p>
-                                                                    </td>
-                                                                    <td>
-                                                                        <p class="text-danger"><strong>Không check out</strong></p>
-                                                                    </td>
+                                                        <td>
+                                                            <p class="text-danger"><strong>Không check in</strong></p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-danger"><strong>Không check out</strong></p>
+                                                        </td>
                                                                     break;
                                                                 default:
                                                                     break;
                                                             }
                                                         }
                                                     </tr>
-                                                            }
-                                                            else
-                                                            {
+                                                }
+                                                else
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
+                                                    </td>
+                                                </tr>
 
-                                                                <tr>
-                                                                    <td>
-                                                                        @i
-                                                                    </td>
-                                                                    <td>
-                                                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
-                                                                    </td>
-                                                                    <td>
-                                                                        <p class="text-success"><strong> Chưa tới ngày</strong></p>
-                                                                    </td>
-                                                                </tr>
+                                                }
+                                            }
+                                        }
+                                        //trường hợp tháng xem bé hơn tháng hiện tại
+                                        else if (DateTime.Now.Month > ((DateTime)Session["DateTime"]).Month)
+                                        {
+                                            for (int i = 1; i <= days; i++)
+                                            {
+                                                int temp = 3;
+                                                WorkManagement.Models.Timekeeping tkp = new WorkManagement.Models.Timekeeping();
 
-                                                                    }
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                for (int i = 1; i <= days; i++)
-                                                                {
-                                                                    <tr>
-                                                                        <td>
-                                                                            @i
-                                                                        </td>
-                                                                        <td>
-                                                                            <p class="text-success"><strong> Chưa tới ngày</strong></p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p class="text-success"><strong> Chưa tới ngày</strong></p>
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            }
+                                                <tr>
+                                                <td>
+                                                    @i
+                                                </td>
+                                                @{
+                                                foreach (var item in Model)
+                                                {
+                                                    //có check in
+                                                    if (@i == Static.TakeDay(item.CheckIn))
+                                                    {
+                                                        tkp = item;
+                                                        //có check out
+                                                        if (item.CheckOut != null)
+                                                        {
+                                                            temp = 1;
+                                                            break;
+                                                        }
+                                                        //không check out
+                                                        else
+                                                        {
+                                                            temp = 2;
+                                                            break;
+                                                        }
+
+                                                    }
+
+                                                }
+
+                                                switch (temp)
+                                                {
+                                                    case 1:
+                                        <td>
+                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckOut)</strong></p>
+                                        </td>
+                                                    break;
+                                                case 2:
+                                        <td>
+                                            <p class="text-info"><strong>@Static.StringToDatetime(tkp.CheckIn)</strong></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-danger"><strong>Không check out</strong></p>
+                                        </td>
+                                                    break;
+                                                case 3:
+                                        <td>
+                                            <p class="text-danger"><strong>Không check in</strong></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-danger"><strong>Không check out</strong></p>
+                                        </td>
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                    </tr>
+                                    }
+
+                                }
+                                //trường hợp tháng xem lớn hơn tháng hiện tại
+                                else
+                                {
+                                    for (int i = 1; i <= days; i++)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @i
+                                        </td>
+                                        <td>
+                                            <p class="text-success"><strong> Chưa tới ngày</strong></p>
+                                        </td>
+                                        <td>
+                                            <p class="text-success"><strong> Chưa tới ngày</strong></p>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
                                     </tbody>
                                 </table>
                             }
 
                         }
-                        
+
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+
 

@@ -20,7 +20,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/BonusDayOffs/Index";
+                //Session["tempLink"] = "~/BonusDayOffs/Index";
                 return Redirect("~/Accounts/Login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -74,7 +74,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/BonusDayOffs/Create";
+                //Session["tempLink"] = "~/BonusDayOffs/Create";
                 return Redirect("~/Accounts/Login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -100,7 +100,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/BonusDayOffs/Create";
+                //Session["tempLink"] = "~/BonusDayOffs/Create";
                 return Redirect("~/Accounts/Login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy

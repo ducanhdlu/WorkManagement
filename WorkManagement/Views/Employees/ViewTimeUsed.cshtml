@@ -1,98 +1,126 @@
-﻿@model IEnumerable<WorkManagement.Models.Employee>
+﻿@model PagedList.IPagedList<WorkManagement.Models.Employee>
 @using WorkManagement.Models
+@using PagedList.Mvc
 @{
     ViewBag.Title = "ViewTimeUsed";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
-<div class="title_right">
-    <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Tìm kiếm...">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-            </span>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_title">
-
-                <h2>Thông tin thời gian nghỉ của các nhân viên</h2>
-                <div class="clearfix"></div>
+<div class="row">
+    <form>
+        <div class="title_right">
+            <div class="col-md-3 col-sm-3 col-xs-11 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control", @placeholder = "Tìm kiếm..." })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="x_content">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                Tên nhân viên
-                            </th>
-                            <th>
-                                Ngày phép đã dùng
-                            </th>
-                            <th>
-                                Ngày phép cộng thêm
-                            </th>
-                            <th>
-                                Ngày phép trong năm
-                            </th>
-                            <th>
-                                Giờ phép đã dùng
-                            </th>
-                            <th>
-                                Giờ phép trong tháng
-                            </th>
+    </form>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_title">
 
-
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            int sumBonus = 0;
-                            foreach (var bn in (List<BonusDayOff>)Session["BonusDayOffs"])
-                            {
-                                if (bn.Employee_ID == item.ID)
-                                {
-                                    sumBonus += int.Parse(bn.TotalDates.ToString());
-                                }
-                            }
+                    <h2>Thông tin thời gian nghỉ của các nhân viên</h2>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DaysUsed)
-                                </td>
-                                <td>
-                                    @sumBonus
-                                </td> 
-                                <td>
-                                    @(((DefaultValue)Session["DayOffInYear"]).Value)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.HoursUsed)
-                                </td>
-                                <td>
-                                    @(((DefaultValue)Session["TimeOffInMonth"]).Value)
-                                </td>
-                                
-                            </tr>
-                    }
+                                <th>
+                                    @Html.ActionLink("Tên nhân viên", "ViewTimeUsed", new
+                               {
+                                   sortOrder = ViewBag.NameSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Ngày phép đã dùng", "ViewTimeUsed", new
+                               {
+                                   sortOrder = ViewBag.DayUsedSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    Ngày phép cộng thêm
+                                </th>
+                                <th>
+                                    Ngày phép trong năm
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Giờ phép đã dùng", "ViewTimeUsed", new
+                               {
+                                   sortOrder = ViewBag.HourSort,
+                                   currentSort = ViewBag.CurrentSort,
+                                   currentSearch = ViewBag.CurrentSearch
+                               })
+                                </th>
+                                <th>
+                                    Giờ phép trong tháng
+                                </th>
 
-                    </tbody>
-                </table>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                int sumBonus = 0;
+                                foreach (var bn in (List<BonusDayOff>)Session["BonusDayOffs"])
+                                {
+                                    if (bn.Employee_ID == item.ID)
+                                    {
+                                        sumBonus += int.Parse(bn.TotalDates.ToString());
+                                    }
+                                }
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DaysUsed)
+                                    </td>
+                                    <td>
+                                        @sumBonus
+                                    </td>
+                                    <td>
+                                        @(((DefaultValue)Session["DayOffInYear"]).Value)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.HoursUsed)
+                                    </td>
+                                    <td>
+                                        @(((DefaultValue)Session["TimeOffInMonth"]).Value)
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+        <div class="mid_center">
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("ViewTimeUsed",
+        new
+        {
+            page,
+            sortOrder = ViewBag.CurrentSort,
+            currentSearch = ViewBag.CurrentSearch
+        }))
         </div>
     </div>
 </div>
-
 
 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WorkManagement.Models;
 using System.Data.Entity;
 using System.Net;
+using PagedList;
 
 namespace WorkManagement.Controllers
 {
@@ -17,7 +18,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Employees/Index";
+                //Session["tempLink"] = "~/Employees/Index";
                 return Redirect("~/Accounts/Login");
             }
             int curID = ((Account)Session["user_login"]).ID;
@@ -42,11 +43,11 @@ namespace WorkManagement.Controllers
             return View();
         }
 
-        public ActionResult ViewTimeUsed()
+        public ActionResult ViewTimeUsed(string sortOrder, string searchString, string currentSearch, int? page)
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Employees/ViewTimeUsed";
+                //Session["tempLink"] = "~/Employees/ViewTimeUsed";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -66,7 +67,43 @@ namespace WorkManagement.Controllers
                     employees.Add(item.Employee);
                 }
             }
-            return View(employees);
+            //tìm kiếm, sắp xếp
+            ViewBag.NameSort = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
+            ViewBag.DayUsedSort = sortOrder == "dayused" ? "dayused_desc" : "dayused";
+            ViewBag.HourSort = sortOrder == "hour" ? "hour_desc" : "hour";
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString == null)
+                searchString = currentSearch;
+            ViewBag.CurrentSearch = searchString;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(a => a.FullName.Contains(searchString)).ToList();
+            }
+            switch (sortOrder)
+            {
+                case "desc":
+                    employees = employees.OrderBy(a => a.FullName).ToList();
+                    break;
+                case "dayused_desc":
+                    employees = employees.OrderByDescending(a => a.DaysUsed).ToList();
+                    break;
+                case "dayused":
+                    employees = employees.OrderBy(a => a.DaysUsed).ToList();
+                    break;
+                case "hour_desc":
+                    employees = employees.OrderByDescending(a => a.HoursUsed).ToList();
+                    break;
+                case "hour":
+                    employees = employees.OrderBy(a => a.HoursUsed).ToList();
+                    break;
+                default:
+                    employees = employees.OrderByDescending(a => a.FullName).ToList();
+                    break;
+            }
+            int pageNumber = (page ?? 1);
+            int pageSize = 6;
+            return View(employees.ToPagedList(pageNumber, pageSize));
         }
     }
 }

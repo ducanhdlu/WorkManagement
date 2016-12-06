@@ -18,7 +18,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/Check";
+                //Session["tempLink"] = "~/Timekeeping/Check";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -106,7 +106,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/ManagerToday";
+                //Session["tempLink"] = "~/Timekeeping/ManagerToday";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -153,7 +153,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/ManagerOneDay";
+                //Session["tempLink"] = "~/Timekeeping/ManagerOneDay";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -194,7 +194,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/ManagerOption";
+                //Session["tempLink"] = "~/Timekeeping/ManagerOption";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -221,7 +221,7 @@ namespace WorkManagement.Controllers
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/ShowInMonthOneEmployee";
+                //Session["tempLink"] = "~/Timekeeping/ShowInMonthOneEmployee";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc nhân viên thì trả về trang không tìm thấy
@@ -253,11 +253,11 @@ namespace WorkManagement.Controllers
         }
         // Get: TimeKeeping/ManagerOneEmployeeOneMonth
         // Quản lý xem 1 nhân viên dưới quyền trong 1 tháng
-        public ActionResult ShowOneEmployeeOneMonth(string employee, string month)
+        public ActionResult ShowOneEmployeeOneMonth(string employee, string month, string cur_emp)
         {
             if (Session["user_login"] == null)
             {
-                Session["tempLink"] = "~/Timekeeping/ManagerOneEmployeeOneMonth";
+                //Session["tempLink"] = "~/Timekeeping/ManagerOneEmployeeOneMonth";
                 return Redirect("~/accounts/login");
             }
             //không có quyền quản lý hoặc quản lý cấp cao thì trả về trang không tìm thấy
@@ -265,6 +265,13 @@ namespace WorkManagement.Controllers
             {
                 return Redirect("~/Default/Error");
             }
+            if (string.IsNullOrEmpty(employee))
+            {
+                employee = cur_emp;
+            }
+            ViewBag.Employee = employee;
+
+
             DateTime dt = DateTime.Now;
             int accID = -1;
             if (!string.IsNullOrEmpty(month))
